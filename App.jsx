@@ -1235,7 +1235,6 @@ const handleLogin = async () => {
   const normalizedEmail = email.trim().toLowerCase();
 
   try {
-    // First: authenticate user
     const { data: authData, error: authError } =
       await supabase.auth.signInWithPassword({
         email: normalizedEmail,
@@ -1247,9 +1246,8 @@ const handleLogin = async () => {
       return;
     }
 
-    // Second: verify member is active
     const response = await fetch(
-      `${SUPABASE_URL}/rest/v1/members?email=eq.${normalizedEmail}&status=eq.active`,
+      `${SUPABASE_URL}/rest/v1/members?select=*&email=eq.${normalizedEmail}&status=eq.active`,
       {
         headers: {
           apikey: SUPABASE_KEY,
@@ -1257,6 +1255,28 @@ const handleLogin = async () => {
         },
       }
     );
+
+    const members = await response.json();
+
+    if (members && members.length > 0) {
+      const member = members[0];
+
+      onLogin({
+        email: member.email,
+        role: member.role,
+        first_name: member.first_name,
+        last_name: member.last_name,
+        membership_type: member.membership_type,
+        status: member.status,
+      });
+    } else {
+      setShowMessage(true);
+    }
+  } catch (error) {
+    console.error(error);
+    setShowMessage(true);
+  }
+};
 
     const members = await response.json();
 
