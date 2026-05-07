@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 const SUPABASE_URL = "https://ztqtfftgtwgxrtoqqggx.supabase.co";
 const SUPABASE_KEY = "sb_publishable_V3P46SsSqP3cj8-hensd9w_OYqIvuhC";
+import { createClient } from "@supabase/supabase-js";
+
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 const burgundy = "#7b1734";
 const darkBurgundy = "#4a0d20";
 const cream = "#faf7f3";
@@ -1018,10 +1021,23 @@ function LoginScreen({ onLogin }) {
   const [showMessage, setShowMessage] = useState(false);
 
   
- const handleLogin = async () => {
+const handleLogin = async () => {
   const normalizedEmail = email.trim().toLowerCase();
 
   try {
+    // First: authenticate user
+    const { data: authData, error: authError } =
+      await supabase.auth.signInWithPassword({
+        email: normalizedEmail,
+        password,
+      });
+
+    if (authError || !authData.user) {
+      setShowMessage(true);
+      return;
+    }
+
+    // Second: verify member is active
     const response = await fetch(
       `${SUPABASE_URL}/rest/v1/members?email=eq.${normalizedEmail}&status=eq.active`,
       {
@@ -1032,9 +1048,9 @@ function LoginScreen({ onLogin }) {
       }
     );
 
-    const data = await response.json();
+    const members = await response.json();
 
-    if (data.length > 0 && password.trim().length > 0) {
+    if (members.length > 0) {
       onLogin();
     } else {
       setShowMessage(true);
