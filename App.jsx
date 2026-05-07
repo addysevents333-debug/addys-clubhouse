@@ -1330,6 +1330,9 @@ export default function AddysClubhousePrototype() {
   const [currentMember, setCurrentMember] = useState(null);
   const [activeTab, setActiveTab] = useState("home");
 
+  const isAdmin =
+    currentMember?.role?.trim().toLowerCase() === "admin";
+
   if (!isLoggedIn) {
     return (
       <LoginScreen
@@ -1345,13 +1348,17 @@ export default function AddysClubhousePrototype() {
   if (activeTab === "calendar") screen = <CalendarScreen />;
   if (activeTab === "offers") screen = <OffersScreen />;
   if (activeTab === "notes") screen = <NotesScreen />;
-  if (activeTab === "profile") screen = <ProfileScreen />;
   if (activeTab === "messages") screen = <MessagesScreen />;
-  if (activeTab === "admin") screen = <AdminScreen />;
+  if (activeTab === "admin" && isAdmin) screen = <AdminScreen />;
 
   return (
     <div style={{ minHeight: "100vh", background: "#e9e5df", fontFamily: "Arial, sans-serif", color: "#111" }}>
       <div style={{ maxWidth: 430, minHeight: "100vh", margin: "0 auto", background: cream, position: "relative", boxShadow: "0 0 35px rgba(0,0,0,.18)" }}>
+        
+        <div style={{ padding: 10, background: isAdmin ? "#e6ffed" : "#fff1f1", fontSize: 12, textAlign: "center" }}>
+          Logged in as: {currentMember?.email || "unknown"} | Role: {currentMember?.role || "none"} | Admin: {isAdmin ? "YES" : "NO"}
+        </div>
+
         {screen}
 
         <div
@@ -1368,9 +1375,9 @@ export default function AddysClubhousePrototype() {
             boxSizing: "border-box",
           }}
         >
-          <div style={{ display: "grid", gridTemplateColumns: currentMember?.role === "admin" ? "repeat(6, 1fr)" : "repeat(5, 1fr)", gap: 6 }}>
+          <div style={{ display: "grid", gridTemplateColumns: isAdmin ? "repeat(6, 1fr)" : "repeat(5, 1fr)", gap: 6 }}>
             {tabs
-              .filter((tab) => tab.id !== "admin" || currentMember?.role === "admin")
+              .filter((tab) => tab.id !== "admin" || isAdmin)
               .map((tab) => {
                 const active = activeTab === tab.id;
                 return (
