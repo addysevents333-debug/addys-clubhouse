@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-
+import React, { useEffect, useState } from "react";
+const SUPABASE_URL = "https://ztqtfftgtwgxrtoqqggx.supabase.co";
+const SUPABASE_KEY = "sb_publishable_V3P46SsSqP3cj8-hensd9w_OYqIvuhC";
 const burgundy = "#7b1734";
 const darkBurgundy = "#4a0d20";
 const cream = "#faf7f3";
@@ -1016,20 +1017,33 @@ function LoginScreen({ onLogin }) {
   const [password, setPassword] = useState("");
   const [showMessage, setShowMessage] = useState(false);
 
-  const approvedMembers = [
-    "member@example.com",
-    "wineclub@example.com",
-    "spiritsclub@example.com",
-  ];
+  
+ const handleLogin = async () => {
+  const normalizedEmail = email.trim().toLowerCase();
 
-  const handleLogin = () => {
-    const normalizedEmail = email.trim().toLowerCase();
-    if (approvedMembers.includes(normalizedEmail) && password.trim().length > 0) {
+  try {
+    const response = await fetch(
+      `${SUPABASE_URL}/rest/v1/members?email=eq.${normalizedEmail}&status=eq.active`,
+      {
+        headers: {
+          apikey: SUPABASE_KEY,
+          Authorization: `Bearer ${SUPABASE_KEY}`,
+        },
+      }
+    );
+
+    const data = await response.json();
+
+    if (data.length > 0 && password.trim().length > 0) {
       onLogin();
     } else {
       setShowMessage(true);
     }
-  };
+  } catch (error) {
+    console.error(error);
+    setShowMessage(true);
+  }
+};
 
   return (
     <div style={{ minHeight: "100vh", background: `linear-gradient(135deg, ${darkBurgundy}, ${burgundy}, #16070d)`, display: "grid", placeItems: "center", padding: 20, boxSizing: "border-box" }}>
