@@ -1261,14 +1261,10 @@ const handleLogin = async () => {
     const members = await response.json();
 
     if (members.length > 0) {
-      onLogin();
-    } else {
-      setShowMessage(true);
-    }
-  } catch (error) {
-    console.error(error);
-    setShowMessage(true);
-  }
+  onLogin(members[0]);
+} else {
+  setShowMessage(true);
+}
 };
 
   return (
