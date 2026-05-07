@@ -722,7 +722,6 @@ function OffersScreen() {
   };
 
   return (
-  return (
     <div style={{ padding: 20, paddingBottom: 92 }}>
       <h1 style={{ margin: "0 0 6px", fontSize: 28 }}>Member Offers</h1>
       <p style={{ margin: "0 0 18px", color: "#666" }}>Rare bottles, early access, and club-only opportunities.</p>
