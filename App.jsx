@@ -306,6 +306,10 @@ function AdminScreen() {
   const [icon, setIcon] = useState("📣");
   const [content, setContent] = useState("");
   const [message, setMessage] = useState("");
+  const [offerTitle, setOfferTitle] = useState("");
+const [offerDetail, setOfferDetail] = useState("");
+const [offerPrice, setOfferPrice] = useState("");
+const [offerBadge, setOfferBadge] = useState("Member Offer");
 
   const createPost = async () => {
     if (!content.trim()) {
@@ -331,7 +335,39 @@ function AdminScreen() {
         comments: 0,
       }),
     });
+const createOffer = async () => {
+  if (!offerTitle.trim() || !offerDetail.trim()) {
+    setMessage("Please add an offer title and details.");
+    return;
+  }
 
+  const response = await fetch(`${SUPABASE_URL}/rest/v1/offers`, {
+    method: "POST",
+    headers: {
+      apikey: SUPABASE_KEY,
+      Authorization: `Bearer ${SUPABASE_KEY}`,
+      "Content-Type": "application/json",
+      Prefer: "return=minimal",
+    },
+    body: JSON.stringify({
+      title: offerTitle,
+      detail: offerDetail,
+      price: offerPrice,
+      badge: offerBadge,
+      image_url: "",
+    }),
+  });
+
+  if (response.ok) {
+    setOfferTitle("");
+    setOfferDetail("");
+    setOfferPrice("");
+    setOfferBadge("Member Offer");
+    setMessage("Offer created. Go to the Offers tab to see it.");
+  } else {
+    setMessage("Something went wrong creating the offer.");
+  }
+};
     if (response.ok) {
       setContent("");
       setMessage("Post created. Go back to the Feed to see it.");
@@ -403,6 +439,51 @@ function AdminScreen() {
 
         <AppButton onClick={createPost}>Create Feed Post</AppButton>
       </Card>
+      <Card style={{ marginTop: 16 }}>
+  <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>Create Member Offer</h2>
+
+  <label style={{ display: "block", fontSize: 13, fontWeight: 900, marginBottom: 6 }}>
+    Offer Title
+  </label>
+  <input
+    value={offerTitle}
+    onChange={(event) => setOfferTitle(event.target.value)}
+    placeholder="Rare Champagne Allocation"
+    style={{ width: "100%", borderRadius: 16, border: "1px solid #ddd6cf", padding: 13, boxSizing: "border-box", fontSize: 15, marginBottom: 12 }}
+  />
+
+  <label style={{ display: "block", fontSize: 13, fontWeight: 900, marginBottom: 6 }}>
+    Offer Details
+  </label>
+  <textarea
+    value={offerDetail}
+    onChange={(event) => setOfferDetail(event.target.value)}
+    placeholder="Describe the bottle, offer, quantity, or deadline..."
+    style={{ width: "100%", minHeight: 100, borderRadius: 16, border: "1px solid #ddd6cf", padding: 13, boxSizing: "border-box", fontFamily: "Arial, sans-serif", fontSize: 15, marginBottom: 12 }}
+  />
+
+  <label style={{ display: "block", fontSize: 13, fontWeight: 900, marginBottom: 6 }}>
+    Price
+  </label>
+  <input
+    value={offerPrice}
+    onChange={(event) => setOfferPrice(event.target.value)}
+    placeholder="$200 / bottle"
+    style={{ width: "100%", borderRadius: 16, border: "1px solid #ddd6cf", padding: 13, boxSizing: "border-box", fontSize: 15, marginBottom: 12 }}
+  />
+
+  <label style={{ display: "block", fontSize: 13, fontWeight: 900, marginBottom: 6 }}>
+    Badge
+  </label>
+  <input
+    value={offerBadge}
+    onChange={(event) => setOfferBadge(event.target.value)}
+    placeholder="Rare Offer"
+    style={{ width: "100%", borderRadius: 16, border: "1px solid #ddd6cf", padding: 13, boxSizing: "border-box", fontSize: 15, marginBottom: 12 }}
+  />
+
+  <AppButton onClick={createOffer}>Create Offer</AppButton>
+</Card>
     </div>
   );
 }
