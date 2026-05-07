@@ -299,7 +299,113 @@ function EventCard({ event }) {
     </Card>
   );
 }
+function AdminScreen() {
+  const [author, setAuthor] = useState("Tyler");
+  const [role, setRole] = useState("Club Director");
+  const [badge, setBadge] = useState("Announcement");
+  const [icon, setIcon] = useState("📣");
+  const [content, setContent] = useState("");
+  const [message, setMessage] = useState("");
 
+  const createPost = async () => {
+    if (!content.trim()) {
+      setMessage("Please write a post first.");
+      return;
+    }
+
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/posts`, {
+      method: "POST",
+      headers: {
+        apikey: SUPABASE_KEY,
+        Authorization: `Bearer ${SUPABASE_KEY}`,
+        "Content-Type": "application/json",
+        Prefer: "return=minimal",
+      },
+      body: JSON.stringify({
+        author,
+        role,
+        badge,
+        icon,
+        content,
+        likes: 0,
+        comments: 0,
+      }),
+    });
+
+    if (response.ok) {
+      setContent("");
+      setMessage("Post created. Go back to the Feed to see it.");
+    } else {
+      setMessage("Something went wrong. Check Supabase or try again.");
+    }
+  };
+
+  return (
+    <div style={{ padding: 20, paddingBottom: 92 }}>
+      <BrandLogo compact />
+      <h1 style={{ margin: "16px 0 6px", fontSize: 28 }}>Admin Portal</h1>
+      <p style={{ margin: "0 0 18px", color: "#666", lineHeight: 1.5 }}>
+        Create posts for the Clubhouse Feed without touching Supabase.
+      </p>
+
+      <Card>
+        <label style={{ display: "block", fontSize: 13, fontWeight: 900, marginBottom: 6 }}>
+          Author
+        </label>
+        <input
+          value={author}
+          onChange={(event) => setAuthor(event.target.value)}
+          style={{ width: "100%", borderRadius: 16, border: "1px solid #ddd6cf", padding: 13, boxSizing: "border-box", fontSize: 15, marginBottom: 12 }}
+        />
+
+        <label style={{ display: "block", fontSize: 13, fontWeight: 900, marginBottom: 6 }}>
+          Role
+        </label>
+        <input
+          value={role}
+          onChange={(event) => setRole(event.target.value)}
+          style={{ width: "100%", borderRadius: 16, border: "1px solid #ddd6cf", padding: 13, boxSizing: "border-box", fontSize: 15, marginBottom: 12 }}
+        />
+
+        <label style={{ display: "block", fontSize: 13, fontWeight: 900, marginBottom: 6 }}>
+          Badge
+        </label>
+        <input
+          value={badge}
+          onChange={(event) => setBadge(event.target.value)}
+          style={{ width: "100%", borderRadius: 16, border: "1px solid #ddd6cf", padding: 13, boxSizing: "border-box", fontSize: 15, marginBottom: 12 }}
+        />
+
+        <label style={{ display: "block", fontSize: 13, fontWeight: 900, marginBottom: 6 }}>
+          Icon
+        </label>
+        <input
+          value={icon}
+          onChange={(event) => setIcon(event.target.value)}
+          style={{ width: "100%", borderRadius: 16, border: "1px solid #ddd6cf", padding: 13, boxSizing: "border-box", fontSize: 15, marginBottom: 12 }}
+        />
+
+        <label style={{ display: "block", fontSize: 13, fontWeight: 900, marginBottom: 6 }}>
+          Post
+        </label>
+        <textarea
+          value={content}
+          onChange={(event) => setContent(event.target.value)}
+          placeholder="Write your Clubhouse update..."
+          style={{ width: "100%", minHeight: 120, borderRadius: 16, border: "1px solid #ddd6cf", padding: 13, boxSizing: "border-box", fontFamily: "Arial, sans-serif", fontSize: 15, marginBottom: 12 }}
+        />
+
+        {message ? (
+          <div style={{ background: "#fffaf0", border: `1px solid ${gold}`, borderRadius: 16, padding: 12, color: "#555", marginBottom: 12 }}>
+            {message}
+          </div>
+        ) : null}
+
+        <AppButton onClick={createPost}>Create Feed Post</AppButton>
+      </Card>
+    </div>
+  );
+}
 function FeedPost({ post }) {
   return (
     <Card>
@@ -995,6 +1101,7 @@ const tabs = [
   { id: "offers", label: "Offers", icon: "🎁" },
   { id: "notes", label: "Notes", icon: "📚" },
   { id: "messages", label: "DMs", icon: "💬" },
+  { id: "admin", label: "Admin", icon: "⚙️" },
 ];
 
 function LoginScreen({ onLogin }) {
@@ -1111,6 +1218,7 @@ export default function AddysClubhousePrototype() {
   if (activeTab === "notes") screen = <NotesScreen />;
   if (activeTab === "profile") screen = <ProfileScreen />;
   if (activeTab === "messages") screen = <MessagesScreen />;
+  if (activeTab === "admin") screen = <AdminScreen />;
 
   return (
     <div style={{ minHeight: "100vh", background: "#e9e5df", fontFamily: "Arial, sans-serif", color: "#111" }}>
@@ -1131,7 +1239,7 @@ export default function AddysClubhousePrototype() {
             boxSizing: "border-box",
           }}
         >
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 6 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: 6 }}>
             {tabs.map((tab) => {
               const active = activeTab === tab.id;
               return (
