@@ -58,44 +58,7 @@ const events = [
   },
 ];
 
-const clubhouseFeed = [
-  {
-    id: 1,
-    author: "Tyler",
-    role: "Club Director",
-    badge: "Announcement",
-    icon: "📣",
-    time: "2 hours ago",
-    content:
-      "We were just offered an extremely limited 2009 vintage Champagne allocation. Wine Club members get first access before public release.",
-    likes: 18,
-    comments: 6,
-  },
-  {
-    id: 2,
-    author: "Jim Curry",
-    role: "Wine Club Instructor",
-    badge: "Jim’s Notes",
-    icon: "🍷",
-    time: "Yesterday",
-    content:
-      "The Rioja lineup this month may be one of my favorite classes we’ve done in years. Faustino showed beautifully with food.",
-    likes: 24,
-    comments: 9,
-  },
-  {
-    id: 3,
-    author: "Ryan",
-    role: "Spirits Specialist",
-    badge: "Staff Pick",
-    icon: "🥃",
-    time: "Yesterday",
-    content:
-      "Just tasted through a few upcoming bourbon barrel picks. One of them might be the best value whiskey we’ve brought in all year.",
-    likes: 31,
-    comments: 12,
-  },
-];
+
 
 const staffContacts = [
   {
@@ -420,6 +383,25 @@ function FeedPost({ post }) {
 }
 
 function HomeScreen({ setActiveTab }) {
+  const [clubhouseFeed, setClubhouseFeed] = useState([]);
+  useEffect(() => {
+  loadPosts();
+}, []);
+
+const loadPosts = async () => {
+  const response = await fetch(
+    `${SUPABASE_URL}/rest/v1/posts?select=*`,
+    {
+      headers: {
+        apikey: SUPABASE_KEY,
+        Authorization: `Bearer ${SUPABASE_KEY}`,
+      },
+    }
+  );
+
+  const data = await response.json();
+  setClubhouseFeed(data);
+};
   return (
     <div style={{ paddingBottom: 92 }}>
       <div
