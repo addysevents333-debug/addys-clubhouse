@@ -1327,18 +1327,19 @@ const handleLogin = async () => {
 
 export default function AddysClubhousePrototype() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-const [currentMember, setCurrentMember] = useState(null);
-const [activeTab, setActiveTab] = useState("home");
+  const [currentMember, setCurrentMember] = useState(null);
+  const [activeTab, setActiveTab] = useState("home");
 
   if (!isLoggedIn) {
-   return (
-  <LoginScreen
-    onLogin={(member) => {
-      setCurrentMember(member);
-      setIsLoggedIn(true);
-    }}
-  />
-);
+    return (
+      <LoginScreen
+        onLogin={(member) => {
+          setCurrentMember(member);
+          setIsLoggedIn(true);
+        }}
+      />
+    );
+  }
 
   let screen = <HomeScreen setActiveTab={setActiveTab} />;
   if (activeTab === "calendar") screen = <CalendarScreen />;
@@ -1367,31 +1368,30 @@ const [activeTab, setActiveTab] = useState("home");
             boxSizing: "border-box",
           }}
         >
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: 6 }}>
+          <div style={{ display: "grid", gridTemplateColumns: currentMember?.role === "admin" ? "repeat(6, 1fr)" : "repeat(5, 1fr)", gap: 6 }}>
             {tabs
-  {tabs
-  .filter((tab) => tab.id !== "admin" || currentMember?.role === "admin")
-  .map((tab) => {
-              const active = activeTab === tab.id;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  style={{
-                    border: 0,
-                    borderRadius: 14,
-                    padding: "8px 4px",
-                    background: active ? burgundy : "transparent",
-                    color: active ? "white" : "#666",
-                    fontWeight: 700,
-                    cursor: "pointer",
-                  }}
-                >
-                  <div style={{ fontSize: 18 }}>{tab.icon}</div>
-                  <div style={{ fontSize: 11 }}>{tab.label}</div>
-                </button>
-              );
-            })}
+              .filter((tab) => tab.id !== "admin" || currentMember?.role === "admin")
+              .map((tab) => {
+                const active = activeTab === tab.id;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    style={{
+                      border: 0,
+                      borderRadius: 14,
+                      padding: "8px 4px",
+                      background: active ? burgundy : "transparent",
+                      color: active ? "white" : "#666",
+                      fontWeight: 700,
+                      cursor: "pointer",
+                    }}
+                  >
+                    <div style={{ fontSize: 18 }}>{tab.icon}</div>
+                    <div style={{ fontSize: 11 }}>{tab.label}</div>
+                  </button>
+                );
+              })}
           </div>
         </div>
       </div>
