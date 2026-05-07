@@ -1327,11 +1327,18 @@ const handleLogin = async () => {
 
 export default function AddysClubhousePrototype() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [activeTab, setActiveTab] = useState("home");
+const [currentMember, setCurrentMember] = useState(null);
+const [activeTab, setActiveTab] = useState("home");
 
   if (!isLoggedIn) {
-    return <LoginScreen onLogin={() => setIsLoggedIn(true)} />;
-  }
+   return (
+  <LoginScreen
+    onLogin={(member) => {
+      setCurrentMember(member);
+      setIsLoggedIn(true);
+    }}
+  />
+);
 
   let screen = <HomeScreen setActiveTab={setActiveTab} />;
   if (activeTab === "calendar") screen = <CalendarScreen />;
