@@ -622,12 +622,31 @@ function CalendarScreen() {
 }
 
 function OffersScreen() {
+  const [liveOffers, setLiveOffers] = useState([]);
+
+  useEffect(() => {
+    loadOffers();
+  }, []);
+
+  const loadOffers = async () => {
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/offers?select=*`, {
+      headers: {
+        apikey: SUPABASE_KEY,
+        Authorization: `Bearer ${SUPABASE_KEY}`,
+      },
+    });
+
+    const data = await response.json();
+    setLiveOffers(data);
+  };
+
+  return (
   return (
     <div style={{ padding: 20, paddingBottom: 92 }}>
       <h1 style={{ margin: "0 0 6px", fontSize: 28 }}>Member Offers</h1>
       <p style={{ margin: "0 0 18px", color: "#666" }}>Rare bottles, early access, and club-only opportunities.</p>
       <div style={{ display: "grid", gap: 12 }}>
-        {offers.map((offer) => (
+        {liveoffers.map((offer) => (
           <Card key={offer.title}>
             <span style={{ background: blush, color: burgundy, borderRadius: 999, padding: "6px 10px", fontSize: 12, fontWeight: 800 }}>
               {offer.badge}
