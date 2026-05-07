@@ -1368,7 +1368,9 @@ const [activeTab, setActiveTab] = useState("home");
           }}
         >
           <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: 6 }}>
-            {tabs.map((tab) => {
+            {tabs
+  .filter((tab) => tab.id !== "admin" || currentMember?.role === "admin")
+  .map((tab) => {
               const active = activeTab === tab.id;
               return (
                 <button
