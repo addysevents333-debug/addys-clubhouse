@@ -306,10 +306,11 @@ function AdminScreen() {
   const [icon, setIcon] = useState("📣");
   const [content, setContent] = useState("");
   const [message, setMessage] = useState("");
+
   const [offerTitle, setOfferTitle] = useState("");
-const [offerDetail, setOfferDetail] = useState("");
-const [offerPrice, setOfferPrice] = useState("");
-const [offerBadge, setOfferBadge] = useState("Member Offer");
+  const [offerDetail, setOfferDetail] = useState("");
+  const [offerPrice, setOfferPrice] = useState("");
+  const [offerBadge, setOfferBadge] = useState("Member Offer");
 
   const createPost = async () => {
     if (!content.trim()) {
@@ -335,155 +336,158 @@ const [offerBadge, setOfferBadge] = useState("Member Offer");
         comments: 0,
       }),
     });
-const createOffer = async () => {
-  if (!offerTitle.trim() || !offerDetail.trim()) {
-    setMessage("Please add an offer title and details.");
-    return;
-  }
 
-  const response = await fetch(`${SUPABASE_URL}/rest/v1/offers`, {
-    method: "POST",
-    headers: {
-      apikey: SUPABASE_KEY,
-      Authorization: `Bearer ${SUPABASE_KEY}`,
-      "Content-Type": "application/json",
-      Prefer: "return=minimal",
-    },
-    body: JSON.stringify({
-      title: offerTitle,
-      detail: offerDetail,
-      price: offerPrice,
-      badge: offerBadge,
-      image_url: "",
-    }),
-  });
-
-  if (response.ok) {
-    setOfferTitle("");
-    setOfferDetail("");
-    setOfferPrice("");
-    setOfferBadge("Member Offer");
-    setMessage("Offer created. Go to the Offers tab to see it.");
-  } else {
-    setMessage("Something went wrong creating the offer.");
-  }
-};
     if (response.ok) {
       setContent("");
-      setMessage("Post created. Go back to the Feed to see it.");
+      setMessage("Post created. Go to Feed to view it.");
     } else {
-      setMessage("Something went wrong. Check Supabase or try again.");
+      setMessage("Error creating post.");
+    }
+  };
+
+  const createOffer = async () => {
+    if (!offerTitle.trim() || !offerDetail.trim()) {
+      setMessage("Please add an offer title and details.");
+      return;
+    }
+
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/offers`, {
+      method: "POST",
+      headers: {
+        apikey: SUPABASE_KEY,
+        Authorization: `Bearer ${SUPABASE_KEY}`,
+        "Content-Type": "application/json",
+        Prefer: "return=minimal",
+      },
+      body: JSON.stringify({
+        title: offerTitle,
+        detail: offerDetail,
+        price: offerPrice,
+        badge: offerBadge,
+        image_url: "",
+      }),
+    });
+
+    if (response.ok) {
+      setOfferTitle("");
+      setOfferDetail("");
+      setOfferPrice("");
+      setOfferBadge("Member Offer");
+      setMessage("Offer created. Go to Offers to view it.");
+    } else {
+      setMessage("Error creating offer.");
     }
   };
 
   return (
     <div style={{ padding: 20, paddingBottom: 92 }}>
       <BrandLogo compact />
-      <h1 style={{ margin: "16px 0 6px", fontSize: 28 }}>Admin Portal</h1>
+
+      <h1 style={{ margin: "16px 0 6px", fontSize: 28 }}>
+        Admin Portal
+      </h1>
+
       <p style={{ margin: "0 0 18px", color: "#666", lineHeight: 1.5 }}>
-        Create posts for the Clubhouse Feed without touching Supabase.
+        Manage Clubhouse content.
       </p>
 
       <Card>
-        <label style={{ display: "block", fontSize: 13, fontWeight: 900, marginBottom: 6 }}>
-          Author
-        </label>
-        <input
-          value={author}
-          onChange={(event) => setAuthor(event.target.value)}
-          style={{ width: "100%", borderRadius: 16, border: "1px solid #ddd6cf", padding: 13, boxSizing: "border-box", fontSize: 15, marginBottom: 12 }}
-        />
+        <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>
+          Create Feed Post
+        </h2>
 
-        <label style={{ display: "block", fontSize: 13, fontWeight: 900, marginBottom: 6 }}>
-          Role
-        </label>
-        <input
-          value={role}
-          onChange={(event) => setRole(event.target.value)}
-          style={{ width: "100%", borderRadius: 16, border: "1px solid #ddd6cf", padding: 13, boxSizing: "border-box", fontSize: 15, marginBottom: 12 }}
-        />
-
-        <label style={{ display: "block", fontSize: 13, fontWeight: 900, marginBottom: 6 }}>
-          Badge
-        </label>
-        <input
-          value={badge}
-          onChange={(event) => setBadge(event.target.value)}
-          style={{ width: "100%", borderRadius: 16, border: "1px solid #ddd6cf", padding: 13, boxSizing: "border-box", fontSize: 15, marginBottom: 12 }}
-        />
-
-        <label style={{ display: "block", fontSize: 13, fontWeight: 900, marginBottom: 6 }}>
-          Icon
-        </label>
-        <input
-          value={icon}
-          onChange={(event) => setIcon(event.target.value)}
-          style={{ width: "100%", borderRadius: 16, border: "1px solid #ddd6cf", padding: 13, boxSizing: "border-box", fontSize: 15, marginBottom: 12 }}
-        />
-
-        <label style={{ display: "block", fontSize: 13, fontWeight: 900, marginBottom: 6 }}>
-          Post
-        </label>
         <textarea
           value={content}
           onChange={(event) => setContent(event.target.value)}
           placeholder="Write your Clubhouse update..."
-          style={{ width: "100%", minHeight: 120, borderRadius: 16, border: "1px solid #ddd6cf", padding: 13, boxSizing: "border-box", fontFamily: "Arial, sans-serif", fontSize: 15, marginBottom: 12 }}
+          style={{
+            width: "100%",
+            minHeight: 120,
+            borderRadius: 16,
+            border: "1px solid #ddd6cf",
+            padding: 13,
+            boxSizing: "border-box",
+            fontFamily: "Arial, sans-serif",
+            fontSize: 15,
+            marginBottom: 12,
+          }}
         />
 
+        <AppButton onClick={createPost}>
+          Create Feed Post
+        </AppButton>
+      </Card>
+
+      <Card style={{ marginTop: 16 }}>
+        <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>
+          Create Member Offer
+        </h2>
+
+        <input
+          value={offerTitle}
+          onChange={(event) => setOfferTitle(event.target.value)}
+          placeholder="Offer Title"
+          style={{
+            width: "100%",
+            borderRadius: 16,
+            border: "1px solid #ddd6cf",
+            padding: 13,
+            boxSizing: "border-box",
+            fontSize: 15,
+            marginBottom: 12,
+          }}
+        />
+
+        <textarea
+          value={offerDetail}
+          onChange={(event) => setOfferDetail(event.target.value)}
+          placeholder="Offer Details"
+          style={{
+            width: "100%",
+            minHeight: 100,
+            borderRadius: 16,
+            border: "1px solid #ddd6cf",
+            padding: 13,
+            boxSizing: "border-box",
+            fontFamily: "Arial, sans-serif",
+            fontSize: 15,
+            marginBottom: 12,
+          }}
+        />
+
+        <input
+          value={offerPrice}
+          onChange={(event) => setOfferPrice(event.target.value)}
+          placeholder="$200 / bottle"
+          style={{
+            width: "100%",
+            borderRadius: 16,
+            border: "1px solid #ddd6cf",
+            padding: 13,
+            boxSizing: "border-box",
+            fontSize: 15,
+            marginBottom: 12,
+          }}
+        />
+
+        <AppButton onClick={createOffer}>
+          Create Offer
+        </AppButton>
+
         {message ? (
-          <div style={{ background: "#fffaf0", border: `1px solid ${gold}`, borderRadius: 16, padding: 12, color: "#555", marginBottom: 12 }}>
+          <div
+            style={{
+              marginTop: 12,
+              background: "#fffaf0",
+              borderRadius: 14,
+              padding: 12,
+              color: "#555",
+            }}
+          >
             {message}
           </div>
         ) : null}
-
-        <AppButton onClick={createPost}>Create Feed Post</AppButton>
       </Card>
-      <Card style={{ marginTop: 16 }}>
-  <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>Create Member Offer</h2>
-
-  <label style={{ display: "block", fontSize: 13, fontWeight: 900, marginBottom: 6 }}>
-    Offer Title
-  </label>
-  <input
-    value={offerTitle}
-    onChange={(event) => setOfferTitle(event.target.value)}
-    placeholder="Rare Champagne Allocation"
-    style={{ width: "100%", borderRadius: 16, border: "1px solid #ddd6cf", padding: 13, boxSizing: "border-box", fontSize: 15, marginBottom: 12 }}
-  />
-
-  <label style={{ display: "block", fontSize: 13, fontWeight: 900, marginBottom: 6 }}>
-    Offer Details
-  </label>
-  <textarea
-    value={offerDetail}
-    onChange={(event) => setOfferDetail(event.target.value)}
-    placeholder="Describe the bottle, offer, quantity, or deadline..."
-    style={{ width: "100%", minHeight: 100, borderRadius: 16, border: "1px solid #ddd6cf", padding: 13, boxSizing: "border-box", fontFamily: "Arial, sans-serif", fontSize: 15, marginBottom: 12 }}
-  />
-
-  <label style={{ display: "block", fontSize: 13, fontWeight: 900, marginBottom: 6 }}>
-    Price
-  </label>
-  <input
-    value={offerPrice}
-    onChange={(event) => setOfferPrice(event.target.value)}
-    placeholder="$200 / bottle"
-    style={{ width: "100%", borderRadius: 16, border: "1px solid #ddd6cf", padding: 13, boxSizing: "border-box", fontSize: 15, marginBottom: 12 }}
-  />
-
-  <label style={{ display: "block", fontSize: 13, fontWeight: 900, marginBottom: 6 }}>
-    Badge
-  </label>
-  <input
-    value={offerBadge}
-    onChange={(event) => setOfferBadge(event.target.value)}
-    placeholder="Rare Offer"
-    style={{ width: "100%", borderRadius: 16, border: "1px solid #ddd6cf", padding: 13, boxSizing: "border-box", fontSize: 15, marginBottom: 12 }}
-  />
-
-  <AppButton onClick={createOffer}>Create Offer</AppButton>
-</Card>
     </div>
   );
 }
