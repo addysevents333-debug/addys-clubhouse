@@ -728,15 +728,34 @@ function OffersScreen() {
   return (
     <div style={{ padding: 20, paddingBottom: 92 }}>
       <h1 style={{ margin: "0 0 6px", fontSize: 28 }}>Member Offers</h1>
-      <p style={{ margin: "0 0 18px", color: "#666" }}>Rare bottles, early access, and club-only opportunities.</p>
+      <p style={{ margin: "0 0 18px", color: "#666" }}>
+        Rare bottles, early access, and club-only opportunities.
+      </p>
+
       <div style={{ display: "grid", gap: 12 }}>
-        {liveoffers.map((offer) => (
-          <Card key={offer.title}>
-            <span style={{ background: blush, color: burgundy, borderRadius: 999, padding: "6px 10px", fontSize: 12, fontWeight: 800 }}>
+        {liveOffers.map((offer) => (
+          <Card key={offer.id}>
+            <span
+              style={{
+                background: blush,
+                color: burgundy,
+                borderRadius: 999,
+                padding: "6px 10px",
+                fontSize: 12,
+                fontWeight: 800,
+              }}
+            >
               {offer.badge}
             </span>
-            <h3 style={{ margin: "14px 0 6px", fontSize: 20 }}>{offer.title}</h3>
-            <p style={{ color: "#666", lineHeight: 1.5 }}>{offer.detail}</p>
+
+            <h3 style={{ margin: "14px 0 6px", fontSize: 20 }}>
+              {offer.title}
+            </h3>
+
+            <p style={{ color: "#666", lineHeight: 1.5 }}>
+              {offer.detail}
+            </p>
+
             <strong>{offer.price}</strong>
           </Card>
         ))}
@@ -744,7 +763,6 @@ function OffersScreen() {
     </div>
   );
 }
-
 function MessagesScreen() {
   const [selectedStaff, setSelectedStaff] = useState(staffContacts[0]);
   const [message, setMessage] = useState("");
