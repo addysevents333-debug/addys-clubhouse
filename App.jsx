@@ -1257,7 +1257,7 @@ function LoginScreen({ onLogin }) {
     }
 
    console.log("Logged in member:", memberData);
-
+alert("Saving member");
 localStorage.setItem(
   "addysMember",
   JSON.stringify(memberData)
