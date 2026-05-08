@@ -1257,7 +1257,7 @@ function LoginScreen({ onLogin }) {
     }
 
    console.log("Logged in member:", memberData);
-alert("Saving member");
+
 localStorage.setItem(
   "addysMember",
   JSON.stringify(memberData)
@@ -1318,26 +1318,29 @@ useEffect(() => {
 }, []);
 
 const checkSession = async () => {
-  const savedMember = localStorage.getItem("addysMember");
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
 
-  if (savedMember) {
-    setCurrentMember(JSON.parse(savedMember));
-    setIsLoggedIn(true);
+  if (!session?.user?.email) {
+    return;
   }
+
+  const normalizedEmail = session.user.email.toLowerCase();
+
+  const { data: memberData, error: memberError } = await supabase
+    .from("members")
+    .select("email, role, first_name, last_name, membership_type, status")
+    .eq("email", normalizedEmail)
+    .single();
+
+  if (memberError || !memberData || memberData.status !== "active") {
+    return;
+  }
+
+  setCurrentMember(memberData);
+  setIsLoggedIn(true);
 };
-  const isAdmin =
-    currentMember?.role?.trim().toLowerCase() === "admin";
-
-  if (!isLoggedIn) {
-    return (
-      <LoginScreen
-        onLogin={(member) => {
-          setCurrentMember(member);
-          setIsLoggedIn(true);
-        }}
-      />
-    );
-  }
 
   let screen = <HomeScreen setActiveTab={setActiveTab} />;
   if (activeTab === "calendar") screen = <CalendarScreen />;
