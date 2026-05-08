@@ -1259,12 +1259,19 @@ const handleLogin = async () => {
   }
 
   console.log("Logged in member:", memberData);
-onLogin({
-  email: normalizedEmail,
-  role: "admin",
-  first_name: "Test",
-  last_name: "Admin",
-});};
+const { data: memberData, error: memberError } = await supabase
+  .from("members")
+  .select("email, role, first_name, last_name, membership_type, status")
+  .eq("email", normalizedEmail)
+  .single();
+
+if (memberError || !memberData || memberData.status !== "active") {
+  console.log("Member lookup failed:", memberError, memberData);
+  setShowMessage(true);
+  return;
+}
+
+onLogin(memberData);
   return (
     <div style={{ minHeight: "100vh", background: `linear-gradient(135deg, ${darkBurgundy}, ${burgundy}, #16070d)`, display: "grid", placeItems: "center", padding: 20, boxSizing: "border-box" }}>
       <div style={{ width: "100%", maxWidth: 430 }}>
