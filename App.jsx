@@ -1309,24 +1309,16 @@ onLogin(memberData);
 }
 
 export default function AddysClubhousePrototype() {
- const [isLoggedIn, setIsLoggedIn] = useState(false);
-const [currentMember, setCurrentMember] = useState(null);
+ const savedMember = localStorage.getItem("addysMember");
+
+const [currentMember, setCurrentMember] = useState(
+  savedMember ? JSON.parse(savedMember) : null
+);
+
+const [isLoggedIn, setIsLoggedIn] = useState(
+  savedMember ? true : false
+);
 const [activeTab, setActiveTab] = useState("home");
-
-useEffect(() => {
-  checkSession();
-}, []);
-
-const checkSession = async () => {
-  const savedMember = localStorage.getItem("addysMember");
-
-  if (savedMember) {
-    setCurrentMember(JSON.parse(savedMember));
-    setIsLoggedIn(true);
-    return;
-  }
-};
-
 
 
   let screen = <HomeScreen setActiveTab={setActiveTab} />;
