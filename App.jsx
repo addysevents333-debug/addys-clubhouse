@@ -573,7 +573,7 @@ function FeedPost({ post }) {
   );
 }
 
-function HomeScreen({ setActiveTab }) {
+function HomeScreen({ setActiveTab, currentMember }) {
   const [clubhouseFeed, setClubhouseFeed] = useState([]);
   useEffect(() => {
   loadPosts();
@@ -608,7 +608,27 @@ const loadPosts = async () => {
           <BrandLogo light />
           <div style={{ fontSize: 26 }}>🔔</div>
         </div>
+<div
+  style={{
+    background: "rgba(255,255,255,.12)",
+    borderRadius: 16,
+    padding: 12,
+    marginTop: 12,
+    color: "white",
+  }}
+>
+  <div style={{ fontSize: 13, opacity: 0.8 }}>
+    Logged in as
+  </div>
 
+  <div style={{ fontSize: 18, fontWeight: 800 }}>
+    {currentMember?.first_name} {currentMember?.last_name}
+  </div>
+
+  <div style={{ fontSize: 13, marginTop: 4 }}>
+    {currentMember?.membership_type} Member
+  </div>
+</div>
         <div
           style={{
             marginTop: 22,
@@ -1425,7 +1445,12 @@ const isAdmin =
     );
   }
 
-  let screen = <HomeScreen setActiveTab={setActiveTab} />;
+ let screen = (
+  <HomeScreen
+    setActiveTab={setActiveTab}
+    currentMember={currentMember}
+  />
+);
   if (activeTab === "calendar") screen = <CalendarScreen />;
   if (activeTab === "offers") screen = <OffersScreen />;
   if (activeTab === "notes") screen = <NotesScreen />;
