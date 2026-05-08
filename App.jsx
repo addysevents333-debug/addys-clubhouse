@@ -1456,7 +1456,7 @@ const isAdmin =
             boxSizing: "border-box",
           }}
         >
-          <div style={{ display: "grid", gridTemplateColumns: isAdmin ? "repeat(6, 1fr)" : "repeat(5, 1fr)", gap: 6 }}>
+          <div style={{ display: "grid", gridTemplateColumns: isAdmin ? "repeat(7, 1fr)" : "repeat(6, 1fr)", gap: 6 }}>
             {tabs
               .filter((tab) => tab.id !== "admin" || isAdmin)
               .map((tab) => {
