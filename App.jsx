@@ -306,7 +306,7 @@ function AdminScreen() {
   const [icon, setIcon] = useState("📣");
   const [content, setContent] = useState("");
   const [message, setMessage] = useState("");
-
+const [members, setMembers] = useState([]);
   const [offerTitle, setOfferTitle] = useState("");
   const [offerDetail, setOfferDetail] = useState("");
   const [offerPrice, setOfferPrice] = useState("");
@@ -378,7 +378,20 @@ function AdminScreen() {
       setMessage("Error creating offer.");
     }
   };
+useEffect(() => {
+  loadMembers();
+}, []);
 
+const loadMembers = async () => {
+  const { data, error } = await supabase
+    .from("members")
+    .select("*")
+    .order("last_name", { ascending: true });
+
+  if (!error && data) {
+    setMembers(data);
+  }
+};
   return (
     <div style={{ padding: 20, paddingBottom: 92 }}>
       <BrandLogo compact />
@@ -488,6 +501,41 @@ function AdminScreen() {
           </div>
         ) : null}
       </Card>
+      <Card>
+  <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>
+    Member Directory
+  </h2>
+
+  <div style={{ display: "grid", gap: 10 }}>
+    {members.map((member) => (
+      <div
+        key={member.email}
+        style={{
+          padding: 12,
+          border: "1px solid #ddd",
+          borderRadius: 14,
+          background: "#faf7f3",
+        }}
+      >
+        <div style={{ fontWeight: 700 }}>
+          {member.first_name} {member.last_name}
+        </div>
+
+        <div style={{ fontSize: 13, color: "#666" }}>
+          {member.email}
+        </div>
+
+        <div style={{ marginTop: 6, fontSize: 13 }}>
+          {member.membership_type} • {member.membership_year}
+        </div>
+
+        <div style={{ marginTop: 4, fontSize: 12 }}>
+          Status: {member.status} | Role: {member.role}
+        </div>
+      </div>
+    ))}
+  </div>
+</Card>
     </div>
   );
 }
