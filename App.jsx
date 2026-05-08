@@ -1256,53 +1256,134 @@ function LoginScreen({ onLogin }) {
       return;
     }
 
-   console.log("Logged in member:", memberData);
+    console.log("Logged in member:", memberData);
 
-localStorage.setItem(
-  "addysMember",
-  JSON.stringify(memberData)
-);
+    localStorage.setItem(
+      "addysMember",
+      JSON.stringify(memberData)
+    );
 
-onLogin(memberData);
-};
+    onLogin(memberData);
+  };
 
   return (
-    <div style={{ minHeight: "100vh", background: `linear-gradient(135deg, ${darkBurgundy}, ${burgundy}, #16070d)`, display: "grid", placeItems: "center", padding: 20, boxSizing: "border-box" }}>
+    <div
+      style={{
+        minHeight: "100vh",
+        background: `linear-gradient(135deg, ${darkBurgundy}, ${burgundy}, #16070d)`,
+        display: "grid",
+        placeItems: "center",
+        padding: 20,
+        boxSizing: "border-box",
+      }}
+    >
       <div style={{ width: "100%", maxWidth: 430 }}>
         <Card style={{ borderRadius: 30, padding: 22 }}>
-          <div style={{ display: "flex", justifyContent: "center", marginBottom: 18 }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              marginBottom: 18,
+            }}
+          >
             <BrandLogo compact />
           </div>
 
-          <h1 style={{ margin: "0 0 6px", textAlign: "center", fontSize: 28 }}>Welcome to Addy’s Clubhouse</h1>
-          <p style={{ margin: "0 0 20px", textAlign: "center", color: "#666", lineHeight: 1.5 }}>
+          <h1
+            style={{
+              margin: "0 0 6px",
+              textAlign: "center",
+              fontSize: 28,
+            }}
+          >
+            Welcome to Addy’s Clubhouse
+          </h1>
+
+          <p
+            style={{
+              margin: "0 0 20px",
+              textAlign: "center",
+              color: "#666",
+              lineHeight: 1.5,
+            }}
+          >
             Member access only. Sign in with the email attached to your Wine Club or Spirits Club membership.
           </p>
 
-          <label style={{ display: "block", fontSize: 13, fontWeight: 900, marginBottom: 6 }}>Email</label>
+          <label
+            style={{
+              display: "block",
+              fontSize: 13,
+              fontWeight: 900,
+              marginBottom: 6,
+            }}
+          >
+            Email
+          </label>
+
           <input
             value={email}
             onChange={(event) => setEmail(event.target.value)}
             placeholder="you@example.com"
-            style={{ width: "100%", borderRadius: 16, border: "1px solid #ddd6cf", padding: 13, boxSizing: "border-box", fontSize: 15, marginBottom: 12, outlineColor: burgundy }}
+            style={{
+              width: "100%",
+              borderRadius: 16,
+              border: "1px solid #ddd6cf",
+              padding: 13,
+              boxSizing: "border-box",
+              fontSize: 15,
+              marginBottom: 12,
+              outlineColor: burgundy,
+            }}
           />
 
-          <label style={{ display: "block", fontSize: 13, fontWeight: 900, marginBottom: 6 }}>Temporary Password</label>
+          <label
+            style={{
+              display: "block",
+              fontSize: 13,
+              fontWeight: 900,
+              marginBottom: 6,
+            }}
+          >
+            Temporary Password
+          </label>
+
           <input
             value={password}
             onChange={(event) => setPassword(event.target.value)}
             placeholder="Enter temporary password"
             type="password"
-            style={{ width: "100%", borderRadius: 16, border: "1px solid #ddd6cf", padding: 13, boxSizing: "border-box", fontSize: 15, marginBottom: 14, outlineColor: burgundy }}
+            style={{
+              width: "100%",
+              borderRadius: 16,
+              border: "1px solid #ddd6cf",
+              padding: 13,
+              boxSizing: "border-box",
+              fontSize: 15,
+              marginBottom: 14,
+              outlineColor: burgundy,
+            }}
           />
 
           {showMessage ? (
-            <div style={{ background: "#fff1f1", color: "#8a1f1f", borderRadius: 16, padding: 12, fontSize: 14, lineHeight: 1.45, marginBottom: 14 }}>
-              This email is not currently approved for member access, or the password is incorrect. Please contact Addy’s if you believe this is an error.
+            <div
+              style={{
+                background: "#fff1f1",
+                color: "#8a1f1f",
+                borderRadius: 16,
+                padding: 12,
+                fontSize: 14,
+                lineHeight: 1.45,
+                marginBottom: 14,
+              }}
+            >
+              This email is not currently approved for member access, or the password is incorrect.
             </div>
           ) : null}
 
-          <AppButton onClick={handleLogin}>Sign In</AppButton>
+          <AppButton onClick={handleLogin}>
+            Sign In
+          </AppButton>
         </Card>
       </div>
     </div>
