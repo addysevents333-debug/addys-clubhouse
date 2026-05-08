@@ -1391,17 +1391,32 @@ function LoginScreen({ onLogin }) {
 }
 
 export default function AddysClubhousePrototype() {
- const savedMember = localStorage.getItem("addysMember");
+  const savedMember = localStorage.getItem("addysMember");
 
-const [currentMember, setCurrentMember] = useState(
-  savedMember ? JSON.parse(savedMember) : null
-);
+  const [currentMember, setCurrentMember] = useState(
+    savedMember ? JSON.parse(savedMember) : null
+  );
 
-const [isLoggedIn, setIsLoggedIn] = useState(
-  savedMember ? true : false
-);
-const [activeTab, setActiveTab] = useState("home");
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    savedMember ? true : false
+  );
 
+  const [activeTab, setActiveTab] = useState("home");
+
+  const isAdmin =
+    currentMember?.role?.trim().toLowerCase() === "admin";
+
+  if (!isLoggedIn) {
+    return (
+      <LoginScreen
+        onLogin={(member) => {
+          localStorage.setItem("addysMember", JSON.stringify(member));
+          setCurrentMember(member);
+          setIsLoggedIn(true);
+        }}
+      />
+    );
+  }
 
   let screen = <HomeScreen setActiveTab={setActiveTab} />;
   if (activeTab === "calendar") screen = <CalendarScreen />;
@@ -1413,7 +1428,6 @@ const [activeTab, setActiveTab] = useState("home");
   return (
     <div style={{ minHeight: "100vh", background: "#e9e5df", fontFamily: "Arial, sans-serif", color: "#111" }}>
       <div style={{ maxWidth: 430, minHeight: "100vh", margin: "0 auto", background: cream, position: "relative", boxShadow: "0 0 35px rgba(0,0,0,.18)" }}>
-
         {screen}
 
         <div
