@@ -1304,10 +1304,34 @@ function LoginScreen({ onLogin }) {
 }
 
 export default function AddysClubhousePrototype() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [currentMember, setCurrentMember] = useState(null);
-  const [activeTab, setActiveTab] = useState("home");
+ const [isLoggedIn, setIsLoggedIn] = useState(false);
+const [currentMember, setCurrentMember] = useState(null);
+const [activeTab, setActiveTab] = useState("home");
 
+useEffect(() => {
+  checkSession();
+}, []);
+
+const checkSession = async () => {
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  if (session?.user?.email) {
+    const normalizedEmail = session.user.email.toLowerCase();
+
+    const { data: memberData } = await supabase
+      .from("members")
+      .select("*")
+      .eq("email", normalizedEmail)
+      .single();
+
+    if (memberData) {
+      setCurrentMember(memberData);
+      setIsLoggedIn(true);
+    }
+  }
+};
   const isAdmin =
     currentMember?.role?.trim().toLowerCase() === "admin";
 
