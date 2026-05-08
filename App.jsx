@@ -1332,10 +1332,6 @@ export default function AddysClubhousePrototype() {
   return (
     <div style={{ minHeight: "100vh", background: "#e9e5df", fontFamily: "Arial, sans-serif", color: "#111" }}>
       <div style={{ maxWidth: 430, minHeight: "100vh", margin: "0 auto", background: cream, position: "relative", boxShadow: "0 0 35px rgba(0,0,0,.18)" }}>
-        
-        <div style={{ padding: 10, background: isAdmin ? "#e6ffed" : "#fff1f1", fontSize: 12, textAlign: "center" }}>
-          Logged in as: {currentMember?.email || "unknown"} | Role: {currentMember?.role || "none"} | Admin: {isAdmin ? "YES" : "NO"}
-        </div>
 
         {screen}
 
