@@ -1400,11 +1400,10 @@ export default function AddysClubhousePrototype() {
     savedMember ? true : false
   );
 
-  const [activeTab, setActiveTab] = useState("home");
+ const [activeTab, setActiveTab] = useState("home");
 
-  const isAdmin =
-    currentMember?.role?.trim().toLowerCase() === "admin";
-
+const isAdmin =
+  currentMember?.role?.trim().toLowerCase() === "admin";
   if (!isLoggedIn) {
     return (
       <LoginScreen
