@@ -1256,9 +1256,14 @@ function LoginScreen({ onLogin }) {
       return;
     }
 
-    console.log("Logged in member:", memberData);
-    onLogin(memberData);
-  };
+   console.log("Logged in member:", memberData);
+
+localStorage.setItem(
+  "addysMember",
+  JSON.stringify(memberData)
+);
+
+onLogin(memberData);
 
   return (
     <div style={{ minHeight: "100vh", background: `linear-gradient(135deg, ${darkBurgundy}, ${burgundy}, #16070d)`, display: "grid", placeItems: "center", padding: 20, boxSizing: "border-box" }}>
