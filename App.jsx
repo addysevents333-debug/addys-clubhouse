@@ -1264,7 +1264,6 @@ function LoginScreen({ onLogin }) {
     );
 
     onLogin(memberData);
-  };
 
   return (
     <div
