@@ -1318,29 +1318,16 @@ useEffect(() => {
 }, []);
 
 const checkSession = async () => {
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
+  const savedMember = localStorage.getItem("addysMember");
 
-  if (!session?.user?.email) {
+  if (savedMember) {
+    setCurrentMember(JSON.parse(savedMember));
+    setIsLoggedIn(true);
     return;
   }
-
-  const normalizedEmail = session.user.email.toLowerCase();
-
-  const { data: memberData, error: memberError } = await supabase
-    .from("members")
-    .select("email, role, first_name, last_name, membership_type, status")
-    .eq("email", normalizedEmail)
-    .single();
-
-  if (memberError || !memberData || memberData.status !== "active") {
-    return;
-  }
-
-  setCurrentMember(memberData);
-  setIsLoggedIn(true);
 };
+
+
 
   let screen = <HomeScreen setActiveTab={setActiveTab} />;
   if (activeTab === "calendar") screen = <CalendarScreen />;
