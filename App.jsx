@@ -1187,49 +1187,101 @@ function NotesScreen() {
   );
 }
 
-function ProfileScreen({ onLogout }) {
+function ProfileScreen({ currentMember, onLogout }) {
   return (
     <div style={{ padding: 20, paddingBottom: 92 }}>
       <BrandLogo compact />
-      <h1 style={{ margin: "16px 0 6px", fontSize: 28 }}>Member Profile</h1>
-      <p style={{ margin: "0 0 18px", color: "#666" }}>Your club status, membership card, and referral progress.</p>
 
-      <Card style={{ background: `linear-gradient(135deg, ${darkBurgundy}, ${burgundy}, #16070d)`, color: "white", border: 0 }}>
+      <h1 style={{ margin: "16px 0 6px", fontSize: 28 }}>
+        Member Profile
+      </h1>
+
+      <p style={{ margin: "0 0 18px", color: "#666" }}>
+        Your Addy’s Clubhouse membership details.
+      </p>
+
+      <Card
+        style={{
+          background: `linear-gradient(135deg, ${darkBurgundy}, ${burgundy}, #16070d)`,
+          color: "white",
+          border: 0,
+        }}
+      >
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <div>
-            <p style={{ margin: 0, opacity: 0.7 }}>2026 Member Card</p>
-            <h2 style={{ margin: "6px 0 0", fontSize: 26 }}>Addy’s Club Member</h2>
+            <p style={{ margin: 0, opacity: 0.7 }}>Member Card</p>
+            <h2 style={{ margin: "6px 0 0", fontSize: 26 }}>
+              {currentMember?.first_name} {currentMember?.last_name}
+            </h2>
           </div>
+
           <div style={{ fontSize: 28 }}>✅</div>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginTop: 22 }}>
-          <div style={{ background: "rgba(255,255,255,.12)", borderRadius: 16, padding: 12 }}>
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: 10,
+            marginTop: 22,
+          }}
+        >
+          <div
+            style={{
+              background: "rgba(255,255,255,.12)",
+              borderRadius: 16,
+              padding: 12,
+            }}
+          >
             <div style={{ opacity: 0.65, fontSize: 13 }}>Membership</div>
-            <strong>Wine + Spirits</strong>
+            <strong>{currentMember?.membership_type || "Member"}</strong>
           </div>
-          <div style={{ background: "rgba(255,255,255,.12)", borderRadius: 16, padding: 12 }}>
-            <div style={{ opacity: 0.65, fontSize: 13 }}>Discount</div>
-            <strong>Active</strong>
+
+          <div
+            style={{
+              background: "rgba(255,255,255,.12)",
+              borderRadius: 16,
+              padding: 12,
+            }}
+          >
+            <div style={{ opacity: 0.65, fontSize: 13 }}>Status</div>
+            <strong>{currentMember?.status || "active"}</strong>
           </div>
         </div>
-        <div style={{ background: "white", color: "#111", borderRadius: 18, padding: 18, textAlign: "center", marginTop: 18 }}>
+
+        <div
+          style={{
+            background: "white",
+            color: "#111",
+            borderRadius: 18,
+            padding: 18,
+            textAlign: "center",
+            marginTop: 18,
+          }}
+        >
           <div style={{ fontSize: 48 }}>▦</div>
           <strong>Scan at checkout</strong>
-          <AppButton
-  onClick={() => {
-    localStorage.removeItem("addysMember");
-    onLogout();
-  }}
->
-  Logout
-</AppButton>
+          <p style={{ margin: "6px 0 0", fontSize: 13, color: "#666" }}>
+            Digital member card placeholder
+          </p>
         </div>
       </Card>
 
       <Card style={{ marginTop: 14 }}>
-        <h3 style={{ margin: 0 }}>Referral Credits</h3>
-        <p style={{ marginBottom: 0, color: "#666" }}>2 referrals tracked • $100 saved</p>
+        <h3 style={{ margin: "0 0 8px" }}>Account Info</h3>
+
+        <p style={{ margin: "6px 0", color: "#666" }}>
+          <strong>Email:</strong> {currentMember?.email}
+        </p>
+
+        <p style={{ margin: "6px 0", color: "#666" }}>
+          <strong>Role:</strong> {currentMember?.role || "member"}
+        </p>
       </Card>
+
+      <div style={{ marginTop: 14 }}>
+        <AppButton onClick={onLogout}>Logout</AppButton>
+      </div>
     </div>
   );
 }
@@ -1250,6 +1302,7 @@ const tabs = [
   { id: "offers", label: "Offers", icon: "🎁" },
   { id: "notes", label: "Notes", icon: "📚" },
   { id: "messages", label: "DMs", icon: "💬" },
+  { id: "profile", label: "Profile", icon: "👤" },
   { id: "admin", label: "Admin", icon: "⚙️" },
 ];
 
@@ -1455,6 +1508,19 @@ const isAdmin =
   if (activeTab === "offers") screen = <OffersScreen />;
   if (activeTab === "notes") screen = <NotesScreen />;
   if (activeTab === "messages") screen = <MessagesScreen />;
+  if (activeTab === "profile") {
+  screen = (
+    <ProfileScreen
+      currentMember={currentMember}
+      onLogout={() => {
+        localStorage.removeItem("addysMember");
+        setCurrentMember(null);
+        setIsLoggedIn(false);
+        setActiveTab("home");
+      }}
+    />
+  );
+}
   if (activeTab === "admin" && isAdmin) screen = <AdminScreen />;
   const handleLogout = () => {
   localStorage.removeItem("addysMember");
@@ -1505,21 +1571,7 @@ const isAdmin =
                   </button>
                 );
               })}
-            <button
-  onClick={handleLogout}
-  style={{
-    border: 0,
-    borderRadius: 14,
-    padding: "8px 4px",
-    background: "#ddd",
-    color: "#333",
-    fontWeight: 700,
-    cursor: "pointer",
-  }}
->
-  <div style={{ fontSize: 18 }}>↩️</div>
-  <div style={{ fontSize: 11 }}>Logout</div>
-</button>
+            
           </div>
         </div>
       </div>
