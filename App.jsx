@@ -1167,7 +1167,7 @@ function NotesScreen() {
   );
 }
 
-function ProfileScreen() {
+function ProfileScreen({ onLogout }) {
   return (
     <div style={{ padding: 20, paddingBottom: 92 }}>
       <BrandLogo compact />
@@ -1195,6 +1195,14 @@ function ProfileScreen() {
         <div style={{ background: "white", color: "#111", borderRadius: 18, padding: 18, textAlign: "center", marginTop: 18 }}>
           <div style={{ fontSize: 48 }}>▦</div>
           <strong>Scan at checkout</strong>
+          <AppButton
+  onClick={() => {
+    localStorage.removeItem("addysMember");
+    onLogout();
+  }}
+>
+  Logout
+</AppButton>
         </div>
       </Card>
 
@@ -1423,6 +1431,11 @@ const isAdmin =
   if (activeTab === "notes") screen = <NotesScreen />;
   if (activeTab === "messages") screen = <MessagesScreen />;
   if (activeTab === "admin" && isAdmin) screen = <AdminScreen />;
+  const handleLogout = () => {
+  localStorage.removeItem("addysMember");
+  setCurrentMember(null);
+  setIsLoggedIn(false);
+};
 
   return (
     <div style={{ minHeight: "100vh", background: "#e9e5df", fontFamily: "Arial, sans-serif", color: "#111" }}>
@@ -1467,6 +1480,21 @@ const isAdmin =
                   </button>
                 );
               })}
+            <button
+  onClick={handleLogout}
+  style={{
+    border: 0,
+    borderRadius: 14,
+    padding: "8px 4px",
+    background: "#ddd",
+    color: "#333",
+    fontWeight: 700,
+    cursor: "pointer",
+  }}
+>
+  <div style={{ fontSize: 18 }}>↩️</div>
+  <div style={{ fontSize: 11 }}>Logout</div>
+</button>
           </div>
         </div>
       </div>
