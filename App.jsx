@@ -1263,7 +1263,8 @@ function LoginScreen({ onLogin }) {
       JSON.stringify(memberData)
     );
 
-    onLogin(memberData);
+        onLogin(memberData);
+  };
 
   return (
     <div
