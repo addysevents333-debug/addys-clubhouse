@@ -1230,48 +1230,36 @@ function LoginScreen({ onLogin }) {
   const [password, setPassword] = useState("");
   const [showMessage, setShowMessage] = useState(false);
 
-  
-const handleLogin = async () => {
-  const normalizedEmail = email.trim().toLowerCase();
+  const handleLogin = async () => {
+    const normalizedEmail = email.trim().toLowerCase();
 
-  const { data: authData, error: authError } =
-    await supabase.auth.signInWithPassword({
-      email: normalizedEmail,
-      password,
-    });
+    const { data: authData, error: authError } =
+      await supabase.auth.signInWithPassword({
+        email: normalizedEmail,
+        password,
+      });
 
-  if (authError || !authData.user) {
-    setShowMessage(true);
-    return;
-  }
+    if (authError || !authData.user) {
+      setShowMessage(true);
+      return;
+    }
 
-  const { data: memberData, error: memberError } = await supabase
-    .from("members")
-    .select("*")
-    .eq("email", normalizedEmail)
-    .eq("status", "active")
-    .single();
+    const { data: memberData, error: memberError } = await supabase
+      .from("members")
+      .select("email, role, first_name, last_name, membership_type, status")
+      .eq("email", normalizedEmail)
+      .single();
 
-  if (memberError || !memberData) {
-    console.log("Member lookup failed:", memberError);
-    setShowMessage(true);
-    return;
-  }
+    if (memberError || !memberData || memberData.status !== "active") {
+      console.log("Member lookup failed:", memberError, memberData);
+      setShowMessage(true);
+      return;
+    }
 
-  console.log("Logged in member:", memberData);
-const { data: memberData, error: memberError } = await supabase
-  .from("members")
-  .select("email, role, first_name, last_name, membership_type, status")
-  .eq("email", normalizedEmail)
-  .single();
+    console.log("Logged in member:", memberData);
+    onLogin(memberData);
+  };
 
-if (memberError || !memberData || memberData.status !== "active") {
-  console.log("Member lookup failed:", memberError, memberData);
-  setShowMessage(true);
-  return;
-}
-
-onLogin(memberData);
   return (
     <div style={{ minHeight: "100vh", background: `linear-gradient(135deg, ${darkBurgundy}, ${burgundy}, #16070d)`, display: "grid", placeItems: "center", padding: 20, boxSizing: "border-box" }}>
       <div style={{ width: "100%", maxWidth: 430 }}>
@@ -1309,17 +1297,6 @@ onLogin(memberData);
           ) : null}
 
           <AppButton onClick={handleLogin}>Sign In</AppButton>
-
-          <button style={{ width: "100%", border: 0, background: "transparent", color: burgundy, fontWeight: 900, marginTop: 14, cursor: "pointer" }}>
-            Forgot or change password
-          </button>
-
-          <div style={{ marginTop: 18, background: "#fffaf0", border: `1px solid ${gold}`, borderRadius: 18, padding: 13 }}>
-            <strong style={{ display: "block", marginBottom: 4 }}>How members get access</strong>
-            <p style={{ margin: 0, color: "#666", fontSize: 14, lineHeight: 1.45 }}>
-              Admin uploads the member spreadsheet, approved emails are invited, and each member receives a temporary password they can change after login.
-            </p>
-          </div>
         </Card>
       </div>
     </div>
