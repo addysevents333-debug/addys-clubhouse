@@ -1318,23 +1318,11 @@ useEffect(() => {
 }, []);
 
 const checkSession = async () => {
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
+  const savedMember = localStorage.getItem("addysMember");
 
-  if (session?.user?.email) {
-    const normalizedEmail = session.user.email.toLowerCase();
-
-    const { data: memberData } = await supabase
-      .from("members")
-      .select("*")
-      .eq("email", normalizedEmail)
-      .single();
-
-    if (memberData) {
-      setCurrentMember(memberData);
-      setIsLoggedIn(true);
-    }
+  if (savedMember) {
+    setCurrentMember(JSON.parse(savedMember));
+    setIsLoggedIn(true);
   }
 };
   const isAdmin =
