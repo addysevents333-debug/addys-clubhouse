@@ -1234,58 +1234,33 @@ function LoginScreen({ onLogin }) {
 const handleLogin = async () => {
   const normalizedEmail = email.trim().toLowerCase();
 
-  try {
-    const { data: authData, error: authError } =
-      await supabase.auth.signInWithPassword({
-        email: normalizedEmail,
-        password,
-      });
+  const { data: authData, error: authError } =
+    await supabase.auth.signInWithPassword({
+      email: normalizedEmail,
+      password,
+    });
 
-    if (authError || !authData.user) {
-      setShowMessage(true);
-      return;
-    }
-
-    const response = await fetch(
-      `${SUPABASE_URL}/rest/v1/members?select=*&email=eq.${normalizedEmail}&status=eq.active`,
-      {
-        headers: {
-          apikey: SUPABASE_KEY,
-          Authorization: `Bearer ${SUPABASE_KEY}`,
-        },
-      }
-    );
-
-    const members = await response.json();
-
-    if (members && members.length > 0) {
-      const member = members[0];
-
-      onLogin({
-        email: member.email,
-        role: member.role,
-        first_name: member.first_name,
-        last_name: member.last_name,
-        membership_type: member.membership_type,
-        status: member.status,
-      });
-    } else {
-      setShowMessage(true);
-    }
-  } catch (error) {
-    console.error(error);
+  if (authError || !authData.user) {
     setShowMessage(true);
+    return;
   }
+
+  const { data: memberData, error: memberError } = await supabase
+    .from("members")
+    .select("*")
+    .eq("email", normalizedEmail)
+    .eq("status", "active")
+    .single();
+
+  if (memberError || !memberData) {
+    console.log("Member lookup failed:", memberError);
+    setShowMessage(true);
+    return;
+  }
+
+  console.log("Logged in member:", memberData);
+  onLogin(memberData);
 };
-
-    const members = await response.json();
-
-    if (members.length > 0) {
-  onLogin={(member) => {
-  setCurrentMember(member);
-  setIsLoggedIn(true);
-}}
-
   return (
     <div style={{ minHeight: "100vh", background: `linear-gradient(135deg, ${darkBurgundy}, ${burgundy}, #16070d)`, display: "grid", placeItems: "center", padding: 20, boxSizing: "border-box" }}>
       <div style={{ width: "100%", maxWidth: 430 }}>
