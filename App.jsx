@@ -1281,11 +1281,10 @@ const handleLogin = async () => {
     const members = await response.json();
 
     if (members.length > 0) {
-  onLogin(members[0]);
-} else {
-  setShowMessage(true);
-}
-};
+  onLogin={(member) => {
+  setCurrentMember(member);
+  setIsLoggedIn(true);
+}}
 
   return (
     <div style={{ minHeight: "100vh", background: `linear-gradient(135deg, ${darkBurgundy}, ${burgundy}, #16070d)`, display: "grid", placeItems: "center", padding: 20, boxSizing: "border-box" }}>
