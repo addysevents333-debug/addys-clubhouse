@@ -405,7 +405,6 @@ const filteredMembers = members.filter((member) => {
   );
 });
 
-return (
   return (
     <div style={{ padding: 20, paddingBottom: 92 }}>
       <BrandLogo compact />
