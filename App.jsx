@@ -393,7 +393,18 @@ const loadMembers = async () => {
     setMembers(data);
   }
 };
+const updateMemberStatus = async (email, newStatus) => {
+  const { error } = await supabase
+    .from("members")
+    .update({ status: newStatus })
+    .eq("email", email);
 
+  if (!error) {
+    loadMembers();
+  } else {
+    console.log(error);
+  }
+};
 const filteredMembers = members.filter((member) => {
   const search = memberSearch.toLowerCase();
 
