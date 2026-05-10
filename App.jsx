@@ -311,6 +311,7 @@ const [members, setMembers] = useState([]);
   const [offerDetail, setOfferDetail] = useState("");
   const [offerPrice, setOfferPrice] = useState("");
   const [offerBadge, setOfferBadge] = useState("Member Offer");
+  const [memberSearch, setMemberSearch] = useState("");
 
   const createPost = async () => {
     if (!content.trim()) {
@@ -392,6 +393,19 @@ const loadMembers = async () => {
     setMembers(data);
   }
 };
+
+const filteredMembers = members.filter((member) => {
+  const search = memberSearch.toLowerCase();
+
+  return (
+    member.first_name?.toLowerCase().includes(search) ||
+    member.last_name?.toLowerCase().includes(search) ||
+    member.email?.toLowerCase().includes(search) ||
+    member.membership_type?.toLowerCase().includes(search)
+  );
+});
+
+return (
   return (
     <div style={{ padding: 20, paddingBottom: 92 }}>
       <BrandLogo compact />
@@ -502,12 +516,27 @@ const loadMembers = async () => {
         ) : null}
       </Card>
       <Card>
-  <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>
-    Member Directory
-  </h2>
+ <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>
+  Member Directory
+</h2>
 
-  <div style={{ display: "grid", gap: 10 }}>
-    {members.map((member) => (
+<input
+  value={memberSearch}
+  onChange={(event) => setMemberSearch(event.target.value)}
+  placeholder="Search members..."
+  style={{
+    width: "100%",
+    borderRadius: 14,
+    border: "1px solid #ddd",
+    padding: 12,
+    boxSizing: "border-box",
+    marginBottom: 14,
+    fontSize: 14,
+  }}
+/>
+
+<div style={{ display: "grid", gap: 10 }}>
+  {filteredMembers.map((member) => (
       <div
         key={member.email}
         style={{
