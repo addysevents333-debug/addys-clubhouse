@@ -678,6 +678,20 @@ const loadPosts = async () => {
   </div>
 </div>
         <div
+  style={{
+    marginTop: 12,
+    background: "#fff3cd",
+    color: "#7a5a00",
+    borderRadius: 16,
+    padding: 12,
+    fontSize: 13,
+    lineHeight: 1.5,
+    fontWeight: 600,
+  }}
+>
+  🧪 Addy’s Clubhouse Beta — features and layouts may change as we improve the member experience. Please submit feedback through the Beta Feedback tool.
+</div>
+        <div
           style={{
             marginTop: 22,
             background: "rgba(255,255,255,.12)",
@@ -725,6 +739,18 @@ const loadPosts = async () => {
           <ToolCard icon="📚" title="Club Notes" subtitle="Jim, Tyler & Spirits Team" />
           <ToolCard icon="🎁" title="Offers" subtitle="Club exclusives" />
           <ToolCard icon="💬" title="Staff DMs" subtitle="Message Tyler, Ryan & team" />
+          <a
+  href="https://docs.google.com/forms/d/e/1FAIpQLSfIDTyHiSCDS5_Lupz7Ksb9qR5qphayTSKR1lIWU4kw5FUXkQ/viewform?usp=header"
+  target="_blank"
+  rel="noreferrer"
+  style={{ textDecoration: "none" }}
+>
+  <ToolCard
+    icon="🧪"
+    title="Beta Feedback"
+    subtitle="Tell us what to improve"
+  />
+</a>
         </div>
       </div>
     </div>
