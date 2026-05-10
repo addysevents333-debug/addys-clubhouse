@@ -312,7 +312,7 @@ const [members, setMembers] = useState([]);
   const [offerPrice, setOfferPrice] = useState("");
   const [offerBadge, setOfferBadge] = useState("Member Offer");
   const [memberSearch, setMemberSearch] = useState("");
-
+const [adminPosts, setAdminPosts] = useState([]);
   const createPost = async () => {
     if (!content.trim()) {
       setMessage("Please write a post first.");
@@ -345,7 +345,18 @@ const [members, setMembers] = useState([]);
       setMessage("Error creating post.");
     }
   };
+const deletePost = async (id) => {
+  const { error } = await supabase
+    .from("posts")
+    .delete()
+    .eq("id", id);
 
+  if (!error) {
+    setMessage("Post deleted.");
+  } else {
+    setMessage("Error deleting post.");
+  }
+};
   const createOffer = async () => {
     if (!offerTitle.trim() || !offerDetail.trim()) {
       setMessage("Please add an offer title and details.");
@@ -381,8 +392,8 @@ const [members, setMembers] = useState([]);
   };
 useEffect(() => {
   loadMembers();
+  loadAdminPosts();
 }, []);
-
 const loadMembers = async () => {
   const { data, error } = await supabase
     .from("members")
@@ -403,6 +414,16 @@ const updateMemberStatus = async (email, newStatus) => {
     loadMembers();
   } else {
     console.log(error);
+  }
+};
+  const loadAdminPosts = async () => {
+  const { data, error } = await supabase
+    .from("posts")
+    .select("*")
+    .order("id", { ascending: false });
+
+  if (!error && data) {
+    setAdminPosts(data);
   }
 };
 const filteredMembers = members.filter((member) => {
@@ -605,6 +626,49 @@ const filteredMembers = members.filter((member) => {
     Inactive
   </button>
 </div>
+      </div>
+    ))}
+  </div>
+</Card>
+      <Card style={{ marginTop: 16 }}>
+  <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>
+    Manage Feed Posts
+  </h2>
+
+  <div style={{ display: "grid", gap: 10 }}>
+    {adminPosts.map((post) => (
+      <div
+        key={post.id}
+        style={{
+          padding: 12,
+          border: "1px solid #ddd",
+          borderRadius: 14,
+          background: "#faf7f3",
+        }}
+      >
+        <div style={{ fontWeight: 700 }}>
+          {post.author}
+        </div>
+
+        <div style={{ marginTop: 6 }}>
+          {post.content}
+        </div>
+
+        <button
+          onClick={() => deletePost(post.id)}
+          style={{
+            marginTop: 12,
+            border: 0,
+            borderRadius: 12,
+            padding: "10px 12px",
+            background: "#8a1f1f",
+            color: "white",
+            fontWeight: 700,
+            cursor: "pointer",
+          }}
+        >
+          Delete Post
+        </button>
       </div>
     ))}
   </div>
