@@ -634,7 +634,9 @@ const filteredMembers = members.filter((member) => {
   <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>
     Manage Feed Posts
   </h2>
-
+<div style={{ marginBottom: 12 }}>
+  Loaded Posts: {adminPosts.length}
+</div>
   <div style={{ display: "grid", gap: 10 }}>
     {adminPosts.map((post) => (
       <div
