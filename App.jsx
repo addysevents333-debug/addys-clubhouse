@@ -393,39 +393,7 @@ const loadMembers = async () => {
     setMembers(data);
   }
 };
-<div style={{ display: "flex", gap: 8, marginTop: 10 }}>
-  <button
-    onClick={() => updateMemberStatus(member.email, "active")}
-    style={{
-      flex: 1,
-      border: 0,
-      borderRadius: 12,
-      padding: "8px 10px",
-      background: member.status === "active" ? "#1f7a45" : "#e7f7ec",
-      color: member.status === "active" ? "white" : "#1f7a45",
-      fontWeight: 700,
-      cursor: "pointer",
-    }}
-  >
-    Active
-  </button>
 
-  <button
-    onClick={() => updateMemberStatus(member.email, "inactive")}
-    style={{
-      flex: 1,
-      border: 0,
-      borderRadius: 12,
-      padding: "8px 10px",
-      background: member.status === "inactive" ? "#8a1f1f" : "#fff1f1",
-      color: member.status === "inactive" ? "white" : "#8a1f1f",
-      fontWeight: 700,
-      cursor: "pointer",
-    }}
-  >
-    Inactive
-  </button>
-</div>
 const filteredMembers = members.filter((member) => {
   const search = memberSearch.toLowerCase();
 
@@ -589,9 +557,43 @@ const filteredMembers = members.filter((member) => {
           {member.membership_type} • {member.membership_year}
         </div>
 
-        <div style={{ marginTop: 4, fontSize: 12 }}>
-          Status: {member.status} | Role: {member.role}
-        </div>
+       <div style={{ marginTop: 4, fontSize: 12 }}>
+  Status: {member.status} | Role: {member.role}
+</div>
+
+<div style={{ display: "flex", gap: 8, marginTop: 10 }}>
+  <button
+    onClick={() => updateMemberStatus(member.email, "active")}
+    style={{
+      flex: 1,
+      border: 0,
+      borderRadius: 12,
+      padding: "8px 10px",
+      background: member.status === "active" ? "#1f7a45" : "#e7f7ec",
+      color: member.status === "active" ? "white" : "#1f7a45",
+      fontWeight: 700,
+      cursor: "pointer",
+    }}
+  >
+    Active
+  </button>
+
+  <button
+    onClick={() => updateMemberStatus(member.email, "inactive")}
+    style={{
+      flex: 1,
+      border: 0,
+      borderRadius: 12,
+      padding: "8px 10px",
+      background: member.status === "inactive" ? "#8a1f1f" : "#fff1f1",
+      color: member.status === "inactive" ? "white" : "#8a1f1f",
+      fontWeight: 700,
+      cursor: "pointer",
+    }}
+  >
+    Inactive
+  </button>
+</div>
       </div>
     ))}
   </div>
