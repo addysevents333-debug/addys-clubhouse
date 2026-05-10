@@ -1417,13 +1417,21 @@ function ProfileScreen({ currentMember, onLogout }) {
       <Card style={{ marginTop: 14 }}>
         <h3 style={{ margin: "0 0 8px" }}>Account Info</h3>
 
-        <p style={{ margin: "6px 0", color: "#666" }}>
-          <strong>Email:</strong> {currentMember?.email}
-        </p>
+       <p style={{ margin: "6px 0", color: "#666" }}>
+  <strong>Email:</strong> {currentMember?.email}
+</p>
 
-        <p style={{ margin: "6px 0", color: "#666" }}>
-          <strong>Role:</strong> {currentMember?.role || "member"}
-        </p>
+<p style={{ margin: "6px 0", color: "#666" }}>
+  <strong>Membership Year:</strong> {currentMember?.membership_year || "Not listed"}
+</p>
+
+<p style={{ margin: "6px 0", color: "#666" }}>
+  <strong>Phone:</strong> {currentMember?.phone || "Not added yet"}
+</p>
+
+<p style={{ margin: "6px 0", color: "#666" }}>
+  <strong>Role:</strong> {currentMember?.role || "member"}
+</p>
       </Card>
 
       <div style={{ marginTop: 14 }}>
