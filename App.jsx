@@ -714,13 +714,13 @@ const filteredMembers = members.filter((member) => {
           background: "#faf7f3",
         }}
       >
-        <div style={{ fontWeight: 700 }}>
-          From: {msg.sender_email}
-        </div>
+     <div style={{ fontWeight: 700 }}>
+  Conversation with {msg.sender_email}
+</div>
 
         <div style={{ fontSize: 13, color: "#666", marginTop: 4 }}>
-          To: {msg.recipient_email}
-        </div>
+  Staff Conversation
+</div>
 
         <div style={{ marginTop: 8 }}>
           {msg.message}
