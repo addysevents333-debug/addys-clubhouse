@@ -317,7 +317,9 @@ const [members, setMembers] = useState([]);
   const [offerBadge, setOfferBadge] = useState("Member Offer");
   const [memberSearch, setMemberSearch] = useState("");
   const [adminMessages, setAdminMessages] = useState([]);
+  const [adminReply, setAdminReply] = useState("");
 const [adminPosts, setAdminPosts] = useState([]);
+  const [selectedConversation, setSelectedConversation] = useState(null);
   const createPost = async () => {
     if (!content.trim()) {
       setMessage("Please write a post first.");
