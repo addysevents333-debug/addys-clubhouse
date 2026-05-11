@@ -690,6 +690,37 @@ const loadAdminMessages = async () => {
     ))}
   </div>
 </Card>
+      <Card style={{ marginTop: 16 }}>
+  <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>
+    Admin DM Inbox
+  </h2>
+
+  <div style={{ display: "grid", gap: 10 }}>
+    {adminMessages.map((msg) => (
+      <div
+        key={msg.id}
+        style={{
+          padding: 12,
+          border: "1px solid #ddd",
+          borderRadius: 14,
+          background: "#faf7f3",
+        }}
+      >
+        <div style={{ fontWeight: 700 }}>
+          From: {msg.sender_email}
+        </div>
+
+        <div style={{ fontSize: 13, color: "#666", marginTop: 4 }}>
+          To: {msg.recipient_email}
+        </div>
+
+        <div style={{ marginTop: 8 }}>
+          {msg.message}
+        </div>
+      </div>
+    ))}
+  </div>
+</Card>
     </div>
   );
 }
