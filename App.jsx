@@ -316,6 +316,7 @@ const [members, setMembers] = useState([]);
   const [offerPrice, setOfferPrice] = useState("");
   const [offerBadge, setOfferBadge] = useState("Member Offer");
   const [memberSearch, setMemberSearch] = useState("");
+  const [adminMessages, setAdminMessages] = useState([]);
 const [adminPosts, setAdminPosts] = useState([]);
   const createPost = async () => {
     if (!content.trim()) {
@@ -397,6 +398,7 @@ const deletePost = async (id) => {
 useEffect(() => {
   loadMembers();
   loadAdminPosts();
+  loadAdminMessages();
 }, []);
 const loadMembers = async () => {
   const { data, error } = await supabase
@@ -432,7 +434,16 @@ const updateMemberStatus = async (email, newStatus) => {
 };
 const filteredMembers = members.filter((member) => {
   const search = memberSearch.toLowerCase();
+const loadAdminMessages = async () => {
+  const { data, error } = await supabase
+    .from("messages")
+    .select("*")
+    .order("created_at", { ascending: false });
 
+  if (!error && data) {
+    setAdminMessages(data);
+  }
+};
   return (
     member.first_name?.toLowerCase().includes(search) ||
     member.last_name?.toLowerCase().includes(search) ||
