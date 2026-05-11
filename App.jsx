@@ -708,10 +708,15 @@ const filteredMembers = members.filter((member) => {
   ).values(),
 ].map((msg) => (
       <div
-        key={msg.id}
-        style={{
+  key={msg.id}
+  onClick={() => setSelectedConversation(msg)}
+  style={{
           padding: 12,
-          border: "1px solid #ddd",
+          cursor: "pointer",
+border:
+  selectedConversation?.sender_email === msg.sender_email
+    ? `2px solid ${burgundy}`
+    : "1px solid #ddd",
           borderRadius: 14,
           background: "#faf7f3",
         }}
@@ -731,6 +736,46 @@ const filteredMembers = members.filter((member) => {
     ))}
   </div>
 </Card>
+      {selectedConversation ? (
+  <Card style={{ marginTop: 16 }}>
+    <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>
+      Reply to {selectedConversation.sender_name || selectedConversation.sender_email}
+    </h2>
+
+    <textarea
+      value={adminReply}
+      onChange={(event) => setAdminReply(event.target.value)}
+      placeholder="Write your reply..."
+      style={{
+        width: "100%",
+        minHeight: 100,
+        borderRadius: 16,
+        border: "1px solid #ddd6cf",
+        padding: 12,
+        boxSizing: "border-box",
+        fontFamily: "Arial, sans-serif",
+        fontSize: 14,
+        marginBottom: 12,
+      }}
+    />
+
+    <button
+      onClick={sendAdminReply}
+      style={{
+        width: "100%",
+        border: 0,
+        borderRadius: 14,
+        padding: "12px 14px",
+        background: burgundy,
+        color: "white",
+        fontWeight: 900,
+        cursor: "pointer",
+      }}
+    >
+      Send Reply
+    </button>
+  </Card>
+) : null}
     </div>
   );
 }
