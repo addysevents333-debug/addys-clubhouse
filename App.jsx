@@ -700,7 +700,7 @@ const filteredMembers = members.filter((member) => {
     {[
   ...new Map(
     adminMessages.map((msg) => [
-      msg.sender_email,
+      msg.sender_name || msg.sender_email,
       msg,
     ])
   ).values(),
@@ -715,7 +715,7 @@ const filteredMembers = members.filter((member) => {
         }}
       >
      <div style={{ fontWeight: 700 }}>
-  Conversation with {msg.sender_email}
+  Conversation with {msg.sender_name || msg.sender_email}
 </div>
 
         <div style={{ fontSize: 13, color: "#666", marginTop: 4 }}>
@@ -1173,15 +1173,15 @@ const sendMessage = async () => {
       key={msg.id}
       style={{
         alignSelf:
-          msg.sender_email === currentMember?.email
+          msg.sender_name || msg.sender_email=== currentMember?.email
             ? "flex-end"
             : "flex-start",
         background:
-          msg.sender_email === currentMember?.email
+          msg.sender_name || msg.sender_email === currentMember?.email
             ? burgundy
             : "#ece7df",
         color:
-          msg.sender_email === currentMember?.email
+          msg.sender_name || msg.sender_email === currentMember?.email
             ? "white"
             : "#111",
         borderRadius: 18,
