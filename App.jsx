@@ -996,8 +996,7 @@ function OffersScreen() {
     </div>
   );
 }
-function MessagesScreen() {
-  const [selectedStaff, setSelectedStaff] = useState(staffContacts[0]);
+function MessagesScreen({ currentMember }) {  const [selectedStaff, setSelectedStaff] = useState(staffContacts[0]);
   const [message, setMessage] = useState("");
   const [attachedPhotos, setAttachedPhotos] = useState([]);
   const [messages, setMessages] = useState([]);
@@ -1788,7 +1787,9 @@ const isAdmin =
   if (activeTab === "calendar") screen = <CalendarScreen />;
   if (activeTab === "offers") screen = <OffersScreen />;
   if (activeTab === "notes") screen = <NotesScreen />;
-  if (activeTab === "messages") screen = <MessagesScreen />;
+  if (activeTab === "messages") {
+  screen = <MessagesScreen currentMember={currentMember} />;
+}
   if (activeTab === "profile") {
   screen = (
     <ProfileScreen
