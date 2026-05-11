@@ -451,7 +451,7 @@ const updateMemberStatus = async (email, newStatus) => {
     .from("messages")
     .insert([
       {
-        sender_email: currentMember?.email,
+        sender_email: selectedConversation.recipient_email,
         sender_name: "Addy's Staff",
         recipient_email: selectedConversation.sender_email,
         message: adminReply,
