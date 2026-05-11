@@ -64,7 +64,8 @@ const staffContacts = [
   {
     id: "tyler",
     name: "Tyler",
-    role: "Club Director / Buyer",
+    email: "addysevents333@gmail.com",
+    role: "Club Director,
     icon: "📝",
     status: "Best for rare bottles, club questions, app help, and general requests.",
     lastMessage: "Absolutely, I can check on that bottle for you.",
@@ -72,6 +73,7 @@ const staffContacts = [
   {
     id: "ryan",
     name: "Ryan",
+    email: "ryan.orzechaddys@gmail.com",
     role: "Spirits Specialist",
     icon: "🥃",
     status: "Best for whiskey, tequila, bourbon picks, and Spirits Club questions.",
@@ -80,6 +82,7 @@ const staffContacts = [
   {
     id: "jim",
     name: "Jim Curry",
+    email: "jpcurry@aol.com",
     role: "Wine Club Instructor",
     icon: "🍷",
     status: "Best for wine education, pairing questions, and class follow-up.",
@@ -88,6 +91,7 @@ const staffContacts = [
   {
     id: "mike-derek",
     name: "Mike & Derek",
+    email: "buffalohappyhourpodcast.com",
     role: "Spirits Club Hosts",
     icon: "🍸",
     status: "Best for cocktails, spirits education, and class questions.",
@@ -1024,7 +1028,7 @@ const sendMessage = async () => {
     .insert([
       {
         sender_email: currentMember?.email,
-        recipient_email: "staff@addys",
+        recipient_email: selectedStaff.email,
         message: newMessage,
       },
     ]);
@@ -1109,7 +1113,9 @@ const sendMessage = async () => {
     marginBottom: 12,
   }}
 >
-  {messages.map((msg) => (
+{messages
+  .filter((msg) => msg.recipient_email === selectedStaff.email)
+  .map((msg) => (
     <div
       key={msg.id}
       style={{
