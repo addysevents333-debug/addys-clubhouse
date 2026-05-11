@@ -1006,10 +1006,11 @@ const [newMessage, setNewMessage] = useState("");
 }, []);
 
 const loadMessages = async () => {
-  const { data, error } = await supabase
-    .from("messages")
-    .select("*")
-    .order("created_at", { ascending: true });
+ const { data, error } = await supabase
+  .from("messages")
+  .select("*")
+  .or(`sender_email.eq.${currentMember?.email},recipient_email.eq.${currentMember?.email}`)
+  .order("created_at", { ascending: true });
 
   if (!error && data) {
     setMessages(data);
