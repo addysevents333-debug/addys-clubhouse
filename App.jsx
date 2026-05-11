@@ -444,6 +444,25 @@ const updateMemberStatus = async (email, newStatus) => {
     setAdminMessages(data);
   }
 };
+  const sendAdminReply = async () => {
+  if (!adminReply.trim() || !selectedConversation) return;
+
+  const { error } = await supabase
+    .from("messages")
+    .insert([
+      {
+        sender_email: currentMember?.email,
+        sender_name: "Addy's Staff",
+        recipient_email: selectedConversation.sender_email,
+        message: adminReply,
+      },
+    ]);
+
+  if (!error) {
+    setAdminReply("");
+    loadAdminMessages();
+  }
+};
 const filteredMembers = members.filter((member) => {
   const search = memberSearch.toLowerCase();
 
