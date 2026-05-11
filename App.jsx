@@ -697,7 +697,14 @@ const filteredMembers = members.filter((member) => {
   </h2>
 
   <div style={{ display: "grid", gap: 10 }}>
-    {adminMessages.map((msg) => (
+    {[
+  ...new Map(
+    adminMessages.map((msg) => [
+      msg.sender_email,
+      msg,
+    ])
+  ).values(),
+].map((msg) => (
       <div
         key={msg.id}
         style={{
