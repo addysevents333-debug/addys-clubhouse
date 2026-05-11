@@ -65,7 +65,7 @@ const staffContacts = [
     id: "tyler",
     name: "Tyler",
     email: "addysevents333@gmail.com",
-    role: "Club Director,
+    role: "Club Director",
     icon: "📝",
     status: "Best for rare bottles, club questions, app help, and general requests.",
     lastMessage: "Absolutely, I can check on that bottle for you.",
