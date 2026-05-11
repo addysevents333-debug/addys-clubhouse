@@ -1000,15 +1000,45 @@ function MessagesScreen() {
   const [selectedStaff, setSelectedStaff] = useState(staffContacts[0]);
   const [message, setMessage] = useState("");
   const [attachedPhotos, setAttachedPhotos] = useState([]);
+  const [messages, setMessages] = useState([]);
+const [newMessage, setNewMessage] = useState("");
+  useEffect(() => {
+  loadMessages();
+}, []);
 
+const loadMessages = async () => {
+  const { data, error } = await supabase
+    .from("messages")
+    .select("*")
+    .order("created_at", { ascending: true });
+
+  if (!error && data) {
+    setMessages(data);
+  }
+};
+const sendMessage = async () => {
+  if (!newMessage.trim()) return;
+
+  const { error } = await supabase
+    .from("messages")
+    .insert([
+      {
+        sender_email: currentMember?.email,
+        recipient_email: "staff@addys",
+        message: newMessage,
+      },
+    ]);
+
+  if (!error) {
+    setNewMessage("");
+    loadMessages();
+  }
+};
   const removePhoto = (photoIndex) => {
     setAttachedPhotos(attachedPhotos.filter((_, index) => index !== photoIndex));
   };
 
-  const sendMessage = () => {
-    setMessage("");
-    setAttachedPhotos([]);
-  };
+
 
   return (
     <div style={{ padding: 20, paddingBottom: 92 }}>
@@ -1071,13 +1101,43 @@ function MessagesScreen() {
           </div>
         </div>
 
-        <div style={{ background: "#f4f1ed", borderRadius: 16, padding: 12, color: "#555", fontSize: 14, lineHeight: 1.45, marginBottom: 12 }}>
-          <strong>Recent reply:</strong> {selectedStaff.lastMessage}
-        </div>
+<div
+  style={{
+    display: "flex",
+    flexDirection: "column",
+    gap: 10,
+    marginBottom: 12,
+  }}
+>
+  {messages.map((msg) => (
+    <div
+      key={msg.id}
+      style={{
+        alignSelf:
+          msg.sender_email === currentMember?.email
+            ? "flex-end"
+            : "flex-start",
+        background:
+          msg.sender_email === currentMember?.email
+            ? burgundy
+            : "#ece7df",
+        color:
+          msg.sender_email === currentMember?.email
+            ? "white"
+            : "#111",
+        borderRadius: 18,
+        padding: 12,
+        maxWidth: "80%",
+      }}
+    >
+      {msg.message}
+    </div>
+  ))}
+</div>
 
         <textarea
-          value={message}
-          onChange={(event) => setMessage(event.target.value)}
+         value={newMessage}
+onChange={(event) => setNewMessage(event.target.value)}
           placeholder={`Write a message to ${selectedStaff.name}...`}
           style={{
             width: "100%",
