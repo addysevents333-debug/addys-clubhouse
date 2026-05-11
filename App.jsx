@@ -1150,7 +1150,9 @@ const sendMessage = async () => {
             {selectedStaff.icon}
           </div>
           <div>
-            <h3 style={{ margin: 0 }}>Message {selectedStaff.name}</h3>
+            <h3 style={{ margin: 0 }}>{currentMember?.role === "admin"
+  ? `Conversation with ${messages[0]?.sender_email || "Member"}`
+  : `Message ${selectedStaff.name}`}</h3>
             <p style={{ margin: "3px 0 0", color: "#777", fontSize: 13 }}>{selectedStaff.role}</p>
           </div>
         </div>
