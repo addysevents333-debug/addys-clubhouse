@@ -432,9 +432,7 @@ const updateMemberStatus = async (email, newStatus) => {
     setAdminPosts(data);
   }
 };
-const filteredMembers = members.filter((member) => {
-  const search = memberSearch.toLowerCase();
-const loadAdminMessages = async () => {
+  const loadAdminMessages = async () => {
   const { data, error } = await supabase
     .from("messages")
     .select("*")
@@ -444,6 +442,9 @@ const loadAdminMessages = async () => {
     setAdminMessages(data);
   }
 };
+const filteredMembers = members.filter((member) => {
+  const search = memberSearch.toLowerCase();
+
   return (
     member.first_name?.toLowerCase().includes(search) ||
     member.last_name?.toLowerCase().includes(search) ||
