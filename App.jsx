@@ -1078,6 +1078,7 @@ const sendMessage = async () => {
     .insert([
       {
         sender_email: currentMember?.email,
+        sender_name: `${currentMember?.first_name} ${currentMember?.last_name}`,
         recipient_email: selectedStaff.email,
         message: newMessage,
       },
