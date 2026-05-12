@@ -470,11 +470,11 @@ const updateMemberStatus = async (email, newStatus) => {
     .from("messages")
     .insert([
       {
-        sender_email: selectedConversation.recipient_email,
-        sender_name: "Addy's Staff",
-        recipient_email: selectedConversation.sender_email,
-        message: adminReply,
-      },
+  sender_email: selectedConversation.recipient_email,
+  sender_name: "Addy's Staff",
+  recipient_email: selectedConversation.sender_email,
+  message: adminReply,
+},
     ]);
 
   if (!error) {
