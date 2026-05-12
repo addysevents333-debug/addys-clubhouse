@@ -1137,7 +1137,29 @@ const loadMessages = async () => {
   }
 };
 const sendMessage = async () => {
-  if (!newMessage.trim()) return;
+  if (!newMessage.trim() && attachedPhotos.length === 0) return;
+
+  let imageUrl = "";
+
+  if (attachedPhotos.length > 0) {
+    const file = attachedPhotos[0];
+    const filePath = `${Date.now()}-${file.name}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from("message-photos")
+      .upload(filePath, file);
+
+    if (uploadError) {
+      alert("Photo upload failed: " + uploadError.message);
+      return;
+    }
+
+    const { data } = supabase.storage
+      .from("message-photos")
+      .getPublicUrl(filePath);
+
+    imageUrl = data.publicUrl;
+  }
 
   const { error } = await supabase
     .from("messages")
@@ -1147,12 +1169,16 @@ const sendMessage = async () => {
         sender_name: `${currentMember?.first_name} ${currentMember?.last_name}`,
         recipient_email: selectedStaff.email,
         message: newMessage,
+        image_url: imageUrl,
       },
     ]);
 
   if (!error) {
     setNewMessage("");
+    setAttachedPhotos([]);
     loadMessages();
+  } else {
+    alert("Message failed: " + error.message);
   }
 };
   const removePhoto = (photoIndex) => {
