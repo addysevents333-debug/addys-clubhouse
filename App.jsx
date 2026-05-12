@@ -1281,7 +1281,20 @@ const sendMessage = async () => {
         maxWidth: "80%",
       }}
     >
-      {msg.message}
+     {msg.message ? <div>{msg.message}</div> : null}
+
+{msg.image_url ? (
+  <img
+    src={msg.image_url}
+    alt="DM attachment"
+    style={{
+      marginTop: msg.message ? 8 : 0,
+      maxWidth: "100%",
+      borderRadius: 12,
+      display: "block",
+    }}
+  />
+) : null}
     </div>
   ))}
 </div>
