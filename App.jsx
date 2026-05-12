@@ -1145,8 +1145,26 @@ function MessagesScreen({ currentMember }) {  const [selectedStaff, setSelectedS
 const [newMessage, setNewMessage] = useState("");
   useEffect(() => {
   loadMessages();
-}, []);
 
+  const channel = supabase
+    .channel("messages-realtime")
+    .on(
+      "postgres_changes",
+      {
+        event: "*",
+        schema: "public",
+        table: "messages",
+      },
+      () => {
+        loadMessages();
+      }
+    )
+    .subscribe();
+
+  return () => {
+    supabase.removeChannel(channel);
+  };
+}, []);
 const loadMessages = async () => {
  const { data, error } = await supabase
   .from("messages")
