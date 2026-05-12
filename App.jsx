@@ -739,8 +739,9 @@ const filteredMembers = members.filter((member) => {
   <div style={{ display: "grid", gap: 10 }}>
     {[
   ...new Map(
-    adminMessages.map((msg) => [
-      msg.sender_name || msg.sender_email,
+adminMessages
+  .filter((msg) => msg.sender_email !== "addysevents333@gmail.com")
+  .map((msg) => [      msg.sender_name || msg.sender_email,
       msg,
     ])
   ).values(),
