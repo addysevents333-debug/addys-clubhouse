@@ -728,7 +728,16 @@ const filteredMembers = members.filter((member) => {
 ].map((msg) => (
       <div
   key={msg.id}
-  onClick={() => setSelectedConversation(msg)}
+  onClick={async () => {
+  setSelectedConversation(msg);
+
+  await supabase
+    .from("messages")
+    .update({ is_read: true })
+    .eq("sender_email", msg.sender_email);
+
+  loadAdminMessages();
+}}
   style={{
           padding: 12,
           cursor: "pointer",
