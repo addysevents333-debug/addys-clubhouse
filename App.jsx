@@ -749,8 +749,21 @@ border:
           background: "#faf7f3",
         }}
       >
-     <div style={{ fontWeight: 700 }}>
-  Conversation with {msg.sender_name || msg.sender_email}
+     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+  <span>
+    Conversation with {msg.sender_name || msg.sender_email}
+  </span>
+
+  {!msg.is_read && (
+    <div
+      style={{
+        width: 10,
+        height: 10,
+        borderRadius: "50%",
+        background: burgundy,
+      }}
+    />
+  )}
 </div>
 
         <div style={{ fontSize: 13, color: "#666", marginTop: 4 }}>
