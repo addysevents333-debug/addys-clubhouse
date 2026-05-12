@@ -401,6 +401,25 @@ useEffect(() => {
   loadMembers();
   loadAdminPosts();
   loadAdminMessages();
+
+  const channel = supabase
+    .channel("admin-messages-realtime")
+    .on(
+      "postgres_changes",
+      {
+        event: "*",
+        schema: "public",
+        table: "messages",
+      },
+      () => {
+        loadAdminMessages();
+      }
+    )
+    .subscribe();
+
+  return () => {
+    supabase.removeChannel(channel);
+  };
 }, []);
 const loadMembers = async () => {
   const { data, error } = await supabase
