@@ -312,6 +312,7 @@ function AdminScreen() {
   const [message, setMessage] = useState("");
 const [members, setMembers] = useState([]);
   const [offerTitle, setOfferTitle] = useState("");
+  const [notes, setNotes] = useState([]);
   const [selectedMemberEmail, setSelectedMemberEmail] = useState("");
   const [offerDetail, setOfferDetail] = useState("");
   const [offerPrice, setOfferPrice] = useState("");
@@ -437,6 +438,7 @@ useEffect(() => {
   loadMembers();
   loadAdminPosts();
   loadAdminMessages();
+  loadNotes();
 
   const channel = supabase
     .channel("admin-messages-realtime")
@@ -497,6 +499,16 @@ const updateMemberStatus = async (email, newStatus) => {
 
   if (!error && data) {
     setAdminMessages(data);
+  }
+};
+  const loadNotes = async () => {
+  const { data, error } = await supabase
+    .from("notes")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (!error && data) {
+    setNotes(data);
   }
 };
 const sendAdminReply = async () => {
