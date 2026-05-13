@@ -504,13 +504,6 @@ recipient_email: selectedMemberEmail,
       },
     ]);
 
-  if (!error) {
-    setAdminReply("");
-    loadAdminMessages();
-  } else {
-    alert("Reply failed: " + error.message);
-  }
-};
 const filteredMembers = members.filter((member) => {
   const search = memberSearch.toLowerCase();
 
