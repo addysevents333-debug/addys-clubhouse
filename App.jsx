@@ -312,6 +312,7 @@ function AdminScreen() {
   const [message, setMessage] = useState("");
 const [members, setMembers] = useState([]);
   const [offerTitle, setOfferTitle] = useState("");
+  const [selectedMemberEmail, setSelectedMemberEmail] = useState("");
   const [offerDetail, setOfferDetail] = useState("");
   const [offerPrice, setOfferPrice] = useState("");
   const [offerBadge, setOfferBadge] = useState("Member Offer");
@@ -470,21 +471,8 @@ const updateMemberStatus = async (email, newStatus) => {
     setAdminMessages(data);
   }
 };
-const sendAdminReply = async () => {
-  if (!adminReply.trim() || !selectedConversation) return;
-
-  const staffEmails = [
-    "addysevents333@gmail.com",
-    "staff@addys",
-    "tyler@addys",
-    "ryan@addys",
-    "jim@addys",
-    "spiritsclub@addys",
-  ];
-
-  const memberEmail = staffEmails.includes(selectedConversation.sender_email)
-    ? selectedConversation.recipient_email
-    : selectedConversation.sender_email;
+  const sendAdminReply = async () => {
+  if (!adminReply.trim() || !selectedMemberEmail) return;
 
   const { error } = await supabase
     .from("messages")
@@ -492,7 +480,26 @@ const sendAdminReply = async () => {
       {
         sender_email: selectedConversation.recipient_email,
         sender_name: "Addy's Staff",
-        recipient_email: memberEmail,
+        recipient_email: selectedMemberEmail,
+        message: adminReply,
+      },
+    ]);
+
+  if (!error) {
+    setAdminReply("");
+    loadAdminMessages();
+  } else {
+    alert("Reply failed: " + error.message);
+  }
+};
+
+  const { error } = await supabase
+    .from("messages")
+    .insert([
+      {
+        sender_email: selectedConversation.recipient_email,
+        sender_name: "Addy's Staff",
+recipient_email: selectedMemberEmail,
         message: adminReply,
       },
     ]);
@@ -770,8 +777,17 @@ adminMessages
 ].map((msg) => (
       <div
   key={msg.id}
-  onClick={async () => {
+onClick={async () => {
   setSelectedConversation(msg);
+  setSelectedMemberEmail(msg.sender_email);
+
+  await supabase
+    .from("messages")
+    .update({ is_read: true })
+    .eq("sender_email", msg.sender_email);
+
+  loadAdminMessages();
+}}
 
   await supabase
     .from("messages")
