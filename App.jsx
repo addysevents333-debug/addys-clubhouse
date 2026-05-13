@@ -320,6 +320,9 @@ const [members, setMembers] = useState([]);
   const [adminMessages, setAdminMessages] = useState([]);
   const [adminReply, setAdminReply] = useState("");
 const [adminPosts, setAdminPosts] = useState([]);
+  const [noteTitle, setNoteTitle] = useState("");
+const [noteContent, setNoteContent] = useState("");
+const [noteAuthor, setNoteAuthor] = useState("Tyler’s Notes");
   const [selectedConversation, setSelectedConversation] = useState(null);
   const createPost = async () => {
     if (!content.trim()) {
@@ -405,6 +408,31 @@ const deletePost = async (id) => {
       setMessage("Error creating offer.");
     }
   };
+  const createNote = async () => {
+  if (!noteTitle.trim() || !noteContent.trim()) {
+    setMessage("Please add a note title and content.");
+    return;
+  }
+
+  const { error } = await supabase
+    .from("notes")
+    .insert([
+      {
+        title: noteTitle,
+        content: noteContent,
+        author: noteAuthor,
+      },
+    ]);
+
+  if (!error) {
+    setNoteTitle("");
+    setNoteContent("");
+    setNoteAuthor("Tyler’s Notes");
+    setMessage("Note created.");
+  } else {
+    setMessage("Error creating note.");
+  }
+};
 useEffect(() => {
   loadMembers();
   loadAdminPosts();
