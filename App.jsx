@@ -2022,7 +2022,19 @@ function LoginScreen({ onLogin }) {
           >
             Member access only. Sign in with the email attached to your Wine Club or Spirits Club membership.
           </p>
-
+<div
+  style={{
+    background: "#fff7e8",
+    borderRadius: 16,
+    padding: 12,
+    marginBottom: 16,
+    fontSize: 13,
+    color: "#7a5a00",
+    lineHeight: 1.5,
+  }}
+>
+  First time here? Use the email tied to your Addy’s membership. If you do not have a password yet, contact Addy’s for your invite link or password setup email.
+</div>
           <label
             style={{
               display: "block",
@@ -2097,6 +2109,39 @@ function LoginScreen({ onLogin }) {
           <AppButton onClick={handleLogin}>
             Sign In
           </AppButton>
+          <button
+  onClick={async () => {
+    if (!email.trim()) {
+      alert("Please enter your email first.");
+      return;
+    }
+
+    const { error } = await supabase.auth.resetPasswordForEmail(
+      email.trim().toLowerCase(),
+      {
+        redirectTo: "https://addys-clubhouse.vercel.app",
+      }
+    );
+
+    if (error) {
+      alert(error.message);
+    } else {
+      alert("Password reset email sent.");
+    }
+  }}
+  style={{
+    marginTop: 12,
+    width: "100%",
+    border: 0,
+    background: "transparent",
+    color: burgundy,
+    fontWeight: 700,
+    cursor: "pointer",
+    fontSize: 14,
+  }}
+>
+  Forgot Password?
+</button>
         </Card>
       </div>
     </div>
