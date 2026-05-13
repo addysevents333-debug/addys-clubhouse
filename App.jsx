@@ -654,6 +654,62 @@ return (
           </div>
         ) : null}
       </Card>
+      <Card style={{ marginTop: 16 }}>
+  <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>
+    Create Club Note
+  </h2>
+
+  <input
+    value={noteTitle}
+    onChange={(event) => setNoteTitle(event.target.value)}
+    placeholder="Note Title"
+    style={{
+      width: "100%",
+      borderRadius: 16,
+      border: "1px solid #ddd6cf",
+      padding: 13,
+      boxSizing: "border-box",
+      fontSize: 15,
+      marginBottom: 12,
+    }}
+  />
+
+  <textarea
+    value={noteContent}
+    onChange={(event) => setNoteContent(event.target.value)}
+    placeholder="Write the note..."
+    style={{
+      width: "100%",
+      minHeight: 100,
+      borderRadius: 16,
+      border: "1px solid #ddd6cf",
+      padding: 13,
+      boxSizing: "border-box",
+      fontFamily: "Arial, sans-serif",
+      fontSize: 15,
+      marginBottom: 12,
+    }}
+  />
+
+  <input
+    value={noteAuthor}
+    onChange={(event) => setNoteAuthor(event.target.value)}
+    placeholder="Tyler’s Notes"
+    style={{
+      width: "100%",
+      borderRadius: 16,
+      border: "1px solid #ddd6cf",
+      padding: 13,
+      boxSizing: "border-box",
+      fontSize: 15,
+      marginBottom: 12,
+    }}
+  />
+
+  <AppButton onClick={createNote}>
+    Create Note
+  </AppButton>
+</Card>
       <Card>
  <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>
   Member Directory
