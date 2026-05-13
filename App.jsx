@@ -323,6 +323,13 @@ const [adminPosts, setAdminPosts] = useState([]);
   const createPost = async () => {
     if (!content.trim()) {
       setMessage("Please write a post first.");
+      const memberConversations = [
+  ...new Map(
+    adminMessages
+      .filter((msg) => msg.sender_email !== "addysevents333@gmail.com")
+      .map((msg) => [msg.sender_email, msg])
+  ).values(),
+];
       return;
     }
 
