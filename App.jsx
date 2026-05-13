@@ -893,7 +893,7 @@ border:
 ) : null}
     </div>
   );
-}
+
 function FeedPost({ post }) {
   return (
     <Card>
