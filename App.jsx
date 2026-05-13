@@ -473,7 +473,9 @@ const updateMemberStatus = async (email, newStatus) => {
 };
   const sendAdminReply = async () => {
   if (!adminReply.trim() || !selectedMemberEmail) return;
-
+alert(
+  `Reply will send TO: ${selectedMemberEmail}\nFROM: ${selectedConversation?.recipient_email}`
+);
   const { error } = await supabase
     .from("messages")
     .insert([
