@@ -887,13 +887,13 @@ border:
         cursor: "pointer",
       }}
     >
-      Send Reply
+     {{ Send Reply
     </button>
   </Card>
 ) : null}
     </div>
  );
-}}
+}
 
 function FeedPost({ post }) {
   return (
