@@ -471,18 +471,18 @@ const updateMemberStatus = async (email, newStatus) => {
     setAdminMessages(data);
   }
 };
-  const sendAdminReply = async () => {
-  if (!adminReply.trim() || !selectedMemberEmail) return;
-alert(
-  `Reply will send TO: ${selectedMemberEmail}\nFROM: ${selectedConversation?.recipient_email}`
-);
+const sendAdminReply = async () => {
+  if (!adminReply.trim() || !selectedConversation) return;
+
   const { error } = await supabase
     .from("messages")
     .insert([
       {
-        sender_email: selectedConversation.recipient_email,
+        sender_email: selectedConversation.staff_email,
         sender_name: "Addy's Staff",
-        recipient_email: selectedMemberEmail,
+        recipient_email: selectedConversation.member_email,
+        member_email: selectedConversation.member_email,
+        staff_email: selectedConversation.staff_email,
         message: adminReply,
       },
     ]);
