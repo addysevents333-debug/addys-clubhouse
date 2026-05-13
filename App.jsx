@@ -493,17 +493,6 @@ const updateMemberStatus = async (email, newStatus) => {
   }
 };
 
-  const { error } = await supabase
-    .from("messages")
-    .insert([
-      {
-        sender_email: selectedConversation.recipient_email,
-        sender_name: "Addy's Staff",
-recipient_email: selectedMemberEmail,
-        message: adminReply,
-      },
-    ]);
-
 const filteredMembers = members.filter((member) => {
   const search = memberSearch.toLowerCase();
 
