@@ -2033,7 +2033,7 @@ function LoginScreen({ onLogin }) {
     lineHeight: 1.5,
   }}
 >
-  First time here? Use the email tied to your Addy’s membership. If you do not have a password yet, contact Addy’s for your invite link or password setup email.
+  First time here? Use the email tied to your Addy’s membership. If you do not have a password yet, contact Tyler and/or Ryan for your invite link or password setup email.
 </div>
           <label
             style={{
