@@ -463,23 +463,38 @@ const updateMemberStatus = async (email, newStatus) => {
     setAdminMessages(data);
   }
 };
-  const sendAdminReply = async () => {
+const sendAdminReply = async () => {
   if (!adminReply.trim() || !selectedConversation) return;
+
+  const staffEmails = [
+    "addysevents333@gmail.com",
+    "staff@addys",
+    "tyler@addys",
+    "ryan@addys",
+    "jim@addys",
+    "spiritsclub@addys",
+  ];
+
+  const memberEmail = staffEmails.includes(selectedConversation.sender_email)
+    ? selectedConversation.recipient_email
+    : selectedConversation.sender_email;
 
   const { error } = await supabase
     .from("messages")
     .insert([
       {
-  sender_email: selectedConversation.recipient_email,
-  sender_name: "Addy's Staff",
-  recipient_email: selectedConversation.sender_email,
-  message: adminReply,
-},
+        sender_email: selectedConversation.recipient_email,
+        sender_name: "Addy's Staff",
+        recipient_email: memberEmail,
+        message: adminReply,
+      },
     ]);
 
   if (!error) {
     setAdminReply("");
     loadAdminMessages();
+  } else {
+    alert("Reply failed: " + error.message);
   }
 };
 const filteredMembers = members.filter((member) => {
