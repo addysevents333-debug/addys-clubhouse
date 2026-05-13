@@ -887,13 +887,13 @@ border:
         cursor: "pointer",
       }}
     >
-     {{ SendReply
+     {{ SendReply}}
     </button>
   </Card>
 ) : null}
     </div>
  );
-}}
+
 
 function FeedPost({ post }) {
   return (
