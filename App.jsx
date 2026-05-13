@@ -1708,7 +1708,21 @@ function BottleNoteCard({ bottle }) {
 
 function NotesScreen() {
   const [notesView, setNotesView] = useState("expert");
+const [liveNotes, setLiveNotes] = useState([]);
+  useEffect(() => {
+  loadNotes();
+}, []);
 
+const loadNotes = async () => {
+  const { data, error } = await supabase
+    .from("notes")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (!error && data) {
+    setLiveNotes(data);
+  }
+};
   return (
     <div style={{ padding: 20, paddingBottom: 92 }}>
       <div style={{ marginBottom: 18 }}>
@@ -1761,7 +1775,7 @@ function NotesScreen() {
           </Card>
 
           <div style={{ display: "grid", gap: 12 }}>
-            {expertNotes.map((note) => (
+            {liveNotes.map((note) => (
               <Card key={note.author}>
                 <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
                   <div style={{ width: 46, height: 46, borderRadius: 18, background: blush, display: "grid", placeItems: "center", fontSize: 24 }}>
@@ -1769,9 +1783,9 @@ function NotesScreen() {
                   </div>
                   <div style={{ flex: 1 }}>
                     <div style={{ color: burgundy, fontSize: 12, fontWeight: 900, textTransform: "uppercase" }}>{note.author}</div>
-                    <div style={{ color: "#777", fontSize: 13, marginTop: 2 }}>{note.role}</div>
+                    <div style={{ color: "#777", fontSize: 13, marginTop: 2 }}>Club Note</div>
                     <h3 style={{ margin: "8px 0 4px", fontSize: 17 }}>{note.title}</h3>
-                    <p style={{ margin: 0, color: "#666", fontSize: 14, lineHeight: 1.45 }}>{note.detail}</p>
+                    <p style={{ margin: 0, color: "#666", fontSize: 14, lineHeight: 1.45 }}>{note.content}</p>
                   </div>
                 </div>
               </Card>
