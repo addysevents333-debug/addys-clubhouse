@@ -433,16 +433,6 @@ const deletePost = async (id) => {
     setMessage("Error creating note.");
   }
 };
-
-  if (!error) {
-    setNoteTitle("");
-    setNoteContent("");
-    setNoteAuthor("Tyler’s Notes");
-    setMessage("Note created.");
-  } else {
-    setMessage("Error creating note.");
-  }
-};
 useEffect(() => {
   loadMembers();
   loadAdminPosts();
@@ -543,7 +533,7 @@ const filteredMembers = members.filter((member) => {
     member.membership_type?.toLowerCase().includes(search)
   );
 });
-
+return (
     <div style={{ padding: 20, paddingBottom: 92 }}>
       <BrandLogo compact />
 
@@ -886,12 +876,13 @@ border:
         cursor: "pointer",
       }}
     >
-     {{ SendReply}}
+     SendReply
     </button>
   </Card>
 ) : null}
     </div>
-
+  );
+}
 function FeedPost({ post }) {
   return (
     <Card>
