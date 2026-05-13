@@ -771,13 +771,6 @@ onClick={async () => {
   loadAdminMessages();
 }}
 
-  await supabase
-    .from("messages")
-    .update({ is_read: true })
-    .eq("sender_email", msg.sender_email);
-
-  loadAdminMessages();
-}}
   style={{
           padding: 12,
           cursor: "pointer",
