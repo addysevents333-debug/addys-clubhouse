@@ -1238,16 +1238,18 @@ const sendMessage = async () => {
   }
 
   const { error } = await supabase
-    .from("messages")
-    .insert([
-      {
-        sender_email: currentMember?.email,
-        sender_name: `${currentMember?.first_name} ${currentMember?.last_name}`,
-        recipient_email: selectedStaff.email,
-        message: newMessage,
-        image_url: imageUrl,
-      },
-    ]);
+  .from("messages")
+  .insert([
+    {
+      sender_email: currentMember?.email,
+      sender_name: `${currentMember?.first_name} ${currentMember?.last_name}`,
+      recipient_email: selectedStaff.email,
+      member_email: currentMember?.email,
+      staff_email: selectedStaff.email,
+      message: newMessage,
+      image_url: imageUrl,
+    },
+  ]);
 
   if (!error) {
     setNewMessage("");
