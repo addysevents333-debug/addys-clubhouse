@@ -887,7 +887,7 @@ border:
         cursor: "pointer",
       }}
     >
-     {{ Send Reply
+     {{ SendReply
     </button>
   </Card>
 ) : null}
