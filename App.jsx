@@ -433,6 +433,16 @@ const deletePost = async (id) => {
     setMessage("Error creating note.");
   }
 };
+
+  if (!error) {
+    setNoteTitle("");
+    setNoteContent("");
+    setNoteAuthor("Tyler’s Notes");
+    setMessage("Note created.");
+  } else {
+    setMessage("Error creating note.");
+  }
+};
 useEffect(() => {
   loadMembers();
   loadAdminPosts();
