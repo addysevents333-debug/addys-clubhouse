@@ -352,27 +352,17 @@ const [noteAuthor, setNoteAuthor] = useState("Tyler’s Notes");
   return data.publicUrl;
 };
   const createPost = async () => {
-    if (!content.trim()) {
-      setMessage("Please write a post first.");
-      const memberConversations = [
-  ...new Map(
-    adminMessages
-      .filter((msg) => msg.sender_email !== "addysevents333@gmail.com")
-      .map((msg) => [msg.sender_email, msg])
-  ).values(),
-];
-      return;
-    }
-const imageUrl = await uploadPostImage();
-    const response = await fetch(`${SUPABASE_URL}/rest/v1/posts`, {
-      method: "POST",
-      headers: {
-        apikey: SUPABASE_KEY,
-        Authorization: `Bearer ${SUPABASE_KEY}`,
-        "Content-Type": "application/json",
-        Prefer: "return=minimal",
-      },
-      body: JSON.stringify({
+  if (!content.trim()) {
+    setMessage("Please write a post first.");
+    return;
+  }
+
+  const imageUrl = await uploadPostImage();
+
+  const { error } = await supabase
+    .from("posts")
+    .insert([
+      {
         author,
         role,
         badge,
@@ -381,17 +371,19 @@ const imageUrl = await uploadPostImage();
         likes: 0,
         comments: 0,
         image_url: imageUrl,
-      }),
-    });
+      },
+    ]);
 
-    if (response.ok) {
-      setContent("");
-      setPostImage(null);
-      setMessage("Post created. Go to Feed to view it.");
-    } else {
-      setMessage("Error creating post.");
-    }
-  };
+  if (!error) {
+    setContent("");
+    setPostImage(null);
+    setMessage("Post created. Go to Feed to view it.");
+    loadAdminPosts();
+  } else {
+    console.log(error);
+    setMessage("Error creating post.");
+  }
+};
 const deletePost = async (id) => {
   const { error } = await supabase
     .from("posts")
