@@ -428,6 +428,7 @@ const imageUrl = await uploadOfferImage();
       setOfferDetail("");
       setOfferPrice("");
       setOfferBadge("Member Offer");
+      setOfferImage(null);
       setMessage("Offer created. Go to Offers to view it.");
     } else {
       setMessage("Error creating offer.");
@@ -684,7 +685,12 @@ return (
             marginBottom: 12,
           }}
         />
-
+<input
+  type="file"
+  accept="image/*"
+  onChange={(event) => setOfferImage(event.target.files[0])}
+  style={{ marginBottom: 12 }}
+/>
         <AppButton onClick={createOffer}>
           Create Offer
         </AppButton>
