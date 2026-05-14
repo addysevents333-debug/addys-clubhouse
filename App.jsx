@@ -1108,7 +1108,20 @@ function FeedPost({ post }) {
               <div style={{ fontWeight: 900, fontSize: 15 }}>{post.author}</div>
               <div style={{ color: "#777", fontSize: 12 }}>{post.role}</div>
             </div>
-
+{post.image_url ? (
+  <img
+    src={post.image_url}
+    alt="Post"
+    style={{
+      width: "100%",
+      borderRadius: 16,
+      marginTop: 12,
+      marginBottom: 12,
+      objectFit: "cover",
+      maxHeight: 320,
+    }}
+  />
+) : null}
             <div
               style={{
                 background: blush,
