@@ -401,39 +401,38 @@ const deletePost = async (id) => {
   return data.publicUrl;
 };
   const createOffer = async () => {
-    if (!offerTitle.trim() || !offerDetail.trim()) {
-      setMessage("Please add an offer title and details.");
-      return;
-    }
-const imageUrl = await uploadOfferImage();
-    const response = await fetch(`${SUPABASE_URL}/rest/v1/offers`, {
-      method: "POST",
-      headers: {
-        apikey: SUPABASE_KEY,
-        Authorization: `Bearer ${SUPABASE_KEY}`,
-        "Content-Type": "application/json",
-        Prefer: "return=minimal",
-      },
-      body: JSON.stringify({
+  if (!offerTitle.trim() || !offerDetail.trim()) {
+    setMessage("Please add an offer title and details.");
+    return;
+  }
+
+  const imageUrl = await uploadOfferImage();
+
+  const { error } = await supabase
+    .from("offers")
+    .insert([
+      {
         title: offerTitle,
         detail: offerDetail,
         price: offerPrice,
         badge: offerBadge,
-       image_url: imageUrl,
-      }),
-    });
+        image_url: imageUrl,
+      },
+    ]);
 
-    if (response.ok) {
-      setOfferTitle("");
-      setOfferDetail("");
-      setOfferPrice("");
-      setOfferBadge("Member Offer");
-      setOfferImage(null);
-      setMessage("Offer created. Go to Offers to view it.");
-    } else {
-      setMessage("Error creating offer.");
-    }
-  };
+  if (!error) {
+    setOfferTitle("");
+    setOfferDetail("");
+    setOfferPrice("");
+    setOfferBadge("Member Offer");
+    setOfferImage(null);
+    setMessage("Offer created. Go to Offers to view it.");
+    loadAdminOffers();
+  } else {
+    console.log(error);
+    setMessage("Error creating offer.");
+  }
+};
   const createNote = async () => {
   if (!noteTitle.trim() || !noteContent.trim()) {
     setMessage("Please add a note title and content.");
