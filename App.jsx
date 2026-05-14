@@ -405,7 +405,7 @@ const deletePost = async (id) => {
       setMessage("Please add an offer title and details.");
       return;
     }
-
+const imageUrl = await uploadOfferImage();
     const response = await fetch(`${SUPABASE_URL}/rest/v1/offers`, {
       method: "POST",
       headers: {
@@ -419,7 +419,7 @@ const deletePost = async (id) => {
         detail: offerDetail,
         price: offerPrice,
         badge: offerBadge,
-        image_url: "",
+       image_url: imageUrl,
       }),
     });
 
