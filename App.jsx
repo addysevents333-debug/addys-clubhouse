@@ -378,6 +378,28 @@ const deletePost = async (id) => {
     setMessage("Error deleting post.");
   }
 };
+  const uploadOfferImage = async () => {
+  if (!offerImage) {
+    return "";
+  }
+
+  const fileName = `${Date.now()}-${offerImage.name}`;
+
+  const { error } = await supabase.storage
+    .from("offer-images")
+    .upload(fileName, offerImage);
+
+  if (error) {
+    setMessage("Image upload failed.");
+    return "";
+  }
+
+  const { data } = supabase.storage
+    .from("offer-images")
+    .getPublicUrl(fileName);
+
+  return data.publicUrl;
+};
   const createOffer = async () => {
     if (!offerTitle.trim() || !offerDetail.trim()) {
       setMessage("Please add an offer title and details.");
