@@ -323,6 +323,7 @@ const [members, setMembers] = useState([]);
 const [adminPosts, setAdminPosts] = useState([]);
   const [noteTitle, setNoteTitle] = useState("");
 const [noteContent, setNoteContent] = useState("");
+  const [adminOffers, setAdminOffers] = useState([]);
 const [noteAuthor, setNoteAuthor] = useState("Tyler’s Notes");
   const [selectedConversation, setSelectedConversation] = useState(null);
   const createPost = async () => {
@@ -439,6 +440,7 @@ useEffect(() => {
   loadAdminPosts();
   loadAdminMessages();
   loadNotes();
+  loadAdminOffers();
 
   const channel = supabase
     .channel("admin-messages-realtime")
@@ -489,6 +491,30 @@ const updateMemberStatus = async (email, newStatus) => {
 
   if (!error && data) {
     setAdminPosts(data);
+  }
+};
+  const loadAdminOffers = async () => {
+  const { data, error } = await supabase
+    .from("offers")
+    .select("*")
+    .order("id", { ascending: false });
+
+  if (!error && data) {
+    setAdminOffers(data);
+  }
+};
+
+const deleteOffer = async (id) => {
+  const { error } = await supabase
+    .from("offers")
+    .delete()
+    .eq("id", id);
+
+  if (!error) {
+    setMessage("Offer deleted.");
+    loadAdminOffers();
+  } else {
+    setMessage("Error deleting offer.");
   }
 };
   const loadAdminMessages = async () => {
@@ -834,6 +860,53 @@ return (
           }}
         >
           Delete Post
+        </button>
+      </div>
+    ))}
+  </div>
+</Card>
+      <Card style={{ marginTop: 16 }}>
+  <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>
+    Manage Offers
+  </h2>
+
+  <div style={{ display: "grid", gap: 10 }}>
+    {adminOffers.map((offer) => (
+      <div
+        key={offer.id}
+        style={{
+          padding: 12,
+          border: "1px solid #ddd",
+          borderRadius: 14,
+          background: "#faf7f3",
+        }}
+      >
+        <div style={{ fontWeight: 700 }}>
+          {offer.title}
+        </div>
+
+        <div style={{ marginTop: 6, color: "#666", fontSize: 14 }}>
+          {offer.detail}
+        </div>
+
+        <div style={{ marginTop: 6, fontWeight: 700 }}>
+          {offer.price}
+        </div>
+
+        <button
+          onClick={() => deleteOffer(offer.id)}
+          style={{
+            marginTop: 12,
+            border: 0,
+            borderRadius: 12,
+            padding: "10px 12px",
+            background: "#8a1f1f",
+            color: "white",
+            fontWeight: 700,
+            cursor: "pointer",
+          }}
+        >
+          Delete Offer
         </button>
       </div>
     ))}
