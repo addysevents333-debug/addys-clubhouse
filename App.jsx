@@ -1343,6 +1343,19 @@ function OffersScreen() {
       <div style={{ display: "grid", gap: 12 }}>
         {liveOffers.map((offer) => (
           <Card key={offer.id}>
+            {offer.image_url ? (
+  <img
+    src={offer.image_url}
+    alt={offer.title}
+    style={{
+      width: "100%",
+      borderRadius: 16,
+      marginBottom: 12,
+      objectFit: "cover",
+      maxHeight: 220,
+    }}
+  />
+) : null}
             <span
               style={{
                 background: blush,
