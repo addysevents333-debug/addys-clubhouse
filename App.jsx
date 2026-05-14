@@ -324,9 +324,33 @@ const [adminPosts, setAdminPosts] = useState([]);
   const [noteTitle, setNoteTitle] = useState("");
 const [noteContent, setNoteContent] = useState("");
   const [offerImage, setOfferImage] = useState(null);
+  const [postImage, setPostImage] = useState(null);
   const [adminOffers, setAdminOffers] = useState([]);
 const [noteAuthor, setNoteAuthor] = useState("Tyler’s Notes");
   const [selectedConversation, setSelectedConversation] = useState(null);
+
+  const uploadPostImage = async () => {
+  if (!postImage) {
+    return "";
+  }
+
+  const fileName = `${Date.now()}-${postImage.name}`;
+
+  const { error } = await supabase.storage
+    .from("post-images")
+    .upload(fileName, postImage);
+
+  if (error) {
+    setMessage("Post image upload failed.");
+    return "";
+  }
+
+  const { data } = supabase.storage
+    .from("post-images")
+    .getPublicUrl(fileName);
+
+  return data.publicUrl;
+};
   const createPost = async () => {
     if (!content.trim()) {
       setMessage("Please write a post first.");
@@ -339,7 +363,7 @@ const [noteAuthor, setNoteAuthor] = useState("Tyler’s Notes");
 ];
       return;
     }
-
+const imageUrl = await uploadPostImage();
     const response = await fetch(`${SUPABASE_URL}/rest/v1/posts`, {
       method: "POST",
       headers: {
@@ -356,11 +380,13 @@ const [noteAuthor, setNoteAuthor] = useState("Tyler’s Notes");
         content,
         likes: 0,
         comments: 0,
+        image_url: imageUrl,
       }),
     });
 
     if (response.ok) {
       setContent("");
+      setPostImage(null);
       setMessage("Post created. Go to Feed to view it.");
     } else {
       setMessage("Error creating post.");
@@ -627,7 +653,12 @@ return (
             marginBottom: 12,
           }}
         />
-
+<input
+  type="file"
+  accept="image/*"
+  onChange={(event) => setPostImage(event.target.files[0])}
+  style={{ marginBottom: 12 }}
+/>
         <AppButton onClick={createPost}>
           Create Feed Post
         </AppButton>
