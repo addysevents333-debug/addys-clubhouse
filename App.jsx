@@ -323,6 +323,7 @@ const [members, setMembers] = useState([]);
 const [adminPosts, setAdminPosts] = useState([]);
   const [noteTitle, setNoteTitle] = useState("");
 const [noteContent, setNoteContent] = useState("");
+  const [offerImage, setOfferImage] = useState(null);
   const [adminOffers, setAdminOffers] = useState([]);
 const [noteAuthor, setNoteAuthor] = useState("Tyler’s Notes");
   const [selectedConversation, setSelectedConversation] = useState(null);
