@@ -1259,7 +1259,13 @@ function FeedPost({ post }) {
   );
 }
 
-function HomeScreen({ setActiveTab, currentMember }) {
+function HomeScreen({
+  setActiveTab,
+  currentMember,
+  showNotifications,
+  setShowNotifications,
+  notifications,
+}) {
   const [clubhouseFeed, setClubhouseFeed] = useState([]);
   useEffect(() => {
   loadPosts();
@@ -1380,7 +1386,7 @@ const loadPosts = async () => {
       </div>
     </div>
   );
-    </div>
+     }
 function SectionHeader({ title, action, onAction }) {
   return (
     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
@@ -1423,7 +1429,7 @@ function CalendarScreen() {
     </div>
   );
 }
-</div>
+
 function OffersScreen() {
   const [liveOffers, setLiveOffers] = useState([]);
 
@@ -2416,9 +2422,13 @@ const isAdmin =
   }
 
  let screen = (
-  <HomeScreen
-    setActiveTab={setActiveTab}
-    currentMember={currentMember}
+<HomeScreen
+  setActiveTab={setActiveTab}
+  currentMember={currentMember}
+  showNotifications={showNotifications}
+  setShowNotifications={setShowNotifications}
+  notifications={notifications}
+/>
   />
 );
   if (activeTab === "calendar") screen = <CalendarScreen />;
