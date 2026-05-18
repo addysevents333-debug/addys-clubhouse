@@ -1333,23 +1333,26 @@ function HomeScreen({
           borderBottomRightRadius: 34,
         }}
       >
-        <div style={{ position: "relative" }}>
-  <div
-    onClick={() => setShowNotifications(!showNotifications)}
-    style={{
-      fontSize: 26,
-      cursor: "pointer",
-    }}
-  >
-    🔔
-  </div>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <BrandLogo light />
 
-  {showNotifications ? (
-    <NotificationPanel notifications={notifications} />
-  ) : null}
-</div>
+          <div style={{ position: "relative" }}>
+            <div
+              onClick={() => setShowNotifications(!showNotifications)}
+              style={{
+                fontSize: 26,
+                cursor: "pointer",
+              }}
+            >
+              🔔
+            </div>
+
+            {showNotifications ? (
+              <NotificationPanel notifications={notifications} />
+            ) : null}
+          </div>
         </div>
- 
+
         <div
           style={{
             background: "rgba(255,255,255,.12)",
@@ -1382,7 +1385,7 @@ function HomeScreen({
             Extremely limited bottles available for Wine Club members first.
           </p>
         </div>
-    
+      </div>
 
       <div style={{ padding: 20 }}>
         <SectionHeader title="Clubhouse Feed" />
