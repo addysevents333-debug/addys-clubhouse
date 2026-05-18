@@ -1314,7 +1314,7 @@ const loadPosts = async () => {
   }}
 >    
  
- 🧪 Addy’s Clubhouse Beta — features and layouts may change as we improve the member experience. Please submit feedback through the Beta Feedback tool.
+     🧪 Addy’s Clubhouse Beta — features and layouts may change as we improve the member experience. Please submit feedback through the Beta Feedback tool.
 </div>
         <div
           style={{
@@ -1380,7 +1380,7 @@ const loadPosts = async () => {
       </div>
     </div>
   );
-}
+    
 function SectionHeader({ title, action, onAction }) {
   return (
     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
@@ -1423,7 +1423,7 @@ function CalendarScreen() {
     </div>
   );
 }
-
+</div>
 function OffersScreen() {
   const [liveOffers, setLiveOffers] = useState([]);
 
