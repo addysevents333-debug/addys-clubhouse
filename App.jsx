@@ -1362,31 +1362,33 @@ const loadPosts = async () => {
         </div>
       </div>
 
-      <div style={{ padding: "0 20px" }}>
-        <SectionHeader title="Clubhouse Tools" />
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-          <ToolCard icon="🎟️" title="Digital Card" subtitle="Show at checkout" />
-          <ToolCard icon="👥" title="Referrals" subtitle="$50 credit tracker" />
-          <ToolCard icon="📚" title="Club Notes" subtitle="Jim, Tyler & Spirits Team" />
-          <ToolCard icon="🎁" title="Offers" subtitle="Club exclusives" />
-          <ToolCard icon="💬" title="Staff DMs" subtitle="Message Tyler, Ryan & team" />
-          <a
-  href="https://docs.google.com/forms/d/e/1FAIpQLSfIDTyHiSCDS5_Lupz7Ksb9qR5qphayTSKR1lIWU4kw5FUXkQ/viewform?usp=header"
-  target="_blank"
-  rel="noreferrer"
-  style={{ textDecoration: "none" }}
->
-  <ToolCard
-    icon="🧪"
-    title="Beta Feedback"
-    subtitle="Tell us what to improve"
-  />
-</a>
-        </div>
-      </div>
-    </div>
+<div style={{ padding: "0 20px" }}>
+  <SectionHeader title="Clubhouse Tools" />
+
+  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+    <ToolCard icon="🎟️" title="Digital Card" subtitle="Show at checkout" />
+    <ToolCard icon="👥" title="Referrals" subtitle="$50 credit tracker" />
+    <ToolCard icon="📚" title="Club Notes" subtitle="Jim, Tyler & Spirits Team" />
+    <ToolCard icon="🎁" title="Offers" subtitle="Club exclusives" />
+    <ToolCard icon="💬" title="Staff DMs" subtitle="Message Tyler, Ryan & team" />
+
+    <a
+      href="https://docs.google.com/forms/d/e/1FAIpQLSfIDTyHiSCDS5_Lupz7Ksb9qR5qphayTSKR1IIW4kw5FUXkQ/viewform?usp=header"
+      target="_blank"
+      rel="noreferrer"
+      style={{ textDecoration: "none" }}
+    >
+      <ToolCard
+        icon="🧪"
+        title="Beta Feedback"
+        subtitle="Tell us what to improve"
+      />
+    </a>
+  </div>
+ </div>
+</div>
   );
-     }
+     
 function SectionHeader({ title, action, onAction }) {
   return (
     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
