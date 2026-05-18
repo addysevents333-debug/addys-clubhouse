@@ -1327,16 +1327,20 @@ function HomeScreen({ setActiveTab, currentMember }) {
           borderBottomRightRadius: 34,
         }}
       >
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <BrandLogo light />
-         <div
-  onClick={() => alert("Notifications coming soon.")}
-  style={{
-    fontSize: 26,
-    cursor: "pointer",
-  }}
->
-  🔔
+        <div style={{ position: "relative" }}>
+  <div
+    onClick={() => setShowNotifications(!showNotifications)}
+    style={{
+      fontSize: 26,
+      cursor: "pointer",
+    }}
+  >
+    🔔
+  </div>
+
+  {showNotifications ? (
+    <NotificationPanel notifications={notifications} />
+  ) : null}
 </div>
         </div>
  
