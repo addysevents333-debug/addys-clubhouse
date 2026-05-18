@@ -2418,7 +2418,6 @@ const isAdmin =
   setShowNotifications={setShowNotifications}
   notifications={notifications}
 />
-  />
 );
   if (activeTab === "calendar") screen = <CalendarScreen />;
   if (activeTab === "offers") screen = <OffersScreen />;
