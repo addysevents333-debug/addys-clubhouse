@@ -1259,32 +1259,25 @@ function FeedPost({ post }) {
   );
 }
 
-function HomeScreen({
-  setActiveTab,
-  currentMember,
-  showNotifications,
-  setShowNotifications,
-  notifications,
-}) {
+function HomeScreen({ setActiveTab, currentMember }) {
   const [clubhouseFeed, setClubhouseFeed] = useState([]);
-  useEffect(() => {
-  loadPosts();
-}, []);
 
-const loadPosts = async () => {
-  const response = await fetch(
-    `${SUPABASE_URL}/rest/v1/posts?select=*`,
-    {
+  useEffect(() => {
+    loadPosts();
+  }, []);
+
+  const loadPosts = async () => {
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/posts?select=*`, {
       headers: {
         apikey: SUPABASE_KEY,
         Authorization: `Bearer ${SUPABASE_KEY}`,
       },
-    }
-  );
+    });
 
-  const data = await response.json();
-  setClubhouseFeed(data);
-};
+    const data = await response.json();
+    setClubhouseFeed(data);
+  };
+
   return (
     <div style={{ paddingBottom: 92 }}>
       <div
@@ -1298,30 +1291,21 @@ const loadPosts = async () => {
       >
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <BrandLogo light />
+          <div style={{ fontSize: 26 }}>🔔</div>
+        </div>
 
-<div style={{ position: "relative" }}>
-  <div
-    onClick={() => setShowNotifications(!showNotifications)}
-    style={{
-      fontSize: 26,
-      cursor: "pointer",
-    }}
-  >
-    🔔
-  </div>
- </div>
-    <div
-  style={{
-    background: "rgba(255,255,255,.12)",
-    borderRadius: 16,
-    padding: 12,
-    marginTop: 12,
-    color: "white",
-  }}
->    
- 
-     🧪 Addy’s Clubhouse Beta — features and layouts may change as we improve the member experience. Please submit feedback through the Beta Feedback tool.
-</div>
+        <div
+          style={{
+            background: "rgba(255,255,255,.12)",
+            borderRadius: 16,
+            padding: 12,
+            marginTop: 12,
+            color: "white",
+          }}
+        >
+          🧪 Addy’s Clubhouse Beta — features and layouts may change as we improve the member experience.
+        </div>
+
         <div
           style={{
             marginTop: 22,
@@ -1330,16 +1314,17 @@ const loadPosts = async () => {
             padding: 16,
           }}
         >
-          <div style={{ opacity: 0.75, fontSize: 12, fontWeight: 800, textTransform: "uppercase" }}>Addy’s Member Exclusive</div>
-          <h2 style={{ margin: "8px 0", fontSize: 22, lineHeight: 1.15 }}>2009 Vintage Champagne Allocation</h2>
-          <p style={{ margin: 0, opacity: 0.85, fontSize: 14 }}>Extremely limited bottles available for Wine Club members first.</p>
-          <div style={{ display: "flex", gap: 8, marginTop: 14 }}>
-            {["$200", "Rare", "Act Fast"].map((item) => (
-              <span key={item} style={{ background: "rgba(255,255,255,.12)", borderRadius: 999, padding: "6px 10px", fontSize: 12 }}>
-                {item}
-              </span>
-            ))}
+          <div style={{ opacity: 0.75, fontSize: 12, fontWeight: 800, textTransform: "uppercase" }}>
+            Addy’s Member Exclusive
           </div>
+
+          <h2 style={{ margin: "8px 0", fontSize: 22, lineHeight: 1.15 }}>
+            2009 Vintage Champagne Allocation
+          </h2>
+
+          <p style={{ margin: 0, opacity: 0.85, fontSize: 14 }}>
+            Extremely limited bottles available for Wine Club members first.
+          </p>
         </div>
       </div>
 
@@ -1354,7 +1339,12 @@ const loadPosts = async () => {
       </div>
 
       <div style={{ padding: 20 }}>
-        <SectionHeader title="Upcoming Classes" action="See all" onAction={() => setActiveTab("calendar")} />
+        <SectionHeader
+          title="Upcoming Classes"
+          action="See all"
+          onAction={() => setActiveTab("calendar")}
+        />
+
         <div style={{ display: "grid", gap: 12 }}>
           {events.slice(0, 2).map((event) => (
             <EventCard key={event.id} event={event} />
@@ -1362,32 +1352,29 @@ const loadPosts = async () => {
         </div>
       </div>
 
-<div style={{ padding: "0 20px" }}>
-  <SectionHeader title="Clubhouse Tools" />
+      <div style={{ padding: "0 20px" }}>
+        <SectionHeader title="Clubhouse Tools" />
 
-  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-    <ToolCard icon="🎟️" title="Digital Card" subtitle="Show at checkout" />
-    <ToolCard icon="👥" title="Referrals" subtitle="$50 credit tracker" />
-    <ToolCard icon="📚" title="Club Notes" subtitle="Jim, Tyler & Spirits Team" />
-    <ToolCard icon="🎁" title="Offers" subtitle="Club exclusives" />
-    <ToolCard icon="💬" title="Staff DMs" subtitle="Message Tyler, Ryan & team" />
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+          <ToolCard icon="🎟️" title="Digital Card" subtitle="Show at checkout" />
+          <ToolCard icon="👥" title="Referrals" subtitle="$50 credit tracker" />
+          <ToolCard icon="📚" title="Club Notes" subtitle="Jim, Tyler & Spirits Team" />
+          <ToolCard icon="🎁" title="Offers" subtitle="Club exclusives" />
+          <ToolCard icon="💬" title="Staff DMs" subtitle="Message Tyler, Ryan & team" />
 
-    <a
-      href="https://docs.google.com/forms/d/e/1FAIpQLSfIDTyHiSCDS5_Lupz7Ksb9qR5qphayTSKR1IIW4kw5FUXkQ/viewform?usp=header"
-      target="_blank"
-      rel="noreferrer"
-      style={{ textDecoration: "none" }}
-    >
-      <ToolCard
-        icon="🧪"
-        title="Beta Feedback"
-        subtitle="Tell us what to improve"
-      />
-    </a>
-  </div>
- </div>
-</div>
+          <a
+            href="https://docs.google.com/forms/d/e/1FAIpQLSfIDTyHiSCDS5_Lupz7Ksb9qR5qphayTSKR1lIWU4kw5FUXkQ/viewform?usp=header"
+            target="_blank"
+            rel="noreferrer"
+            style={{ textDecoration: "none" }}
+          >
+            <ToolCard icon="🧪" title="Beta Feedback" subtitle="Tell us what to improve" />
+          </a>
+        </div>
+      </div>
+    </div>
   );
+}
      
 function SectionHeader({ title, action, onAction }) {
   return (
