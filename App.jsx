@@ -1292,7 +1292,7 @@ const loadPosts = async () => {
       >
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <BrandLogo light />
-          <div
+         <div
   onClick={() => setShowNotifications(!showNotifications)}
   style={{
     fontSize: 26,
@@ -1301,6 +1301,8 @@ const loadPosts = async () => {
 >
   🔔
 </div>
+
+{showNotifications ? (
          {showNotifications ? (
   <div
     style={{
