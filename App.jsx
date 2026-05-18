@@ -1301,6 +1301,80 @@ const loadPosts = async () => {
 >
   🔔
 </div>
+         {showNotifications ? (
+  <div
+    style={{
+      position: "absolute",
+      top: 70,
+      right: 20,
+      width: 320,
+      maxHeight: 420,
+      overflowY: "auto",
+      background: "white",
+      borderRadius: 18,
+      padding: 14,
+      boxShadow: "0 8px 30px rgba(0,0,0,0.18)",
+      zIndex: 999,
+      color: "#222",
+    }}
+  >
+    <div
+      style={{
+        fontWeight: 900,
+        fontSize: 18,
+        marginBottom: 12,
+      }}
+    >
+      Notifications
+    </div>
+
+    {notifications.length === 0 ? (
+      <div style={{ color: "#777" }}>
+        No notifications yet.
+      </div>
+    ) : (
+      notifications.map((notification) => (
+        <div
+          key={notification.id}
+          style={{
+            padding: "10px 0",
+            borderBottom: "1px solid #eee",
+          }}
+        >
+          <div
+            style={{
+              fontWeight: 800,
+              marginBottom: 4,
+            }}
+          >
+            {notification.title}
+          </div>
+
+          <div
+            style={{
+              fontSize: 14,
+              color: "#555",
+              marginBottom: 6,
+              lineHeight: 1.4,
+            }}
+          >
+            {notification.message}
+          </div>
+
+          <div
+            style={{
+              fontSize: 12,
+              color: "#999",
+              fontWeight: 700,
+            }}
+          >
+            {notification.category}
+          </div>
+        </div>
+      ))
+    )}
+  </div>
+) : null}
         </div>
 <div
   style={{
