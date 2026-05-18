@@ -10,7 +10,7 @@ const cream = "#faf7f3";
 const blush = "#f3e5ea";
 const gold = "#c8a96a";
 const logoUrl = "/mnt/data/Addy's no background logo (1)(6).png";
-
+ 
 const events = [
   {
     id: 1,
@@ -452,6 +452,33 @@ const deletePost = async (id) => {
   } else {
     console.log(error);
     setMessage("Error creating offer.");
+  }
+};
+
+  const createNotification = async () => {
+  if (!notificationTitle.trim() || !notificationMessage.trim()) {
+    setMessage("Please add a notification title and message.");
+    return;
+  }
+
+  const { error } = await supabase
+    .from("notifications")
+    .insert([
+      {
+        title: notificationTitle,
+        message: notificationMessage,
+        category: notificationCategory,
+      },
+    ]);
+
+  if (!error) {
+    setNotificationTitle("");
+    setNotificationMessage("");
+    setNotificationCategory("Announcement");
+    setMessage("Notification created.");
+  } else {
+    console.log(error);
+    setMessage("Error creating notification.");
   }
 };
   const createNote = async () => {
