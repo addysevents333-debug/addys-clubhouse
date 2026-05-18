@@ -1304,7 +1304,7 @@ const loadPosts = async () => {
     🔔
   </div>
 
-         {showNotifications ? (
+         {showNotifications && (
   <div
     style={{
       position: "absolute",
@@ -1377,7 +1377,7 @@ const loadPosts = async () => {
       ))
     )}
   </div>
-) : null}
+)}
         </div>
 <div
   style={{
