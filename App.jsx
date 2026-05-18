@@ -1303,83 +1303,8 @@ const loadPosts = async () => {
   >
     🔔
   </div>
-
-         {showNotifications && (
-  <div
-    style={{
-      position: "absolute",
-      top: 70,
-      right: 20,
-      width: 320,
-      maxHeight: 420,
-      overflowY: "auto",
-      background: "white",
-      borderRadius: 18,
-      padding: 14,
-      boxShadow: "0 8px 30px rgba(0,0,0,0.18)",
-      zIndex: 999,
-      color: "#222",
-    }}
-  >
+ </div>
     <div
-      style={{
-        fontWeight: 900,
-        fontSize: 18,
-        marginBottom: 12,
-      }}
-    >
-      Notifications
-    </div>
-
-    {notifications.length === 0 ? (
-      <div style={{ color: "#777" }}>
-        No notifications yet.
-      </div>
-    ) : (
-      notifications.map((notification) => (
-        <div
-          key={notification.id}
-          style={{
-            padding: "10px 0",
-            borderBottom: "1px solid #eee",
-          }}
-        >
-          <div
-            style={{
-              fontWeight: 800,
-              marginBottom: 4,
-            }}
-          >
-            {notification.title}
-          </div>
-
-          <div
-            style={{
-              fontSize: 14,
-              color: "#555",
-              marginBottom: 6,
-              lineHeight: 1.4,
-            }}
-          >
-            {notification.message}
-          </div>
-
-          <div
-            style={{
-              fontSize: 12,
-              color: "#999",
-              fontWeight: 700,
-            }}
-          >
-            {notification.category}
-          </div>
-        </div>
-      ))
-    )}
-  </div>
-)}
-        </div>
-<div
   style={{
     background: "rgba(255,255,255,.12)",
     borderRadius: 16,
@@ -1387,32 +1312,9 @@ const loadPosts = async () => {
     marginTop: 12,
     color: "white",
   }}
->
-  <div style={{ fontSize: 13, opacity: 0.8 }}>
-    Logged in as
-  </div>
-
-  <div style={{ fontSize: 18, fontWeight: 800 }}>
-    {currentMember?.first_name} {currentMember?.last_name}
-  </div>
-
-  <div style={{ fontSize: 13, marginTop: 4 }}>
-    {currentMember?.membership_type} Member
-  </div>
-</div>
-        <div
-  style={{
-    marginTop: 12,
-    background: "#fff3cd",
-    color: "#7a5a00",
-    borderRadius: 16,
-    padding: 12,
-    fontSize: 13,
-    lineHeight: 1.5,
-    fontWeight: 600,
-  }}
->
-  🧪 Addy’s Clubhouse Beta — features and layouts may change as we improve the member experience. Please submit feedback through the Beta Feedback tool.
+>    
+ 
+ 🧪 Addy’s Clubhouse Beta — features and layouts may change as we improve the member experience. Please submit feedback through the Beta Feedback tool.
 </div>
         <div
           style={{
