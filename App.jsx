@@ -1261,7 +1261,8 @@ function FeedPost({ post }) {
 function NotificationPanel({ notifications }) {
   return (
     <Card
-      style={{
+  style={{
+    color: "#222",
         position: "absolute",
         top: 42,
         right: 0,
