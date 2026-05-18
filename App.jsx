@@ -1306,7 +1306,6 @@ const loadPosts = async () => {
 
   {showNotifications ? (
 
-{showNotifications ? (
          {showNotifications ? (
   <div
     style={{
