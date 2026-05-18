@@ -1376,7 +1376,7 @@ function HomeScreen({ setActiveTab, currentMember }) {
             Extremely limited bottles available for Wine Club members first.
           </p>
         </div>
-      </div>
+    
 
       <div style={{ padding: 20 }}>
         <SectionHeader title="Clubhouse Feed" />
