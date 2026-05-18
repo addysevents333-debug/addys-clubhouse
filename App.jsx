@@ -1301,7 +1301,7 @@ function HomeScreen({ setActiveTab, currentMember }) {
   🔔
 </div>
         </div>
-
+ 
         <div
           style={{
             background: "rgba(255,255,255,.12)",
