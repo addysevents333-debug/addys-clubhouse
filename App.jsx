@@ -685,7 +685,66 @@ return (
           Create Feed Post
         </AppButton>
       </Card>
+<Card style={{ marginTop: 16 }}>
+  <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>
+    Create Notification
+  </h2>
 
+  <input
+    value={notificationTitle}
+    onChange={(event) => setNotificationTitle(event.target.value)}
+    placeholder="Notification Title"
+    style={{
+      width: "100%",
+      borderRadius: 16,
+      border: "1px solid #ddd6cf",
+      padding: 13,
+      boxSizing: "border-box",
+      fontSize: 15,
+      marginBottom: 12,
+    }}
+  />
+
+  <textarea
+    value={notificationMessage}
+    onChange={(event) => setNotificationMessage(event.target.value)}
+    placeholder="Notification Message"
+    style={{
+      width: "100%",
+      minHeight: 90,
+      borderRadius: 16,
+      border: "1px solid #ddd6cf",
+      padding: 13,
+      boxSizing: "border-box",
+      fontFamily: "Arial, sans-serif",
+      fontSize: 15,
+      marginBottom: 12,
+    }}
+  />
+
+  <select
+    value={notificationCategory}
+    onChange={(event) => setNotificationCategory(event.target.value)}
+    style={{
+      width: "100%",
+      borderRadius: 16,
+      border: "1px solid #ddd6cf",
+      padding: 13,
+      boxSizing: "border-box",
+      fontSize: 15,
+      marginBottom: 12,
+    }}
+  >
+    <option>Announcement</option>
+    <option>Offer</option>
+    <option>Class</option>
+    <option>RSVP</option>
+  </select>
+
+  <AppButton onClick={createNotification}>
+    Create Notification
+  </AppButton>
+</Card>
       <Card style={{ marginTop: 16 }}>
         <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>
           Create Member Offer
