@@ -1304,8 +1304,6 @@ const loadPosts = async () => {
     🔔
   </div>
 
-  {showNotifications ? (
-
          {showNotifications ? (
   <div
     style={{
