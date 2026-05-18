@@ -2399,7 +2399,8 @@ export default function AddysClubhousePrototype() {
   );
 
  const [activeTab, setActiveTab] = useState("home");
-
+const [notifications, setNotifications] = useState([]);
+const [showNotifications, setShowNotifications] = useState(false);
 const isAdmin =
   currentMember?.role?.trim().toLowerCase() === "admin";
   if (!isLoggedIn) {
