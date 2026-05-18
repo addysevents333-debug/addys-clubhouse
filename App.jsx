@@ -1258,7 +1258,45 @@ function FeedPost({ post }) {
     </Card>
   );
 }
+function NotificationPanel({ notifications }) {
+  return (
+    <Card
+      style={{
+        position: "absolute",
+        top: 42,
+        right: 0,
+        width: 300,
+        maxHeight: 420,
+        overflowY: "auto",
+        zIndex: 999,
+      }}
+    >
+      <h3 style={{ margin: "0 0 12px" }}>Notifications</h3>
 
+      {notifications.length === 0 ? (
+        <p style={{ margin: 0, color: "#666" }}>No notifications yet.</p>
+      ) : (
+        notifications.map((notification) => (
+          <div
+            key={notification.id}
+            style={{
+              padding: "10px 0",
+              borderBottom: "1px solid #eee",
+            }}
+          >
+            <strong>{notification.title}</strong>
+            <p style={{ margin: "4px 0", color: "#666", fontSize: 14 }}>
+              {notification.message}
+            </p>
+            <div style={{ fontSize: 12, color: burgundy, fontWeight: 800 }}>
+              {notification.category}
+            </div>
+          </div>
+        ))
+      )}
+    </Card>
+  );
+}
 function HomeScreen({ setActiveTab, currentMember }) {
   const [clubhouseFeed, setClubhouseFeed] = useState([]);
 
