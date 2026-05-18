@@ -1478,7 +1478,7 @@ const loadPosts = async () => {
       </div>
     </div>
   );
-
+}
 function SectionHeader({ title, action, onAction }) {
   return (
     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
