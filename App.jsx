@@ -2401,6 +2401,20 @@ export default function AddysClubhousePrototype() {
  const [activeTab, setActiveTab] = useState("home");
 const [notifications, setNotifications] = useState([]);
 const [showNotifications, setShowNotifications] = useState(false);
+ useEffect(() => {
+  loadNotifications();
+}, []);
+
+const loadNotifications = async () => {
+  const { data, error } = await supabase
+    .from("notifications")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (!error && data) {
+    setNotifications(data);
+  }
+};
 const isAdmin =
   currentMember?.role?.trim().toLowerCase() === "admin";
   if (!isLoggedIn) {
