@@ -1478,7 +1478,7 @@ const loadPosts = async () => {
       </div>
     </div>
   );
-}
+)}
 
 function SectionHeader({ title, action, onAction }) {
   return (
