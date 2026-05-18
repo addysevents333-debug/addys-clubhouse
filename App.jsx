@@ -1346,6 +1346,23 @@ function HomeScreen({
               }}
             >
               🔔
+{notifications.length > 0 ? (
+  <span
+    style={{
+      position: "absolute",
+      top: -6,
+      right: -8,
+      background: "#ffcc00",
+      color: "#111",
+      borderRadius: 999,
+      padding: "2px 6px",
+      fontSize: 11,
+      fontWeight: 900,
+    }}
+  >
+    {notifications.length}
+  </span>
+) : null}
             </div>
 
             {showNotifications ? (
