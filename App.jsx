@@ -1297,7 +1297,13 @@ function NotificationPanel({ notifications }) {
     </Card>
   );
 }
-function HomeScreen({ setActiveTab, currentMember }) {
+function HomeScreen({
+  setActiveTab,
+  currentMember,
+  showNotifications,
+  setShowNotifications,
+  notifications,
+}) {
   const [clubhouseFeed, setClubhouseFeed] = useState([]);
 
   useEffect(() => {
