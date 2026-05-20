@@ -10,8 +10,7 @@ const darkBurgundy = "#4a0d20";
 const cream = "#faf7f3";
 const blush = "#f3e5ea";
 const gold = "#c8a96a";
-const logoUrl = AddysLogo;
- 
+const logoUrl = AddysLogo; 
 const events = [
   {
     id: 1,
