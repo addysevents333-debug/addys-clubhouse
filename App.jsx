@@ -328,6 +328,7 @@ const [noteContent, setNoteContent] = useState("");
   const [notificationTitle, setNotificationTitle] = useState("");
 const [notificationMessage, setNotificationMessage] = useState("");
 const [notificationCategory, setNotificationCategory] = useState("Announcement");
+ const [adminNotifications, setAdminNotifications] = useState([]);
   const [adminOffers, setAdminOffers] = useState([]);
 const [noteAuthor, setNoteAuthor] = useState("Tyler’s Notes");
   const [selectedConversation, setSelectedConversation] = useState(null);
@@ -525,6 +526,7 @@ useEffect(() => {
   loadAdminMessages();
   loadNotes();
   loadAdminOffers();
+ loadAdminNotifications();
 
   const channel = supabase
     .channel("admin-messages-realtime")
@@ -565,6 +567,16 @@ const updateMemberStatus = async (email, newStatus) => {
     loadMembers();
   } else {
     console.log(error);
+  }
+};
+ const loadAdminNotifications = async () => {
+  const { data, error } = await supabase
+    .from("notifications")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (!error && data) {
+    setAdminNotifications(data);
   }
 };
   const loadAdminPosts = async () => {
