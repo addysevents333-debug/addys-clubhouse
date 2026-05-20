@@ -1347,7 +1347,27 @@ function HomeScreen({
             >
               🔔
             </div>
-
+{notifications.length > 0 ? (
+  <div
+    style={{
+      position: "absolute",
+      top: -6,
+      right: -8,
+      background: "#d50000",
+      color: "white",
+      borderRadius: 999,
+      minWidth: 18,
+      height: 18,
+      fontSize: 11,
+      fontWeight: 900,
+      display: "grid",
+      placeItems: "center",
+      padding: "0 5px",
+    }}
+  >
+    {notifications.length}
+  </div>
+) : null}
             {showNotifications ? (
               <NotificationPanel notifications={notifications} />
             ) : null}
