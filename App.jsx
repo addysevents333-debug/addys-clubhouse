@@ -776,7 +776,7 @@ return (
   </h2>
 
   <div style={{ display: "grid", gap: 10 }}>
-    {notifications.map((notification) => (
+    {adminNotifications.map((notification) => (
       <div
         key={notification.id}
         style={{
@@ -2535,7 +2535,7 @@ export default function AddysClubhousePrototype() {
 const [notifications, setNotifications] = useState([]);
 const [showNotifications, setShowNotifications] = useState(false);
  useEffect(() => {
-  loadNotifications();
+ loadAdminNotifications();
 }, []);
 
 const loadNotifications = async () => {
