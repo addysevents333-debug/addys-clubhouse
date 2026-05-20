@@ -9,7 +9,7 @@ const darkBurgundy = "#4a0d20";
 const cream = "#faf7f3";
 const blush = "#f3e5ea";
 const gold = "#c8a96a";
-const logoUrl = "/mnt/data/Addy's no background logo (1)(6).png";
+const logoUrl = "const logoUrl = "/src/addyslogo.png";";
  
 const events = [
   {
