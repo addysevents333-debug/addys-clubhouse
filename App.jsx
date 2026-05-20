@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import AddysLogo from "./src/Addys-Logo.png";
+import AddysLogo from "./Addys-Logo.png";
 const SUPABASE_URL = "https://ztqtfftgtwgxrtoqqggx.supabase.co";
 const SUPABASE_KEY = "sb_publishable_V3P46SsSqP3cj8-hensd9w_OYqIvuhC";
 import { createClient } from "@supabase/supabase-js";
