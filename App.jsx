@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import AddysLogo from "./src/Addys-Logo.png";
 const SUPABASE_URL = "https://ztqtfftgtwgxrtoqqggx.supabase.co";
 const SUPABASE_KEY = "sb_publishable_V3P46SsSqP3cj8-hensd9w_OYqIvuhC";
 import { createClient } from "@supabase/supabase-js";
@@ -9,7 +10,7 @@ const darkBurgundy = "#4a0d20";
 const cream = "#faf7f3";
 const blush = "#f3e5ea";
 const gold = "#c8a96a";
-const logoUrl = "/src/Addys-Logo.png";
+const logoUrl = "AddysLogo";
  
 const events = [
   {
