@@ -526,7 +526,6 @@ useEffect(() => {
   loadAdminMessages();
   loadNotes();
   loadAdminOffers();
- loadAdminNotifications();
 
   const channel = supabase
     .channel("admin-messages-realtime")
