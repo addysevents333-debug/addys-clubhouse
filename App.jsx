@@ -2534,8 +2534,8 @@ export default function AddysClubhousePrototype() {
 const [notifications, setNotifications] = useState([]);
 const [showNotifications, setShowNotifications] = useState(false);
  useEffect(() => {
- loadAdminNotifications();
-}, []);
+loadNotifications();
+ }, []);
 
 const loadNotifications = async () => {
   const { data, error } = await supabase
