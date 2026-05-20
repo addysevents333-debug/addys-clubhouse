@@ -387,6 +387,19 @@ const [noteAuthor, setNoteAuthor] = useState("Tyler’s Notes");
     setMessage("Error creating post.");
   }
 };
+ const deleteNotification = async (id) => {
+  const { error } = await supabase
+    .from("notifications")
+    .delete()
+    .eq("id", id);
+
+  if (!error) {
+    setMessage("Notification deleted.");
+    loadNotifications();
+  } else {
+    setMessage("Error deleting notification.");
+  }
+};
 const deletePost = async (id) => {
   const { error } = await supabase
     .from("posts")
