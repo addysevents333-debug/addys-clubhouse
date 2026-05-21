@@ -192,8 +192,8 @@ function Button({ children, onClick, href }) {
     textAlign: "center",
     textDecoration: "none",
     cursor: "pointer",
-  };
-
+  }
+const AppButton = Button;
   if (href) {
     return (
       <a href={href} target="_blank" rel="noreferrer" style={style}>
