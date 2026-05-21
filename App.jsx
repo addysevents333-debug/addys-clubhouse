@@ -335,7 +335,6 @@ const [noteAuthor, setNoteAuthor] = useState("Tyler’s Notes");
   const [postMessage, setPostMessage] = useState("");
 const [offerMessage, setOfferMessage] = useState("");
 const [noteMessage, setNoteMessage] = useState("");
-const [notificationMessage, setNotificationMessage] = useState("");
 
   const uploadPostImage = async () => {
   if (!postImage) {
