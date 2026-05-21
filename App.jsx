@@ -1421,7 +1421,7 @@ function HomeScreen({
             >
               🔔
             </div>
-{notifications.length > 0 ? (
+{!notificationsRead && notifications.length > 0 ? (
   <div
     style={{
       position: "absolute",
@@ -1439,7 +1439,7 @@ function HomeScreen({
       padding: "0 5px",
     }}
   >
-    {notifications.length}
+    {notificationsRead ? 0 : notifications.length}
   </div>
 ) : null}
             {showNotifications ? (
