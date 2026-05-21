@@ -687,9 +687,6 @@ return (
         <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>
           Create Feed Post
         </h2>
-<Button onClick={createPost}>
-  Create Feed Post
-</Button>
 
 {postMessage ? (
   <div
