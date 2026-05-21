@@ -1410,7 +1410,10 @@ function HomeScreen({
 
           <div style={{ position: "relative" }}>
             <div
-              onClick={() => setShowNotifications(!showNotifications)}
+             onClick={() => {
+  setShowNotifications(!showNotifications);
+  setNotificationsRead(true);
+}}
               style={{
                 fontSize: 26,
                 cursor: "pointer",
@@ -2532,6 +2535,7 @@ export default function AddysClubhousePrototype() {
 
  const [activeTab, setActiveTab] = useState("home");
 const [notifications, setNotifications] = useState([]);
+  const [notificationsRead, setNotificationsRead] = useState(false);
 const [showNotifications, setShowNotifications] = useState(false);
  useEffect(() => {
 loadNotifications();
