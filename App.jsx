@@ -495,6 +495,7 @@ const deletePost = async (id) => {
     setNotificationMessage("");
     setNotificationCategory("Announcement");
     setNotificationMessage("Notification created.");
+    loadNotifications();
   } else {
     console.log(error);
     setNotificationMessage("Error creating notification.");
