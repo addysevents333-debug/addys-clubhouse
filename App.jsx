@@ -896,19 +896,19 @@ return (
           Create Offer
         </AppButton>
 
-        {message ? (
-          <div
-            style={{
-              marginTop: 12,
-              background: "#fffaf0",
-              borderRadius: 14,
-              padding: 12,
-              color: "#555",
-            }}
-          >
-            {message}
-          </div>
-        ) : null}
+        {offerMessage ? (
+  <div
+    style={{
+      marginTop: 12,
+      background: "#fffaf0",
+      borderRadius: 14,
+      padding: 12,
+      color: "#555",
+    }}
+  >
+    {offerMessage}
+  </div>
+) : null}
       </Card>
       <Card style={{ marginTop: 16 }}>
   <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>
