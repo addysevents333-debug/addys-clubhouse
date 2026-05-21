@@ -361,7 +361,7 @@ const [notificationMessage, setNotificationMessage] = useState("");
 };
   const createPost = async () => {
   if (!content.trim()) {
-    setMessage("Please write a post first.");
+   setPostMessage("Please write a post first.");
     return;
   }
 
@@ -385,11 +385,11 @@ const [notificationMessage, setNotificationMessage] = useState("");
   if (!error) {
     setContent("");
     setPostImage(null);
-    setMessage("Post created. Go to Feed to view it.");
+    setPostMessage("Post created. Go to Feed to view it.");
     loadAdminPosts();
   } else {
     console.log(error);
-    setMessage("Error creating post.");
+    setPostMessage("Error creating post.");
   }
 };
  const deleteNotification = async (id) => {
@@ -686,7 +686,23 @@ return (
         <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>
           Create Feed Post
         </h2>
+<Button onClick={createPost}>
+  Create Feed Post
+</Button>
 
+{postMessage ? (
+  <div
+    style={{
+      marginTop: 12,
+      background: "#fffaf0",
+      borderRadius: 14,
+      padding: 12,
+      color: "#555",
+    }}
+  >
+    {postMessage}
+  </div>
+) : null}
         <textarea
           value={content}
           onChange={(event) => setContent(event.target.value)}
