@@ -179,7 +179,7 @@ const tastingBottles = [
 const calendarLink =
   "https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=America%2FNew_York&showPrint=0&src=MDFlOTk1MTEzOWM2NzliYzQ5NWRjNzJmOGE2ZjdiOTZjNGNiZjIzNjI5MDRkYWE3ZDJjODlmMzM1ZjFkN2NjZkBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&src=NWE3NDg4MjlkNzY3OWQzMGJhZTYwODM4ZDhjMjYzZjkwYmU1ZDJlM2QwMDM3YjQ1YmU3OGNmZmU0Mjg5ZDliY0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%237986cb&color=%23d50000";
 
-function AppButton({ children, onClick, href }) {
+function Button({ children, onClick, href }) {
   const style = {
     display: "block",
     width: "100%",
