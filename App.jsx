@@ -348,7 +348,7 @@ const [noteMessage, setNoteMessage] = useState("");
     .upload(fileName, postImage);
 
   if (error) {
-    setMessage("Post image upload failed.");
+    setPostMessage("Post image upload failed.");
     return "";
   }
 
@@ -398,10 +398,10 @@ const [noteMessage, setNoteMessage] = useState("");
     .eq("id", id);
 
   if (!error) {
-    setMessage("Notification deleted.");
+    setNotificationMessage("Notification deleted.");
     loadNotifications();
   } else {
-    setMessage("Error deleting notification.");
+    setNotificationMessage("Error deleting notification.");
   }
 };
 const deletePost = async (id) => {
@@ -411,9 +411,9 @@ const deletePost = async (id) => {
     .eq("id", id);
 
   if (!error) {
-    setMessage("Post deleted.");
+   setPostMessage("Post deleted.");
   } else {
-    setMessage("Error deleting post.");
+    setPostMessage("Error deleting post.");
   }
 };
   const uploadOfferImage = async () => {
@@ -428,7 +428,7 @@ const deletePost = async (id) => {
     .upload(fileName, offerImage);
 
   if (error) {
-    setMessage("Image upload failed.");
+    setOfferMessage("Image upload failed.");
     return "";
   }
 
@@ -440,7 +440,7 @@ const deletePost = async (id) => {
 };
   const createOffer = async () => {
   if (!offerTitle.trim() || !offerDetail.trim()) {
-    setMessage("Please add an offer title and details.");
+    setOfferMessage("Please add an offer title and details.");
     return;
   }
 
@@ -464,17 +464,17 @@ const deletePost = async (id) => {
     setOfferPrice("");
     setOfferBadge("Member Offer");
     setOfferImage(null);
-    setMessage("Offer created. Go to Offers to view it.");
+    setOfferMessage("Offer created. Go to Offers to view it.");
     loadAdminOffers();
   } else {
     console.log(error);
-    setMessage("Error creating offer.");
+    setOfferMessage("Error creating offer.");
   }
 };
 
   const createNotification = async () => {
   if (!notificationTitle.trim() || !notificationMessage.trim()) {
-    setMessage("Please add a notification title and message.");
+    setNotificationMessage("Please add a notification title and message.");
     return;
   }
 
@@ -492,15 +492,15 @@ const deletePost = async (id) => {
     setNotificationTitle("");
     setNotificationMessage("");
     setNotificationCategory("Announcement");
-    setMessage("Notification created.");
+    setNotificationMessage("Notification created.");
   } else {
     console.log(error);
-    setMessage("Error creating notification.");
+    setNotificationMessage("Error creating notification.");
   }
 };
   const createNote = async () => {
   if (!noteTitle.trim() || !noteContent.trim()) {
-    setMessage("Please add a note title and content.");
+    setNoteMessage("Please add a note title and content.");
     return;
   }
 
@@ -518,9 +518,9 @@ const deletePost = async (id) => {
     setNoteTitle("");
     setNoteContent("");
     setNoteAuthor("Tyler’s Notes");
-    setMessage("Note created.");
+    setNoteMessage("Note created.");
   } else {
-    setMessage("Error creating note.");
+    setNoteMessage("Error creating note.");
   }
 };
 useEffect(() => {
@@ -609,10 +609,10 @@ const deleteOffer = async (id) => {
     .eq("id", id);
 
   if (!error) {
-    setMessage("Offer deleted.");
+    setOfferMessage("Offer deleted.");
     loadAdminOffers();
   } else {
-    setMessage("Error deleting offer.");
+    setOfferMessage("Error deleting offer.");
   }
 };
   const loadAdminMessages = async () => {
