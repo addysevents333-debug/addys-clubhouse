@@ -1375,6 +1375,8 @@ function HomeScreen({
   showNotifications,
   setShowNotifications,
   notifications,
+  notificationsRead,
+  setNotificationsRead,
 }) {
   const [clubhouseFeed, setClubhouseFeed] = useState([]);
 
@@ -2571,6 +2573,8 @@ const isAdmin =
   currentMember={currentMember}
   showNotifications={showNotifications}
   setShowNotifications={setShowNotifications}
+  notificationsRead={notificationsRead}
+setNotificationsRead={setNotificationsRead}
   notifications={notifications}
 />
 );
