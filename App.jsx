@@ -794,7 +794,7 @@ return (
   </h2>
 
   <div style={{ display: "grid", gap: 10 }}>
-    {adminNotifications.map((notification) => (
+   {notifications.map((notification) => (
       <div
         key={notification.id}
         style={{
