@@ -2126,7 +2126,7 @@ function BottleNoteCard({ bottle }) {
   );
 }
 
-function NotesScreen() {
+function NotesScreen({ currentMember }) {
   const [notesView, setNotesView] = useState("expert");
   const [liveNotes, setLiveNotes] = useState([]);
 
@@ -2869,7 +2869,7 @@ setNotificationsRead={setNotificationsRead}
 );
   if (activeTab === "calendar") screen = <CalendarScreen />;
   if (activeTab === "offers") screen = <OffersScreen />;
-  if (activeTab === "notes") screen = <NotesScreen />;
+  if (activeTab === "notes") screen = <NotesScreen currentMember={currentMember} />;
   if (activeTab === "messages") {
   screen = <MessagesScreen currentMember={currentMember} />;
 }
