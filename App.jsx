@@ -2327,6 +2327,77 @@ function NotesScreen() {
   <option>RTD / Canned Cocktail</option>
   <option>Other</option>
 </select>
+    <input
+  type="number"
+  min="1"
+  max="5"
+  value={journalStars}
+  onChange={(e) => setJournalStars(e.target.value)}
+  placeholder="Stars (1-5)"
+  style={{
+    width: "100%",
+    padding: 12,
+    borderRadius: 12,
+    border: "1px solid #ddd",
+    marginBottom: 10,
+  }}
+/>
+    <input
+  type="number"
+  min="50"
+  max="100"
+  value={journalScore}
+  onChange={(e) => setJournalScore(e.target.value)}
+  placeholder="100 Point Score (Optional)"
+  style={{
+    width: "100%",
+    padding: 12,
+    borderRadius: 12,
+    border: "1px solid #ddd",
+    marginBottom: 10,
+  }}
+/>
+    <textarea
+  value={journalNotes}
+  onChange={(e) => setJournalNotes(e.target.value)}
+  placeholder="Tasting Notes"
+  rows={5}
+  style={{
+    width: "100%",
+    padding: 12,
+    borderRadius: 12,
+    border: "1px solid #ddd",
+    marginBottom: 10,
+  }}
+/>
+    <label style={{ display: "block", marginBottom: 10 }}>
+  <input
+    type="checkbox"
+    checked={journalFavorite}
+    onChange={(e) => setJournalFavorite(e.target.checked)}
+  />
+  {" "}Favorite Bottle
+</label>
+    <label style={{ display: "block", marginBottom: 10 }}>
+  <input
+    type="checkbox"
+    checked={journalBuyAgain}
+    onChange={(e) => setJournalBuyAgain(e.target.checked)}
+  />
+  {" "}Would Buy Again
+</label>
+    <input
+  type="date"
+  value={journalTastedOn}
+  onChange={(e) => setJournalTastedOn(e.target.value)}
+  style={{
+    width: "100%",
+    padding: 12,
+    borderRadius: 12,
+    border: "1px solid #ddd",
+    marginBottom: 10,
+  }}
+/>
   </Card>
 ) : null}
           <div style={{ display: "grid", gap: 12 }}>
