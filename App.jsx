@@ -2172,6 +2172,7 @@ function NotesScreen() {
     }
   };
 const saveJournalEntry = async () => {
+  alert("Save clicked");
   if (!journalProductName.trim()) {
     setJournalMessage("Please add a bottle or product name.");
     return;
