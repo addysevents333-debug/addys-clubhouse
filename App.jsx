@@ -2171,7 +2171,53 @@ function NotesScreen() {
       setJournalEntries(data);
     }
   };
+const saveJournalEntry = async () => {
+  if (!journalProductName.trim()) {
+    setJournalMessage("Please add a bottle or product name.");
+    return;
+  }
 
+  const { error } = await supabase
+    .from("member_product_notes")
+    .insert([
+      {
+        member_email: currentMember?.email || "",
+        member_name: currentMember?.name || "",
+        product_name: journalProductName,
+        producer: journalProducer,
+        vintage: journalVintage,
+        region: journalRegion,
+        category: journalCategory,
+        rating_stars: journalStars ? Number(journalStars) : null,
+        rating_score: journalScore ? Number(journalScore) : null,
+        notes: journalNotes,
+        favorite: journalFavorite,
+        buy_again: journalBuyAgain,
+        tasted_on: journalTastedOn || null,
+        is_custom: true,
+      },
+    ]);
+
+  if (!error) {
+    setJournalProductName("");
+    setJournalProducer("");
+    setJournalVintage("");
+    setJournalRegion("");
+    setJournalCategory("Wine");
+    setJournalStars(0);
+    setJournalScore("");
+    setJournalNotes("");
+    setJournalFavorite(false);
+    setJournalBuyAgain(false);
+    setJournalTastedOn("");
+    setJournalMessage("Bottle saved to your journal.");
+    setShowJournalForm(false);
+    loadJournalEntries();
+  } else {
+    console.log(error);
+    setJournalMessage("Error saving bottle.");
+  }
+};
   return (
     <div style={{ padding: 20, paddingBottom: 92 }}>
       <div style={{ marginBottom: 18 }}>
