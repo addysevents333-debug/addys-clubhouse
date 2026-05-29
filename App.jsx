@@ -2255,9 +2255,78 @@ function NotesScreen() {
           {showJournalForm ? (
   <Card style={{ marginTop: 14 }}>
     <h2 style={{ margin: "0 0 12px", fontSize: 20 }}>Add Bottle</h2>
-    <p style={{ margin: 0, color: "#666" }}>
-      Bottle form coming next.
-    </p>
+   <input
+  value={journalProductName}
+  onChange={(e) => setJournalProductName(e.target.value)}
+  placeholder="Bottle / Product Name"
+  style={{
+    width: "100%",
+    padding: 12,
+    borderRadius: 12,
+    border: "1px solid #ddd",
+    marginBottom: 10,
+  }}
+/>
+
+<input
+  value={journalProducer}
+  onChange={(e) => setJournalProducer(e.target.value)}
+  placeholder="Producer / Distillery"
+  style={{
+    width: "100%",
+    padding: 12,
+    borderRadius: 12,
+    border: "1px solid #ddd",
+    marginBottom: 10,
+  }}
+/>
+
+<input
+  value={journalVintage}
+  onChange={(e) => setJournalVintage(e.target.value)}
+  placeholder="Vintage / Batch"
+  style={{
+    width: "100%",
+    padding: 12,
+    borderRadius: 12,
+    border: "1px solid #ddd",
+    marginBottom: 10,
+  }}
+/>
+
+<input
+  value={journalRegion}
+  onChange={(e) => setJournalRegion(e.target.value)}
+  placeholder="Region"
+  style={{
+    width: "100%",
+    padding: 12,
+    borderRadius: 12,
+    border: "1px solid #ddd",
+    marginBottom: 10,
+  }}
+/>
+
+<select
+  value={journalCategory}
+  onChange={(e) => setJournalCategory(e.target.value)}
+  style={{
+    width: "100%",
+    padding: 12,
+    borderRadius: 12,
+    border: "1px solid #ddd",
+    marginBottom: 10,
+  }}
+>
+  <option>Wine</option>
+  <option>Bourbon</option>
+  <option>Whiskey</option>
+  <option>Scotch</option>
+  <option>Tequila</option>
+  <option>Mezcal</option>
+  <option>Beer</option>
+  <option>Other</option>
+</select>
   </Card>
 ) : null}
           <div style={{ display: "grid", gap: 12 }}>
