@@ -950,20 +950,7 @@ return (
     }}
   />
 
-  <input
-    value={noteAuthor}
-    onChange={(event) => setNoteAuthor(event.target.value)}
-    placeholder="Tyler’s Notes"
-    style={{
-      width: "100%",
-      borderRadius: 16,
-      border: "1px solid #ddd6cf",
-      padding: 13,
-      boxSizing: "border-box",
-      fontSize: 15,
-      marginBottom: 12,
-    }}
-  />
+ 
 <select
   value={noteAuthorGroup}
   onChange={(e) => setNoteAuthorGroup(e.target.value)}
