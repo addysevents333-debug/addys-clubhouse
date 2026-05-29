@@ -2444,6 +2444,23 @@ const saveJournalEntry = async () => {
     marginBottom: 10,
   }}
 />
+    <AppButton onClick={saveJournalEntry}>
+  Save Bottle
+</AppButton>
+
+{journalMessage ? (
+  <div
+    style={{
+      marginTop: 12,
+      background: "#fffaf0",
+      borderRadius: 14,
+      padding: 12,
+      color: "#555",
+    }}
+  >
+    {journalMessage}
+  </div>
+) : null}
   </Card>
 ) : null}
           <div style={{ display: "grid", gap: 12 }}>
