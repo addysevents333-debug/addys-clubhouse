@@ -2249,6 +2249,17 @@ function NotesScreen() {
               Members can rate each wine or spirit, write private notes, favorite bottles, and remember what they want to buy again.
             </p>
           </Card>
+          <AppButton onClick={() => setShowJournalForm(!showJournalForm)}>
+  {showJournalForm ? "Cancel" : "+ Add Bottle"}
+</AppButton>
+          {showJournalForm ? (
+  <Card style={{ marginTop: 14 }}>
+    <h2 style={{ margin: "0 0 12px", fontSize: 20 }}>Add Bottle</h2>
+    <p style={{ margin: 0, color: "#666" }}>
+      Bottle form coming next.
+    </p>
+  </Card>
+) : null}
           <div style={{ display: "grid", gap: 12 }}>
             {tastingBottles.map((bottle) => (
               <BottleNoteCard key={bottle.id} bottle={bottle} />
