@@ -325,6 +325,7 @@ const [members, setMembers] = useState([]);
 const [adminPosts, setAdminPosts] = useState([]);
   const [noteTitle, setNoteTitle] = useState("");
 const [noteContent, setNoteContent] = useState("");
+  const [noteAuthorGroup, setNoteAuthorGroup] = useState("tyler");
   const [offerImage, setOfferImage] = useState(null);
   const [postImage, setPostImage] = useState(null);
   const [notificationTitle, setNotificationTitle] = useState("");
@@ -510,12 +511,14 @@ const deletePost = async (id) => {
   const { error } = await supabase
     .from("notes")
     .insert([
-      {
-        title: noteTitle,
-        content: noteContent,
-        author: noteAuthor,
-      },
-    ]);
+  {
+    title: noteTitle,
+    content: noteContent,
+    author: noteAuthor,
+    author_group: noteAuthorGroup,
+  
+  },
+]);
 
   if (!error) {
     setNoteTitle("");
@@ -961,7 +964,22 @@ return (
       marginBottom: 12,
     }}
   />
-
+<select
+  value={noteAuthorGroup}
+  onChange={(e) => setNoteAuthorGroup(e.target.value)}
+  style={{
+    width: "100%",
+    padding: 12,
+    borderRadius: 12,
+    border: "1px solid #ddd",
+    marginBottom: 12,
+  }}
+>
+  <option value="tyler">Tyler's Notes</option>
+  <option value="jim">Jim's Notes</option>
+  <option value="ryan">Ryan's Notes</option>
+  <option value="mike_derek">Mike & Derek Notes</option>
+</select>
   <AppButton onClick={createNote}>
     Create Note
   </AppButton>
