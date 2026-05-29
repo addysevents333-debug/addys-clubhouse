@@ -511,13 +511,19 @@ const deletePost = async (id) => {
   const { error } = await supabase
     .from("notes")
     .insert([
-  {
-    title: noteTitle,
-    content: noteContent,
-    author: noteAuthor,
-    author_group: noteAuthorGroup,
-  
-  },
+     {
+  title: noteTitle,
+  content: noteContent,
+  author:
+    noteAuthorGroup === "tyler"
+      ? "Tyler's Notes"
+      : noteAuthorGroup === "jim"
+      ? "Jim's Notes"
+      : noteAuthorGroup === "ryan"
+      ? "Ryan's Notes"
+      : "Mike & Derek Notes",
+  author_group: noteAuthorGroup,
+},
 ]);
 
   if (!error) {
