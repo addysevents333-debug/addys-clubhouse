@@ -2128,35 +2128,50 @@ function BottleNoteCard({ bottle }) {
 
 function NotesScreen() {
   const [notesView, setNotesView] = useState("expert");
-const [liveNotes, setLiveNotes] = useState([]);
+  const [liveNotes, setLiveNotes] = useState([]);
+
+  const [journalEntries, setJournalEntries] = useState([]);
+  const [showJournalForm, setShowJournalForm] = useState(false);
+  const [journalProductName, setJournalProductName] = useState("");
+  const [journalProducer, setJournalProducer] = useState("");
+  const [journalVintage, setJournalVintage] = useState("");
+  const [journalRegion, setJournalRegion] = useState("");
+  const [journalCategory, setJournalCategory] = useState("Wine");
+  const [journalStars, setJournalStars] = useState(0);
+  const [journalScore, setJournalScore] = useState("");
+  const [journalNotes, setJournalNotes] = useState("");
+  const [journalFavorite, setJournalFavorite] = useState(false);
+  const [journalBuyAgain, setJournalBuyAgain] = useState(false);
+  const [journalTastedOn, setJournalTastedOn] = useState("");
+  const [journalMessage, setJournalMessage] = useState("");
+
   useEffect(() => {
-  loadNotes();
-    const [journalEntries, setJournalEntries] = useState([]);
-const [showJournalForm, setShowJournalForm] = useState(false);
-const [journalProductName, setJournalProductName] = useState("");
-const [journalProducer, setJournalProducer] = useState("");
-const [journalVintage, setJournalVintage] = useState("");
-const [journalRegion, setJournalRegion] = useState("");
-const [journalCategory, setJournalCategory] = useState("Wine");
-const [journalStars, setJournalStars] = useState(0);
-const [journalScore, setJournalScore] = useState("");
-const [journalNotes, setJournalNotes] = useState("");
-const [journalFavorite, setJournalFavorite] = useState(false);
-const [journalBuyAgain, setJournalBuyAgain] = useState(false);
-const [journalTastedOn, setJournalTastedOn] = useState("");
-const [journalMessage, setJournalMessage] = useState("");
-}, []);
+    loadNotes();
+    loadJournalEntries();
+  }, []);
 
-const loadNotes = async () => {
-  const { data, error } = await supabase
-    .from("notes")
-    .select("*")
-    .order("created_at", { ascending: false });
+  const loadNotes = async () => {
+    const { data, error } = await supabase
+      .from("notes")
+      .select("*")
+      .order("created_at", { ascending: false });
 
-  if (!error && data) {
-    setLiveNotes(data);
-  }
-};
+    if (!error && data) {
+      setLiveNotes(data);
+    }
+  };
+
+  const loadJournalEntries = async () => {
+    const { data, error } = await supabase
+      .from("member_product_notes")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (!error && data) {
+      setJournalEntries(data);
+    }
+  };
+
   return (
     <div style={{ padding: 20, paddingBottom: 92 }}>
       <div style={{ marginBottom: 18 }}>
