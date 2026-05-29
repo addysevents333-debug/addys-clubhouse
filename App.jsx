@@ -523,7 +523,7 @@ const deletePost = async (id) => {
     setNoteAuthor("Tyler’s Notes");
     setNoteMessage("Note created.");
   } else {
-    setNoteMessage("Error creating note.");
+   setNoteMessage("Error creating note.");
   }
 };
 useEffect(() => {
@@ -965,6 +965,19 @@ return (
   <AppButton onClick={createNote}>
     Create Note
   </AppButton>
+        {noteMessage ? (
+  <div
+    style={{
+      marginTop: 12,
+      background: "#fffaf0",
+      borderRadius: 14,
+      padding: 12,
+      color: "#555",
+    }}
+  >
+    {noteMessage}
+  </div>
+) : null}
 </Card>
       <Card>
  <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>
