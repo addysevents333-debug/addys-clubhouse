@@ -1603,7 +1603,7 @@ function OffersScreen() {
   }, []);
 
   const loadOffers = async () => {
-    const response = await fetch(`${SUPABASE_URL}/rest/v1/offers?select=*&order=created_at.desc, {
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/offers?select=*&order=created_at.desc`, {
       headers: {
         apikey: SUPABASE_KEY,
         Authorization: `Bearer ${SUPABASE_KEY}`,
