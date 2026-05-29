@@ -2464,9 +2464,42 @@ const saveJournalEntry = async () => {
   </Card>
 ) : null}
           <div style={{ display: "grid", gap: 12 }}>
-            {tastingBottles.map((bottle) => (
-              <BottleNoteCard key={bottle.id} bottle={bottle} />
-            ))}
+            {journalEntries.length === 0 ? (
+  <Card style={{ marginTop: 14 }}>
+    <p style={{ margin: 0, color: "#666" }}>
+      No journal entries yet. Add your first bottle above.
+    </p>
+  </Card>
+) : (
+  journalEntries.map((entry) => (
+    <Card key={entry.id} style={{ marginTop: 14 }}>
+      <div style={{ fontSize: 12, fontWeight: 900, color: burgundy, textTransform: "uppercase" }}>
+        {entry.category || "Journal Entry"}
+      </div>
+
+      <h3 style={{ margin: "6px 0 4px" }}>{entry.product_name}</h3>
+
+      <p style={{ margin: "0 0 8px", color: "#666" }}>
+        {[entry.producer, entry.vintage, entry.region].filter(Boolean).join(" • ")}
+      </p>
+
+      <div style={{ marginBottom: 8 }}>
+        {"★".repeat(entry.rating_stars || 0)}
+        {"☆".repeat(5 - (entry.rating_stars || 0))}
+        {entry.rating_score ? `  ${entry.rating_score}/100` : ""}
+      </div>
+
+      <p style={{ margin: 0, color: "#444", lineHeight: 1.45 }}>
+        {entry.notes}
+      </p>
+
+      <div style={{ marginTop: 10, fontSize: 13, color: burgundy, fontWeight: 800 }}>
+        {entry.favorite ? "❤️ Favorite " : ""}
+        {entry.buy_again ? " 🔁 Buy Again" : ""}
+      </div>
+    </Card>
+  ))
+)}
           </div>
         </>
       )}
