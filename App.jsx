@@ -1434,6 +1434,7 @@ function HomeScreen({
              onClick={() => {
   setShowNotifications(!showNotifications);
   setNotificationsRead(true);
+               localStorage.setItem("notificationsRead", "true");
 }}
               style={{
                 fontSize: 26,
@@ -2556,7 +2557,9 @@ export default function AddysClubhousePrototype() {
 
  const [activeTab, setActiveTab] = useState("home");
 const [notifications, setNotifications] = useState([]);
-  const [notificationsRead, setNotificationsRead] = useState(false);
+  const [notificationsRead, setNotificationsRead] = useState(
+  localStorage.getItem("notificationsRead") === "true"
+);
 const [showNotifications, setShowNotifications] = useState(false);
  useEffect(() => {
 loadNotifications();
