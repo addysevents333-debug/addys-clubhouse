@@ -2131,6 +2131,20 @@ function NotesScreen() {
 const [liveNotes, setLiveNotes] = useState([]);
   useEffect(() => {
   loadNotes();
+    const [journalEntries, setJournalEntries] = useState([]);
+const [showJournalForm, setShowJournalForm] = useState(false);
+const [journalProductName, setJournalProductName] = useState("");
+const [journalProducer, setJournalProducer] = useState("");
+const [journalVintage, setJournalVintage] = useState("");
+const [journalRegion, setJournalRegion] = useState("");
+const [journalCategory, setJournalCategory] = useState("Wine");
+const [journalStars, setJournalStars] = useState(0);
+const [journalScore, setJournalScore] = useState("");
+const [journalNotes, setJournalNotes] = useState("");
+const [journalFavorite, setJournalFavorite] = useState(false);
+const [journalBuyAgain, setJournalBuyAgain] = useState(false);
+const [journalTastedOn, setJournalTastedOn] = useState("");
+const [journalMessage, setJournalMessage] = useState("");
 }, []);
 
 const loadNotes = async () => {
