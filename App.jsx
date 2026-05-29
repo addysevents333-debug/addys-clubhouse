@@ -1404,7 +1404,7 @@ function HomeScreen({
   }, []);
 
   const loadPosts = async () => {
-    const response = await fetch(`${SUPABASE_URL}/rest/v1/posts?select=*`, {
+   const response = await fetch(`${SUPABASE_URL}/rest/v1/posts?select=*&order=created_at.desc`, {
       headers: {
         apikey: SUPABASE_KEY,
         Authorization: `Bearer ${SUPABASE_KEY}`,
