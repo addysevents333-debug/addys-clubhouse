@@ -2324,7 +2324,7 @@ function NotesScreen() {
   <option>Scotch</option>
   <option>Tequila</option>
   <option>Mezcal</option>
-  <option>Beer</option>
+  <option>RTD / Canned Cocktail</option>
   <option>Other</option>
 </select>
   </Card>
