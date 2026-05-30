@@ -2209,7 +2209,8 @@ const { error } = editingJournalId
     setJournalFavorite(false);
     setJournalBuyAgain(false);
     setJournalTastedOn("");
-    setJournalMessage("Bottle saved to your journal.");
+    setJournalMessage(editingJournalId ? "Bottle updated." : "Bottle saved to your journal.");
+    setEditingJournalId(null);
     setShowJournalForm(false);
     loadJournalEntries();
   } else {
@@ -2475,7 +2476,7 @@ const { error } = editingJournalId
   }}
 />
     <AppButton onClick={saveJournalEntry}>
-  Save Bottle
+  {editingJournalId ? "Update Bottle" : "Save Bottle"}
 </AppButton>
 
 {journalMessage ? (
