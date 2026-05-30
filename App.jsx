@@ -2174,20 +2174,7 @@ function NotesScreen({ currentMember }) {
 const saveJournalEntry = async () => {
   if (!journalProductName.trim()) {
     setJournalMessage("Please add a bottle or product name.");
-    const deleteJournalEntry = async (id) => {
-  const { error } = await supabase
-    .from("member_product_notes")
-    .delete()
-    .eq("id", id);
-
-  if (!error) {
-    setJournalMessage("Journal entry deleted.");
-    loadJournalEntries();
-  } else {
-    console.log(error);
-    setJournalMessage(error.message || "Error deleting journal entry.");
-  }
-};
+    
     return;
   }
 
@@ -2231,6 +2218,20 @@ const saveJournalEntry = async () => {
   console.log(error);
   setJournalMessage(error.message || "Error saving bottle.");
 }
+};
+  const deleteJournalEntry = async (id) => {
+  const { error } = await supabase
+    .from("member_product_notes")
+    .delete()
+    .eq("id", id);
+
+  if (!error) {
+    setJournalMessage("Journal entry deleted.");
+    loadJournalEntries();
+  } else {
+    console.log(error);
+    setJournalMessage(error.message || "Error deleting journal entry.");
+  }
 };
   return (
     <div style={{ padding: 20, paddingBottom: 92 }}>
