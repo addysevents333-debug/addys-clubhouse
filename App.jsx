@@ -2171,33 +2171,31 @@ const [editingJournalId, setEditingJournalId] = useState(null);
       setJournalEntries(data);
     }
   };
-const saveJournalEntry = async () => {
-  if (!journalProductName.trim()) {
-    setJournalMessage("Please add a bottle or product name.");
-    
-    return;
-  }
+const journalData = {
+  member_email: currentMember?.email || "",
+  member_name: currentMember?.name || "",
+  product_name: journalProductName,
+  producer: journalProducer,
+  vintage: journalVintage,
+  region: journalRegion,
+  category: journalCategory,
+  rating_stars: journalStars ? Number(journalStars) : null,
+  rating_score: journalScore ? Number(journalScore) : null,
+  notes: journalNotes,
+  favorite: journalFavorite,
+  buy_again: journalBuyAgain,
+  tasted_on: journalTastedOn || null,
+  is_custom: true,
+};
 
-  const { error } = await supabase
-    .from("member_product_notes")
-    .insert([
-      {
-        member_email: currentMember?.email || "",
-        member_name: currentMember?.name || "",
-        product_name: journalProductName,
-        producer: journalProducer,
-        vintage: journalVintage,
-        region: journalRegion,
-        category: journalCategory,
-        rating_stars: journalStars ? Number(journalStars) : null,
-        rating_score: journalScore ? Number(journalScore) : null,
-        notes: journalNotes,
-        favorite: journalFavorite,
-        buy_again: journalBuyAgain,
-        tasted_on: journalTastedOn || null,
-        is_custom: true,
-      },
-    ]);
+const { error } = editingJournalId
+  ? await supabase
+      .from("member_product_notes")
+      .update(journalData)
+      .eq("id", editingJournalId)
+  : await supabase
+      .from("member_product_notes")
+      .insert([journalData]);
 
   if (!error) {
     setJournalProductName("");
