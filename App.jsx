@@ -2233,6 +2233,23 @@ const saveJournalEntry = async () => {
     setJournalMessage(error.message || "Error deleting journal entry.");
   }
 };
+  const startEditJournalEntry = (entry) => {
+  setEditingJournalId(entry.id);
+  setShowJournalForm(true);
+
+  setJournalProductName(entry.product_name || "");
+  setJournalProducer(entry.producer || "");
+  setJournalVintage(entry.vintage || "");
+  setJournalRegion(entry.region || "");
+  setJournalCategory(entry.category || "Wine");
+  setJournalStars(entry.rating_stars || 0);
+  setJournalScore(entry.rating_score || "");
+  setJournalNotes(entry.notes || "");
+  setJournalFavorite(entry.favorite || false);
+  setJournalBuyAgain(entry.buy_again || false);
+  setJournalTastedOn(entry.tasted_on || "");
+  setJournalMessage("");
+};
   return (
     <div style={{ padding: 20, paddingBottom: 92 }}>
       <div style={{ marginBottom: 18 }}>
@@ -2512,6 +2529,22 @@ const saveJournalEntry = async () => {
         {entry.favorite ? "❤️ Favorite " : ""}
         {entry.buy_again ? " 🔁 Buy Again" : ""}
       </div>
+      <button
+  onClick={() => startEditJournalEntry(entry)}
+  style={{
+    marginTop: 12,
+    marginRight: 8,
+    border: 0,
+    borderRadius: 12,
+    padding: "10px 12px",
+    background: burgundy,
+    color: "white",
+    fontWeight: 700,
+    cursor: "pointer",
+  }}
+>
+  Edit Entry
+</button>
       <button
   onClick={() => deleteJournalEntry(entry.id)}
   style={{
