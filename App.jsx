@@ -2174,6 +2174,20 @@ function NotesScreen({ currentMember }) {
 const saveJournalEntry = async () => {
   if (!journalProductName.trim()) {
     setJournalMessage("Please add a bottle or product name.");
+    const deleteJournalEntry = async (id) => {
+  const { error } = await supabase
+    .from("member_product_notes")
+    .delete()
+    .eq("id", id);
+
+  if (!error) {
+    setJournalMessage("Journal entry deleted.");
+    loadJournalEntries();
+  } else {
+    console.log(error);
+    setJournalMessage(error.message || "Error deleting journal entry.");
+  }
+};
     return;
   }
 
@@ -2497,6 +2511,21 @@ const saveJournalEntry = async () => {
         {entry.favorite ? "❤️ Favorite " : ""}
         {entry.buy_again ? " 🔁 Buy Again" : ""}
       </div>
+      <button
+  onClick={() => deleteJournalEntry(entry.id)}
+  style={{
+    marginTop: 12,
+    border: 0,
+    borderRadius: 12,
+    padding: "10px 12px",
+    background: "#8a1f1f",
+    color: "white",
+    fontWeight: 700,
+    cursor: "pointer",
+  }}
+>
+  Delete Entry
+</button>
     </Card>
   ))
 )}
