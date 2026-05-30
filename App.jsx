@@ -2129,7 +2129,7 @@ function BottleNoteCard({ bottle }) {
 function NotesScreen({ currentMember }) {
   const [notesView, setNotesView] = useState("expert");
   const [liveNotes, setLiveNotes] = useState([]);
-
+const [editingJournalId, setEditingJournalId] = useState(null);
   const [journalEntries, setJournalEntries] = useState([]);
   const [showJournalForm, setShowJournalForm] = useState(false);
   const [journalProductName, setJournalProductName] = useState("");
