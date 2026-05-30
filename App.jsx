@@ -2171,31 +2171,37 @@ const [editingJournalId, setEditingJournalId] = useState(null);
       setJournalEntries(data);
     }
   };
-const journalData = {
-  member_email: currentMember?.email || "",
-  member_name: currentMember?.name || "",
-  product_name: journalProductName,
-  producer: journalProducer,
-  vintage: journalVintage,
-  region: journalRegion,
-  category: journalCategory,
-  rating_stars: journalStars ? Number(journalStars) : null,
-  rating_score: journalScore ? Number(journalScore) : null,
-  notes: journalNotes,
-  favorite: journalFavorite,
-  buy_again: journalBuyAgain,
-  tasted_on: journalTastedOn || null,
-  is_custom: true,
-};
+const saveJournalEntry = async () => {
+  if (!journalProductName.trim()) {
+    setJournalMessage("Please add a bottle or product name.");
+    return;
+  }
 
-const { error } = editingJournalId
-  ? await supabase
-      .from("member_product_notes")
-      .update(journalData)
-      .eq("id", editingJournalId)
-  : await supabase
-      .from("member_product_notes")
-      .insert([journalData]);
+  const journalData = {
+    member_email: currentMember?.email || "",
+    member_name: currentMember?.name || "",
+    product_name: journalProductName,
+    producer: journalProducer,
+    vintage: journalVintage,
+    region: journalRegion,
+    category: journalCategory,
+    rating_stars: journalStars ? Number(journalStars) : null,
+    rating_score: journalScore ? Number(journalScore) : null,
+    notes: journalNotes,
+    favorite: journalFavorite,
+    buy_again: journalBuyAgain,
+    tasted_on: journalTastedOn || null,
+    is_custom: true,
+  };
+
+  const { error } = editingJournalId
+    ? await supabase
+        .from("member_product_notes")
+        .update(journalData)
+        .eq("id", editingJournalId)
+    : await supabase
+        .from("member_product_notes")
+        .insert([journalData]);
 
   if (!error) {
     setJournalProductName("");
@@ -2214,9 +2220,9 @@ const { error } = editingJournalId
     setShowJournalForm(false);
     loadJournalEntries();
   } else {
-  console.log(error);
-  setJournalMessage(error.message || "Error saving bottle.");
-}
+    console.log(error);
+    setJournalMessage(error.message || "Error saving bottle.");
+  }
 };
   const deleteJournalEntry = async (id) => {
   const { error } = await supabase
