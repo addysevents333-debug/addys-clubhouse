@@ -1303,6 +1303,21 @@ function FeedPost({ post }) {
               <div style={{ fontWeight: 900, fontSize: 15 }}>{post.author}</div>
               <div style={{ color: "#777", fontSize: 12 }}>{post.role}</div>
             </div>
+
+            <div
+              style={{
+                background: blush,
+                color: burgundy,
+                borderRadius: 999,
+                padding: "5px 10px",
+                fontSize: 11,
+                fontWeight: 900,
+                whiteSpace: "nowrap",
+              }}
+            >
+              {post.badge}
+            </div>
+          </div>
  {post.image_url ? (
   <img
     src={post.image_url}
@@ -1320,21 +1335,6 @@ function FeedPost({ post }) {
     }}
   />
 ) : null}
-            <div
-              style={{
-                background: blush,
-                color: burgundy,
-                borderRadius: 999,
-                padding: "5px 10px",
-                fontSize: 11,
-                fontWeight: 900,
-                whiteSpace: "nowrap",
-              }}
-            >
-              {post.badge}
-            </div>
-          </div>
-
           <div style={{ color: "#999", fontSize: 12, marginTop: 4 }}>{post.time}</div>
 
           <p style={{ margin: "12px 0", lineHeight: 1.55, color: "#444", fontSize: 14 }}>
