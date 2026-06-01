@@ -2538,6 +2538,19 @@ if (journalPhoto) {
 ) : (
   journalEntries.map((entry) => (
     <Card key={entry.id} style={{ marginTop: 14 }}>
+      {entry.photo_url ? (
+  <img
+    src={entry.photo_url}
+    alt={entry.product_name}
+    style={{
+      width: "100%",
+      borderRadius: 16,
+      marginBottom: 12,
+      objectFit: "cover",
+      maxHeight: 260,
+    }}
+  />
+) : null}
       <div style={{ fontSize: 12, fontWeight: 900, color: burgundy, textTransform: "uppercase" }}>
         {entry.category || "Journal Entry"}
       </div>
