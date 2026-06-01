@@ -2126,7 +2126,7 @@ function BottleNoteCard({ bottle }) {
   );
 }
 
-function NotesScreen({ currentMember }) {
+function NotesScreen({ currentMember, setFullscreenImage }) {
   const [notesView, setNotesView] = useState("expert");
   const [liveNotes, setLiveNotes] = useState([]);
 const [editingJournalId, setEditingJournalId] = useState(null);
@@ -2539,17 +2539,20 @@ if (journalPhoto) {
   journalEntries.map((entry) => (
     <Card key={entry.id} style={{ marginTop: 14 }}>
       {entry.photo_url ? (
-  <img
-    src={entry.photo_url}
-    alt={entry.product_name}
-    style={{
-      width: "100%",
-      borderRadius: 16,
-      marginBottom: 12,
-      objectFit: "contain",
-      maxHeight: 400,
-    }}
-  />
+ <img
+  src={entry.photo_url}
+  alt={entry.product_name}
+  onClick={() => setFullscreenImage(entry.photo_url)}
+  style={{
+    width: "100%",
+    borderRadius: 16,
+    marginBottom: 12,
+    objectFit: "contain",
+    maxHeight: 400,
+    background: "#f5f5f5",
+    cursor: "pointer",
+  }}
+/>
 ) : null}
       <div style={{ fontSize: 12, fontWeight: 900, color: burgundy, textTransform: "uppercase" }}>
         {entry.category || "Journal Entry"}
@@ -2963,7 +2966,7 @@ export default function AddysClubhousePrototype() {
   const [isLoggedIn, setIsLoggedIn] = useState(
     savedMember ? true : false
   );
-
+const [fullscreenImage, setFullscreenImage] = useState(null);
  const [activeTab, setActiveTab] = useState("home");
 const [notifications, setNotifications] = useState([]);
   const [notificationsRead, setNotificationsRead] = useState(
@@ -3002,16 +3005,21 @@ const isAdmin =
 <HomeScreen
   setActiveTab={setActiveTab}
   currentMember={currentMember}
+  setFullscreenImage={setFullscreenImage}
   showNotifications={showNotifications}
   setShowNotifications={setShowNotifications}
   notificationsRead={notificationsRead}
 setNotificationsRead={setNotificationsRead}
   notifications={notifications}
+  setFullscreenImage={setFullscreenImage}
 />
 );
   if (activeTab === "calendar") screen = <CalendarScreen />;
   if (activeTab === "offers") screen = <OffersScreen />;
-  if (activeTab === "notes") screen = <NotesScreen currentMember={currentMember} />;
+  if (activeTab === "notes") screen = <NotesScreen
+  currentMember={currentMember}
+  setFullscreenImage={setFullscreenImage}
+/>
   if (activeTab === "messages") {
   screen = <MessagesScreen currentMember={currentMember} />;
 }
@@ -3082,6 +3090,31 @@ setNotificationsRead={setNotificationsRead}
           </div>
         </div>
       </div>
+      {fullscreenImage ? (
+  <div
+    onClick={() => setFullscreenImage(null)}
+    style={{
+      position: "fixed",
+      inset: 0,
+      background: "rgba(0,0,0,0.92)",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      zIndex: 99999,
+      padding: 20,
+    }}
+  >
+    <img
+      src={fullscreenImage}
+      alt=""
+      style={{
+        maxWidth: "95%",
+        maxHeight: "95%",
+        objectFit: "contain",
+      }}
+    />
+  </div>
+) : null}
     </div>
   );
 }
