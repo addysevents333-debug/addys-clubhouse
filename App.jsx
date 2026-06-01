@@ -504,7 +504,7 @@ const deletePost = async (id) => {
 };
   const createNote = async () => {
  if (!noteTitle.trim() || !noteContent.trim()) {
-  setMessage("Please add a note title and content.");
+setNoteMessage("Please add a note title and content.");
   return;
 }
     const { error } = await supabase
