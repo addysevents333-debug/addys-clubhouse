@@ -1537,7 +1537,11 @@ function HomeScreen({
 
         <div style={{ display: "grid", gap: 12 }}>
           {clubhouseFeed.map((post) => (
-            <FeedPost key={post.id} post={post} />
+           <FeedPost
+  key={post.id}
+  post={post}
+  setFullscreenImage={setFullscreenImage}
+/>
           ))}
         </div>
       </div>
