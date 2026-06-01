@@ -1304,18 +1304,20 @@ function FeedPost({ post }) {
               <div style={{ color: "#777", fontSize: 12 }}>{post.role}</div>
             </div>
 {post.image_url ? (
-  <img
-    src={post.image_url}
-    alt="Post"
-    style={{
-      width: "100%",
-      borderRadius: 16,
-      marginTop: 12,
-      marginBottom: 12,
-      objectFit: "contain",
-      maxHeight: 350,
-    }}
-  />
+ <img
+  src={post.image_url}
+  alt=""
+  onClick={() => setFullscreenImage(post.image_url)}
+  style={{
+    width: "100%",
+    borderRadius: 16,
+    marginBottom: 12,
+    objectFit: "contain",
+    maxHeight: 400,
+    background: "#f5f5f5",
+    cursor: "pointer",
+  }}
+/>
 ) : null}
             <div
               style={{
@@ -1418,6 +1420,7 @@ function HomeScreen({
   showNotifications,
   setShowNotifications,
   notifications,
+  setFullscreenImage,
   notificationsRead,
   setNotificationsRead,
 }) {
