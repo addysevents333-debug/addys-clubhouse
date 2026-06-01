@@ -1304,20 +1304,22 @@ function FeedPost({ post }) {
               <div style={{ color: "#777", fontSize: 12 }}>{post.role}</div>
             </div>
 {post.image_url ? (
- <img
-  src={post.image_url}
-  alt=""
-  onClick={() => setFullscreenImage(post.image_url)}
-  style={{
-    width: "100%",
-    borderRadius: 16,
-    marginBottom: 12,
-    objectFit: "contain",
-    maxHeight: 400,
-    background: "#f5f5f5",
-    cursor: "pointer",
-  }}
-/>
+ {post.image_url ? (
+  <img
+    src={post.image_url}
+    alt=""
+    onClick={() => setFullscreenImage(post.image_url)}
+    style={{
+      width: "100%",
+      borderRadius: 16,
+      margin: "12px 0",
+      objectFit: "contain",
+      maxHeight: 400,
+      background: "#f5f5f5",
+      cursor: "pointer",
+      display: "block",
+    }}
+  />
 ) : null}
             <div
               style={{
