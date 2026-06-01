@@ -1619,7 +1619,7 @@ function CalendarScreen() {
   );
 }
 
-function OffersScreen() {
+function OffersScreen({ setFullscreenImage }) {
   const [liveOffers, setLiveOffers] = useState([]);
 
   useEffect(() => {
@@ -1649,17 +1649,19 @@ function OffersScreen() {
         {liveOffers.map((offer) => (
           <Card key={offer.id}>
             {offer.image_url ? (
-  <img
-    src={offer.image_url}
-    alt={offer.title}
-    style={{
-      width: "100%",
-      borderRadius: 16,
-      marginBottom: 12,
-      objectFit: "contain",
-      maxHeight: 300,
-    }}
-  />
+ <img
+  src={offer.image_url}
+  alt={offer.title}
+  onClick={() => setFullscreenImage(offer.image_url)}
+  style={{
+    width: "100%",
+    borderRadius: 16,
+    marginBottom: 12,
+    objectFit: "contain",
+    maxHeight: 300,
+    cursor: "pointer",
+  }}
+/>
 ) : null}
             <span
               style={{
@@ -3015,7 +3017,12 @@ setNotificationsRead={setNotificationsRead}
 />
 );
   if (activeTab === "calendar") screen = <CalendarScreen />;
-  if (activeTab === "offers") screen = <OffersScreen />;
+  if (activeTab === "offers")
+  screen = (
+    <OffersScreen
+      setFullscreenImage={setFullscreenImage}
+    />
+  );
   if (activeTab === "notes") screen = <NotesScreen
   currentMember={currentMember}
   setFullscreenImage={setFullscreenImage}
