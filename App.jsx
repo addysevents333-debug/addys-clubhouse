@@ -1004,6 +1004,59 @@ return (
 ) : null}
 </Card>
       <Card>
+  <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>
+    Manage Club Notes
+  </h2>
+
+  {liveNotes.length === 0 ? (
+    <p style={{ margin: 0, color: "#666" }}>
+      No club notes yet.
+    </p>
+  ) : (
+    <div style={{ display: "grid", gap: 12 }}>
+      {liveNotes.map((note) => (
+        <div
+          key={note.id}
+          style={{
+            padding: 12,
+            border: "1px solid #ddd",
+            borderRadius: 14,
+            background: "#faf7f3",
+          }}
+        >
+          <div style={{ fontWeight: 900, color: burgundy }}>
+            {note.title}
+          </div>
+
+          <div style={{ fontSize: 12, color: "#666", marginTop: 4 }}>
+            {note.author}
+          </div>
+
+          <p style={{ margin: "8px 0 0", color: "#444", lineHeight: 1.4 }}>
+            {note.content}
+          </p>
+
+          <button
+            onClick={() => deleteNote(note.id)}
+            style={{
+              marginTop: 12,
+              border: 0,
+              borderRadius: 12,
+              padding: "10px 12px",
+              background: "#8a1f1f",
+              color: "white",
+              fontWeight: 700,
+              cursor: "pointer",
+            }}
+          >
+            Delete Note
+          </button>
+        </div>
+      ))}
+    </div>
+  )}
+</Card>
+      <Card>
  <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>
   Member Directory
 </h2>
