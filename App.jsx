@@ -507,6 +507,20 @@ const deletePost = async (id) => {
   setMessage("Please add a note title and content.");
   return;
 }
+    const deleteNote = async (id) => {
+  const { error } = await supabase
+    .from("notes")
+    .delete()
+    .eq("id", id);
+
+  if (!error) {
+    setNoteMessage("Note deleted.");
+    loadNotes();
+  } else {
+    console.log(error);
+    setNoteMessage(error.message || "Error deleting note.");
+  }
+};
 
   const { error } = await supabase
     .from("notes")
