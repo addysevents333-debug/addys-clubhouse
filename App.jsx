@@ -1008,13 +1008,13 @@ return (
     Manage Club Notes
   </h2>
 
-  {liveNotes.length === 0 ? (
+  {notes.length === 0 ? (
     <p style={{ margin: 0, color: "#666" }}>
       No club notes yet.
     </p>
   ) : (
     <div style={{ display: "grid", gap: 12 }}>
-      {liveNotes.map((note) => (
+      {notes.map((note) => (
         <div
           key={note.id}
           style={{
