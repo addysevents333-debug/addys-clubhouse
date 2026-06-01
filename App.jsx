@@ -2144,6 +2144,8 @@ const [editingJournalId, setEditingJournalId] = useState(null);
   const [journalBuyAgain, setJournalBuyAgain] = useState(false);
   const [journalTastedOn, setJournalTastedOn] = useState("");
   const [journalMessage, setJournalMessage] = useState("");
+  const [journalPhoto, setJournalPhoto] = useState(null);
+const [journalPhotoUrl, setJournalPhotoUrl] = useState("");
 
   useEffect(() => {
     loadNotes();
@@ -2479,6 +2481,15 @@ const saveJournalEntry = async () => {
     borderRadius: 12,
     border: "1px solid #ddd",
     marginBottom: 10,
+  }}
+/>
+    <input
+  type="file"
+  accept="image/*"
+  onChange={(e) => setJournalPhoto(e.target.files[0])}
+  style={{
+    width: "100%",
+    marginBottom: 12,
   }}
 />
     <AppButton onClick={saveJournalEntry}>
