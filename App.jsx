@@ -1312,8 +1312,8 @@ function FeedPost({ post }) {
       borderRadius: 16,
       marginTop: 12,
       marginBottom: 12,
-      objectFit: "cover",
-      maxHeight: 320,
+      objectFit: "contain",
+      maxHeight: 350,
     }}
   />
 ) : null}
@@ -1656,8 +1656,8 @@ function OffersScreen() {
       width: "100%",
       borderRadius: 16,
       marginBottom: 12,
-      objectFit: "cover",
-      maxHeight: 220,
+      objectFit: "contain",
+      maxHeight: 300,
     }}
   />
 ) : null}
@@ -2546,8 +2546,8 @@ if (journalPhoto) {
       width: "100%",
       borderRadius: 16,
       marginBottom: 12,
-      objectFit: "cover",
-      maxHeight: 260,
+      objectFit: "contain",
+      maxHeight: 400,
     }}
   />
 ) : null}
