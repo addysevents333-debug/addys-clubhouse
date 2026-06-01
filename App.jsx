@@ -1303,7 +1303,6 @@ function FeedPost({ post }) {
               <div style={{ fontWeight: 900, fontSize: 15 }}>{post.author}</div>
               <div style={{ color: "#777", fontSize: 12 }}>{post.role}</div>
             </div>
-{post.image_url ? (
  {post.image_url ? (
   <img
     src={post.image_url}
