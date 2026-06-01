@@ -1278,7 +1278,7 @@ border:
     </div>
   );
 }
-function FeedPost({ post }) {
+function FeedPost({ post, setFullscreenImage }) {
   return (
     <Card>
       <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
