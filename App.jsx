@@ -2178,7 +2178,23 @@ const saveJournalEntry = async () => {
     setJournalMessage("Please add a bottle or product name.");
     return;
   }
+let uploadedPhotoUrl = journalPhotoUrl;
 
+if (journalPhoto) {
+  const fileName = `${Date.now()}-${journalPhoto.name}`;
+
+  const { error: uploadError } = await supabase.storage
+    .from("journal-photos")
+    .upload(fileName, journalPhoto);
+
+  if (!uploadError) {
+    const { data } = supabase.storage
+      .from("journal-photos")
+      .getPublicUrl(fileName);
+
+    uploadedPhotoUrl = data.publicUrl;
+  }
+}
   const journalData = {
     member_email: currentMember?.email || "",
     member_name: currentMember?.name || "",
@@ -2187,6 +2203,7 @@ const saveJournalEntry = async () => {
     vintage: journalVintage,
     region: journalRegion,
     category: journalCategory,
+    photo_url: uploadedPhotoUrl,
     rating_stars: journalStars ? Number(journalStars) : null,
     rating_score: journalScore ? Number(journalScore) : null,
     notes: journalNotes,
