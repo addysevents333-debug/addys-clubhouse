@@ -671,13 +671,13 @@ const updateMemberStatus = async (email, newStatus) => {
   const { data, error } = await supabase
     .from("offers")
     .select("*")
-    .order("id", { ascending: false });
+    .order("created_at", { ascending: false });
 
   if (!error && data) {
     console.log("Admin offers loaded:", data);
     setAdminOffers(data);
   } else {
-    console.log("Error loading admin offers:", error);
+    console.log("Error loading admin offers:", error.message, error);
   }
 };
 
