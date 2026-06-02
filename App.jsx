@@ -1703,7 +1703,7 @@ function CalendarScreen() {
     <div style={{ padding: 20, paddingBottom: 92 }}>
       <h1 style={{ margin: "0 0 6px", fontSize: 28 }}>Club Calendar</h1>
       <p style={{ margin: "0 0 18px", color: "#666", lineHeight: 1.5 }}>
-        The final site can connect to your live Google Calendar. For this preview, the events are shown as clean app cards.
+        Click the live calendar or view and RSVP upcoming events for both clubs.
       </p>
 
       <Card style={{ marginBottom: 16 }}>
