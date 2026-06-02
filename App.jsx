@@ -518,7 +518,7 @@ const deleteOffer = async (id) => {
   const { error } = await supabase
     .from("offers")
     .delete()
-    .eq("id", id);
+    .eq("created_at", id);
 
   if (!error) {
     loadAdminOffers();
@@ -1237,7 +1237,7 @@ return (
   <div style={{ display: "grid", gap: 10 }}>
     {adminOffers.map((offer) => (
       <div
-        key={offer.id}
+        key={offer.created_at}
         style={{
           padding: 12,
           border: "1px solid #ddd",
@@ -1258,7 +1258,7 @@ return (
         </div>
 
         <button
-          onClick={() => deleteOffer(offer.id)}
+         onClick={() => deleteOffer(offer.created_at)}
           style={{
             marginTop: 12,
             border: 0,
@@ -1765,7 +1765,7 @@ function OffersScreen({ setFullscreenImage }) {
 
       <div style={{ display: "grid", gap: 12 }}>
         {liveOffers.map((offer) => (
-          <Card key={offer.id}>
+          <Card key={offer.created_at}>
             {offer.image_url ? (
  <img
   src={offer.image_url}
