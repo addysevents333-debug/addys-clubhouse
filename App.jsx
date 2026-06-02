@@ -667,14 +667,17 @@ const updateMemberStatus = async (email, newStatus) => {
     setAdminPosts(data);
   }
 };
-  const loadAdminOffers = async () => {
+ const loadAdminOffers = async () => {
   const { data, error } = await supabase
     .from("offers")
     .select("*")
     .order("id", { ascending: false });
 
   if (!error && data) {
+    console.log("Admin offers loaded:", data);
     setAdminOffers(data);
+  } else {
+    console.log("Error loading admin offers:", error);
   }
 };
 
