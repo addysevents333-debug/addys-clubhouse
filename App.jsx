@@ -304,10 +304,12 @@ function EventCard({ event }) {
             display: "grid",
             placeItems: "center",
             fontSize: 22,
+            flexShrink: 0,
           }}
         >
           {event.club === "Spirits Club" ? "🥃" : event.club === "Bonus Class" ? "⭐" : "🍷"}
         </div>
+
         <div style={{ flex: 1 }}>
           <div style={{ display: "flex", justifyContent: "space-between", gap: 10 }}>
             <div style={{ color: burgundy, fontSize: 12, fontWeight: 800, textTransform: "uppercase" }}>
@@ -326,16 +328,19 @@ function EventCard({ event }) {
               {event.spots}
             </div>
           </div>
+
           <h3 style={{ margin: "8px 0 10px", fontSize: 16, lineHeight: 1.25 }}>{event.title}</h3>
+
           <div style={{ color: "#666", fontSize: 14, lineHeight: 1.7 }}>
             <div>📅 {event.date}</div>
             <div>🕕 {event.time}</div>
             <div>📍 {event.location}</div>
           </div>
-          <div style={{ marginTop: 14 }}>
-            <AppButton href={event.formLink}>{event.status}</AppButton>
-          </div>
         </div>
+      </div>
+
+      <div style={{ marginTop: 14 }}>
+        <AppButton href={event.formLink}>{event.status}</AppButton>
       </div>
     </Card>
   );
