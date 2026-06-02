@@ -737,7 +737,7 @@ const filteredMembers = members.filter((member) => {
   );
 });
 return (
-    <div style={{ padding: 20, paddingBottom: 92 }}>
+    <div style={{ padding: 20, paddingBottom: 160 }}>
       <BrandLogo compact />
 
       <h1 style={{ margin: "16px 0 6px", fontSize: 28 }}>
@@ -1231,7 +1231,9 @@ return (
   <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>
     Manage Offers
   </h2>
-
+<p style={{ margin: "0 0 12px", color: "#666" }}>
+  {adminOffers.length} offers loaded
+</p>
   <div style={{ display: "grid", gap: 10 }}>
     {adminOffers.map((offer) => (
       <div
