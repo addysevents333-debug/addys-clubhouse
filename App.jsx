@@ -514,7 +514,18 @@ const deletePost = async (id) => {
     setOfferMessage("Error creating offer.");
   }
 };
+const deleteOffer = async (id) => {
+  const { error } = await supabase
+    .from("offers")
+    .delete()
+    .eq("id", id);
 
+  if (!error) {
+    loadAdminOffers();
+  } else {
+    console.log(error);
+  }
+};
   const createNotification = async () => {
   if (!notificationTitle.trim() || !notificationMessage.trim()) {
     setNotificationMessage("Please add a notification title and message.");
