@@ -678,19 +678,7 @@ const updateMemberStatus = async (email, newStatus) => {
   }
 };
 
-const deleteOffer = async (id) => {
-  const { error } = await supabase
-    .from("offers")
-    .delete()
-    .eq("id", id);
 
-  if (!error) {
-    setOfferMessage("Offer deleted.");
-    loadAdminOffers();
-  } else {
-    setOfferMessage("Error deleting offer.");
-  }
-};
   const loadAdminMessages = async () => {
   const { data, error } = await supabase
     .from("messages")
