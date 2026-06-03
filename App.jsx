@@ -2664,6 +2664,7 @@ if (journalPhoto) {
     borderRadius: 12,
     border: "1px solid #ddd",
     marginBottom: 10,
+     boxSizing: "border-box",
   }}
 />
 
