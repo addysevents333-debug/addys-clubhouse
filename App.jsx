@@ -2616,9 +2616,9 @@ if (journalPhoto) {
         <>
           <Card style={{ marginBottom: 14, background: `linear-gradient(135deg, ${darkBurgundy}, ${burgundy})`, color: "white", border: 0 }}>
             <div style={{ fontSize: 13, opacity: 0.75, fontWeight: 800, textTransform: "uppercase" }}>Featured Section</div>
-            <h2 style={{ margin: "8px 0 6px", fontSize: 22 }}>Jim’s Notes</h2>
+            <h2 style={{ margin: "8px 0 6px", fontSize: 22 }}>Expert Notes</h2>
             <p style={{ margin: 0, opacity: 0.85, lineHeight: 1.5 }}>
-              Wine Club recaps, producer stories, food pairings, vintage notes, and quick takeaways from class.
+              Wine & Spirits Club previews, recaps, producer stories, food pairings, vintage notes, and quick takeaways from class.
             </p>
           </Card>
 
