@@ -1542,7 +1542,17 @@ const togglePostLike = async () => {
 </div>
 
 {showComments ? (
-  // paste the entire comments panel here
+  <div
+    style={{
+      marginTop: 12,
+      paddingTop: 12,
+      borderTop: "1px solid #eee",
+    }}
+  >
+    <div style={{ color: "#777", fontSize: 13, marginBottom: 10 }}>
+      No comments yet. Be the first to comment.
+    </div>
+  </div>
 ) : null}
 
         </div>
