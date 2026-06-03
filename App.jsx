@@ -1549,9 +1549,62 @@ const togglePostLike = async () => {
       borderTop: "1px solid #eee",
     }}
   >
-    <div style={{ color: "#777", fontSize: 13, marginBottom: 10 }}>
-      No comments yet. Be the first to comment.
-    </div>
+    {postComments.length === 0 ? (
+  <div style={{ color: "#777", fontSize: 13, marginBottom: 10 }}>
+    No comments yet. Be the first to comment.
+  </div>
+) : (
+  <div style={{ display: "grid", gap: 8, marginBottom: 12 }}>
+    {postComments.map((comment) => (
+      <div
+        key={comment.id}
+        style={{
+          background: "#faf7f3",
+          borderRadius: 12,
+          padding: 10,
+          fontSize: 13,
+        }}
+      >
+        <div style={{ fontWeight: 900, color: burgundy }}>
+          {comment.member_name || "Member"}
+        </div>
+
+        <div style={{ color: "#444", marginTop: 4 }}>
+          {comment.comment}
+        </div>
+      </div>
+    ))}
+  </div>
+)}<textarea
+  value={commentText}
+  onChange={(e) => setCommentText(e.target.value)}
+  placeholder="Write a comment..."
+  style={{
+    width: "100%",
+    minHeight: 70,
+    borderRadius: 12,
+    border: "1px solid #ddd",
+    padding: 10,
+    boxSizing: "border-box",
+    fontFamily: "Arial, sans-serif",
+    fontSize: 14,
+    marginBottom: 8,
+  }}
+/>
+
+<button
+  style={{
+    border: 0,
+    background: burgundy,
+    color: "white",
+    borderRadius: 12,
+    padding: "9px 12px",
+    fontWeight: 800,
+    cursor: "pointer",
+  }}
+>
+  Post Comment
+</button>
   </div>
 ) : null}
 
