@@ -1420,11 +1420,16 @@ const togglePostLike = async () => {
   if (!currentMember?.email) return;
 
   if (userLikedPost) {
-    await supabase
-      .from("post_likes")
-      .delete()
-      .eq("post_id", post.id)
-      .eq("member_email", currentMember.email);
+    const existingLike = postLikes.find(
+  (like) => like.member_email === currentMember.email
+);
+
+if (existingLike) {
+  await supabase
+    .from("post_likes")
+    .delete()
+    .eq("id", existingLike.id);
+}
   } else {
     await supabase
       .from("post_likes")
