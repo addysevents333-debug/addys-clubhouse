@@ -2717,7 +2717,33 @@ if (journalPhoto) {
                     <div style={{ color: burgundy, fontSize: 12, fontWeight: 900, textTransform: "uppercase" }}>{note.author}</div>
                     <div style={{ color: "#777", fontSize: 13, marginTop: 2 }}>Club Note</div>
                     <h3 style={{ margin: "8px 0 4px", fontSize: 17 }}>{note.title}</h3>
-                    <p style={{ margin: 0, color: "#666", fontSize: 14, lineHeight: 1.45 }}>{note.content}</p>
+                   <p style={{ margin: 0, color: "#666", fontSize: 14, lineHeight: 1.45 }}>
+  {note.content}
+</p>
+
+<div style={{ marginTop: 12 }}>
+  <button
+    onClick={() => toggleNoteLike(note.id)}
+    style={{
+      border: 0,
+      background: "#f4f1ed",
+      borderRadius: 12,
+      padding: "8px 12px",
+      fontWeight: 700,
+      color: burgundy,
+      cursor: "pointer",
+    }}
+  >
+    {noteLikes.some(
+      (like) =>
+        like.note_id === note.id &&
+        like.member_email === currentMember?.email
+    )
+      ? "❤️"
+      : "🤍"}{" "}
+    {noteLikes.filter((like) => like.note_id === note.id).length}
+  </button>
+</div>
                   </div>
                 </div>
               </Card>
