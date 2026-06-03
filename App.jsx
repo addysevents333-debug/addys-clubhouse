@@ -1388,7 +1388,30 @@ border:
     </div>
   );
 }
-function FeedPost({ post, setFullscreenImage }) {
+function FeedPost({ post, setFullscreenImage, currentMember }) {
+   const [postLikes, setPostLikes] = useState([]);
+const [postComments, setPostComments] = useState([]);
+const [commentText, setCommentText] = useState("");
+
+useEffect(() => {
+  loadPostEngagement();
+}, []);
+
+const loadPostEngagement = async () => {
+  const { data: likesData } = await supabase
+    .from("post_likes")
+    .select("*")
+    .eq("post_id", post.id);
+
+  const { data: commentsData } = await supabase
+    .from("post_comments")
+    .select("*")
+    .eq("post_id", post.id)
+    .order("created_at", { ascending: true });
+
+  setPostLikes(likesData || []);
+  setPostComments(commentsData || []);
+};
   return (
     <Card>
       <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
@@ -1647,10 +1670,11 @@ function HomeScreen({
 
         <div style={{ display: "grid", gap: 12 }}>
           {clubhouseFeed.map((post) => (
-           <FeedPost
+          <FeedPost
   key={post.id}
   post={post}
   setFullscreenImage={setFullscreenImage}
+  currentMember={currentMember}
 />
           ))}
         </div>
