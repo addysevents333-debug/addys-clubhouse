@@ -26,7 +26,7 @@ const events = [
   },
   {
     id: 2,
-    club: "Bonus Class",
+    club: "Wine Bonus Class",
     title: "Paso Robles",
     date: "Thurs, June 18",
     time: "6:30 PM",
@@ -38,7 +38,7 @@ const events = [
  
   {
     id: 3,
-    club: "Bonus Class",
+    club: "Spirits Bonus Class",
     title: "Fair Liqueurs",
     date: "Tues, June 23",
     time: "6:30 PM",
@@ -82,7 +82,7 @@ const events = [
   },
    {
     id: 7,
-    club: "Bonus Class",
+    club: "Spirits Bonus Class",
     title: "Cocktails with Casamigos",
     date: "Wed, July 1",
     time: "6:30 PM",
