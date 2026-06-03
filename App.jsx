@@ -1419,17 +1419,19 @@ const loadPostEngagement = async () => {
 const togglePostLike = async () => {
   if (!currentMember?.email) return;
 
-  if (userLikedPost) {
-    const existingLike = postLikes.find(
-  (like) => like.member_email === currentMember.email
-);
-
-if (existingLike) {
-  await supabase
+  const { data: existingLikes } = await supabase
     .from("post_likes")
-    .delete()
-    .eq("id", existingLike.id);
-}
+    .select("*")
+    .eq("post_id", post.id)
+    .eq("member_email", currentMember.email);
+
+  const existingLike = existingLikes?.[0];
+
+  if (existingLike) {
+    await supabase
+      .from("post_likes")
+      .delete()
+      .eq("id", existingLike.id);
   } else {
     await supabase
       .from("post_likes")
