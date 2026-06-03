@@ -1465,6 +1465,14 @@ const togglePostLike = async () => {
   setCommentText("");
   loadPostEngagement();
 };
+   const deleteComment = async (commentId) => {
+  await supabase
+    .from("post_comments")
+    .delete()
+    .eq("id", commentId);
+
+  loadPostEngagement();
+};
   return (
     <Card>
       <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
@@ -1583,9 +1591,30 @@ const togglePostLike = async () => {
           fontSize: 13,
         }}
       >
-        <div style={{ fontWeight: 900, color: burgundy }}>
-          {comment.member_name || "Member"}
-        </div>
+        <div
+  style={{
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+  }}
+>
+  <div style={{ fontWeight: 900, color: burgundy }}>
+    {comment.member_name || "Member"}
+  </div>
+
+  <button
+    onClick={() => deleteComment(comment.id)}
+    style={{
+      border: 0,
+      background: "transparent",
+      color: "#999",
+      cursor: "pointer",
+      fontSize: 12,
+    }}
+  >
+    ✕
+  </button>
+</div>
 
         <div style={{ color: "#444", marginTop: 4 }}>
           {comment.comment}
