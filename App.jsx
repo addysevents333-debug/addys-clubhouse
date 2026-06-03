@@ -2471,6 +2471,7 @@ function BottleNoteCard({ bottle }) {
 function NotesScreen({ currentMember, setFullscreenImage }) {
   const [notesView, setNotesView] = useState("expert");
   const [liveNotes, setLiveNotes] = useState([]);
+   const [noteLikes, setNoteLikes] = useState([]);
 const [editingJournalId, setEditingJournalId] = useState(null);
   const [journalEntries, setJournalEntries] = useState([]);
   const [showJournalForm, setShowJournalForm] = useState(false);
@@ -2492,6 +2493,7 @@ const [journalPhotoUrl, setJournalPhotoUrl] = useState("");
   useEffect(() => {
     loadNotes();
     loadJournalEntries();
+     loadNoteLikes();
   }, []);
 
   const loadNotes = async () => {
@@ -2515,6 +2517,15 @@ const [journalPhotoUrl, setJournalPhotoUrl] = useState("");
       setJournalEntries(data);
     }
   };
+  const loadNoteLikes = async () => {
+  const { data, error } = await supabase
+    .from("note_likes")
+    .select("*");
+
+  if (!error && data) {
+    setNoteLikes(data);
+  }
+};
 const saveJournalEntry = async () => {
   if (!journalProductName.trim()) {
     setJournalMessage("Please add a bottle or product name.");
@@ -2615,6 +2626,34 @@ if (journalPhoto) {
   setJournalBuyAgain(entry.buy_again || false);
   setJournalTastedOn(entry.tasted_on || "");
   setJournalMessage("");
+};
+   const toggleNoteLike = async (noteId) => {
+  if (!currentMember?.email) return;
+
+  const existingLike = noteLikes.find(
+    (like) =>
+      like.note_id === noteId &&
+      like.member_email === currentMember.email
+  );
+
+  if (existingLike) {
+    await supabase
+      .from("note_likes")
+      .delete()
+      .eq("id", existingLike.id);
+  } else {
+    await supabase
+      .from("note_likes")
+      .insert([
+        {
+          note_id: noteId,
+          member_email: currentMember.email,
+          member_name: currentMember.name || currentMember.email,
+        },
+      ]);
+  }
+
+  loadNoteLikes();
 };
   return (
     <div style={{ padding: 20, paddingBottom: 92 }}>
