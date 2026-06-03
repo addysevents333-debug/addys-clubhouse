@@ -1509,36 +1509,36 @@ const togglePostLike = async () => {
             {post.content}
           </p>
 
-          <div style={{ display: "flex", gap: 10 }}>
-            <button
-              style={{
-                border: 0,
-                background: "#f4f1ed",
-                borderRadius: 12,
-                padding: "8px 12px",
-                fontWeight: 700,
-                color: burgundy,
-                cursor: "pointer",
-              }}
-            >
-           {userLikedPost ? "❤️" : "🤍"} {postLikes.length}
-            </button>
+<div style={{ display: "flex", gap: 10 }}>
+  <button
+    onClick={togglePostLike}
+    style={{
+      border: 0,
+      background: "#f4f1ed",
+      borderRadius: 12,
+      padding: "8px 12px",
+      fontWeight: 700,
+      color: burgundy,
+      cursor: "pointer",
+    }}
+  >
+    {userLikedPost ? "❤️" : "🤍"} {postLikes.length}
+  </button>
 
-            <button
-  onClick={togglePostLike}
-  style={{
-                border: 0,
-                background: "#f4f1ed",
-                borderRadius: 12,
-                padding: "8px 12px",
-                fontWeight: 700,
-                color: burgundy,
-                cursor: "pointer",
-              }}
-            >
-              💬 {post.comments}
-            </button>
-          </div>
+  <button
+    style={{
+      border: 0,
+      background: "#f4f1ed",
+      borderRadius: 12,
+      padding: "8px 12px",
+      fontWeight: 700,
+      color: burgundy,
+      cursor: "pointer",
+    }}
+  >
+    💬 {postComments.length}
+  </button>
+</div>
         </div>
       </div>
     </Card>
