@@ -1417,6 +1417,7 @@ const loadPostEngagement = async () => {
 );
 
 const togglePostLike = async () => {
+   console.log("LIKE CLICKED", currentMember, post.id);
   if (!currentMember?.email) return;
 
   const { data: existingLikes } = await supabase
