@@ -1528,18 +1528,23 @@ const togglePostLike = async () => {
   <button
   onClick={() => setShowComments(!showComments)}
   style={{
-      border: 0,
-      background: "#f4f1ed",
-      borderRadius: 12,
-      padding: "8px 12px",
-      fontWeight: 700,
-      color: burgundy,
-      cursor: "pointer",
-    }}
-  >
-    💬 {postComments.length}
-  </button>
+    border: 0,
+    background: "#f4f1ed",
+    borderRadius: 12,
+    padding: "8px 12px",
+    fontWeight: 700,
+    color: burgundy,
+    cursor: "pointer",
+  }}
+>
+  💬 {postComments.length}
+</button>
 </div>
+
+{showComments ? (
+  // paste the entire comments panel here
+) : null}
+
         </div>
       </div>
     </Card>
