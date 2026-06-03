@@ -574,14 +574,24 @@ const createNote = async () => {
     author_group: noteAuthorGroup,
   };
 
-  const { error } = editingNoteId
-    ? await supabase
-        .from("notes")
-        .update(noteData)
-        .eq("id", editingNoteId)
-    : await supabase
-        .from("notes")
-        .insert([noteData]);
+let result;
+
+if (editingNoteId) {
+  result = await supabase
+    .from("notes")
+    .update(noteData)
+    .eq("id", editingNoteId)
+    .select();
+} else {
+  result = await supabase
+    .from("notes")
+    .insert([noteData])
+    .select();
+}
+
+const { data, error } = result;
+
+console.log("NOTE SAVE RESULT:", { editingNoteId, noteData, data, error });
 
   if (!error) {
     setNoteTitle("");
