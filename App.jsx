@@ -2678,6 +2678,7 @@ if (journalPhoto) {
     borderRadius: 12,
     border: "1px solid #ddd",
     marginBottom: 10,
+     boxSizing: "border-box",
   }}
 />
 
@@ -2691,6 +2692,7 @@ if (journalPhoto) {
     borderRadius: 12,
     border: "1px solid #ddd",
     marginBottom: 10,
+     boxSizing: "border-box",
   }}
 />
 
@@ -2704,6 +2706,7 @@ if (journalPhoto) {
     borderRadius: 12,
     border: "1px solid #ddd",
     marginBottom: 10,
+     boxSizing: "border-box",
   }}
 />
 
@@ -2716,6 +2719,7 @@ if (journalPhoto) {
     borderRadius: 12,
     border: "1px solid #ddd",
     marginBottom: 10,
+     boxSizing: "border-box",
   }}
 >
   <option>Red Wine</option>
@@ -2740,6 +2744,7 @@ if (journalPhoto) {
       fontWeight: 800,
       color: "#555",
       marginBottom: 6,
+       boxSizing: "border-box",
     }}
   >
     Star Rating
@@ -2758,6 +2763,7 @@ if (journalPhoto) {
           cursor: "pointer",
           padding: 0,
           lineHeight: 1,
+           boxSizing: "border-box",
         }}
       >
         {journalStars >= star ? "★" : "☆"}
@@ -2778,6 +2784,7 @@ if (journalPhoto) {
     borderRadius: 12,
     border: "1px solid #ddd",
     marginBottom: 10,
+     boxSizing: "border-box",
   }}
 />
     <textarea
@@ -2791,6 +2798,7 @@ if (journalPhoto) {
     borderRadius: 12,
     border: "1px solid #ddd",
     marginBottom: 10,
+     boxSizing: "border-box",
   }}
 />
     <label style={{ display: "block", marginBottom: 10 }}>
@@ -2819,6 +2827,7 @@ if (journalPhoto) {
     borderRadius: 12,
     border: "1px solid #ddd",
     marginBottom: 10,
+     boxSizing: "border-box",
   }}
 />
     <input
