@@ -1447,6 +1447,24 @@ const togglePostLike = async () => {
 
   loadPostEngagement();
 };
+   const submitPostComment = async () => {
+  if (!currentMember?.email) return;
+  if (!commentText.trim()) return;
+
+  await supabase
+    .from("post_comments")
+    .insert([
+      {
+        post_id: post.id,
+        member_email: currentMember.email,
+        member_name: currentMember.name || currentMember.email,
+        comment: commentText.trim(),
+      },
+    ]);
+
+  setCommentText("");
+  loadPostEngagement();
+};
   return (
     <Card>
       <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
@@ -1593,6 +1611,7 @@ const togglePostLike = async () => {
 />
 
 <button
+  onClick={submitPostComment}
   style={{
     border: 0,
     background: burgundy,
