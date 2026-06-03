@@ -2717,30 +2717,53 @@ if (journalPhoto) {
     marginBottom: 10,
   }}
 >
-  <option>Wine</option>
+  <option>Red Wine</option>
+   <option>White Wine</option>
+   <option>Sparkling Wine</option>
+   <option>Rose</option>
+   <option>Other Wine</option>
   <option>Bourbon</option>
   <option>Whiskey</option>
   <option>Scotch</option>
   <option>Tequila</option>
   <option>Mezcal</option>
   <option>RTD / Canned Cocktail</option>
+   <option>Sake</option>
+    <option>Soju</option>
   <option>Other</option>
 </select>
-    <input
-  type="number"
-  min="1"
-  max="5"
-  value={journalStars}
-  onChange={(e) => setJournalStars(e.target.value)}
-  placeholder="Stars (1-5)"
-  style={{
-    width: "100%",
-    padding: 12,
-    borderRadius: 12,
-    border: "1px solid #ddd",
-    marginBottom: 10,
-  }}
-/>
+   <div style={{ marginBottom: 12 }}>
+  <div
+    style={{
+      fontSize: 13,
+      fontWeight: 800,
+      color: "#555",
+      marginBottom: 6,
+    }}
+  >
+    Star Rating
+  </div>
+
+  <div style={{ display: "flex", gap: 6 }}>
+    {[1, 2, 3, 4, 5].map((star) => (
+      <button
+        key={star}
+        type="button"
+        onClick={() => setJournalStars(star)}
+        style={{
+          border: 0,
+          background: "transparent",
+          fontSize: 32,
+          cursor: "pointer",
+          padding: 0,
+          lineHeight: 1,
+        }}
+      >
+        {journalStars >= star ? "★" : "☆"}
+      </button>
+    ))}
+  </div>
+</div>
     <input
   type="number"
   min="50"
