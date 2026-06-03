@@ -1412,6 +1412,33 @@ const loadPostEngagement = async () => {
   setPostLikes(likesData || []);
   setPostComments(commentsData || []);
 };
+   const userLikedPost = postLikes.some(
+  (like) => like.member_email === currentMember?.email
+);
+
+const togglePostLike = async () => {
+  if (!currentMember?.email) return;
+
+  if (userLikedPost) {
+    await supabase
+      .from("post_likes")
+      .delete()
+      .eq("post_id", post.id)
+      .eq("member_email", currentMember.email);
+  } else {
+    await supabase
+      .from("post_likes")
+      .insert([
+        {
+          post_id: post.id,
+          member_email: currentMember.email,
+          member_name: currentMember.name || currentMember.email,
+        },
+      ]);
+  }
+
+  loadPostEngagement();
+};
   return (
     <Card>
       <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
@@ -1486,11 +1513,12 @@ const loadPostEngagement = async () => {
                 cursor: "pointer",
               }}
             >
-              ❤️ {post.likes}
+           {userLikedPost ? "❤️" : "🤍"} {postLikes.length}
             </button>
 
             <button
-              style={{
+  onClick={togglePostLike}
+  style={{
                 border: 0,
                 background: "#f4f1ed",
                 borderRadius: 12,
