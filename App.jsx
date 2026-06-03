@@ -366,6 +366,7 @@ const [adminPosts, setAdminPosts] = useState([]);
   const [noteTitle, setNoteTitle] = useState("");
 const [noteContent, setNoteContent] = useState("");
   const [noteAuthorGroup, setNoteAuthorGroup] = useState("tyler");
+   const [editingNoteId, setEditingNoteId] = useState(null);
   const [offerImage, setOfferImage] = useState(null);
   const [postImage, setPostImage] = useState(null);
   const [notificationTitle, setNotificationTitle] = useState("");
@@ -553,36 +554,45 @@ const deleteOffer = async (id) => {
     setNotificationMessage("Error creating notification.");
   }
 };
-  const createNote = async () => {
- if (!noteTitle.trim() || !noteContent.trim()) {
-setNoteMessage("Please add a note title and content.");
-  return;
-}
-    const { error } = await supabase
-    .from("notes")
-    .insert([
-     {
-  title: noteTitle,
-  content: noteContent,
-  author:
-    noteAuthorGroup === "tyler"
-      ? "Tyler's Notes"
-      : noteAuthorGroup === "jim"
-      ? "Jim's Notes"
-      : noteAuthorGroup === "ryan"
-      ? "Ryan's Notes"
-      : "Mike & Derek Notes",
-  author_group: noteAuthorGroup,
-},
-]);
+const createNote = async () => {
+  if (!noteTitle.trim() || !noteContent.trim()) {
+    setNoteMessage("Please add a note title and content.");
+    return;
+  }
+
+  const noteData = {
+    title: noteTitle,
+    content: noteContent,
+    author:
+      noteAuthorGroup === "tyler"
+        ? "Tyler's Notes"
+        : noteAuthorGroup === "jim"
+        ? "Jim's Notes"
+        : noteAuthorGroup === "ryan"
+        ? "Ryan's Notes"
+        : "Mike & Derek Notes",
+    author_group: noteAuthorGroup,
+  };
+
+  const { error } = editingNoteId
+    ? await supabase
+        .from("notes")
+        .update(noteData)
+        .eq("id", editingNoteId)
+    : await supabase
+        .from("notes")
+        .insert([noteData]);
 
   if (!error) {
     setNoteTitle("");
     setNoteContent("");
-    setNoteAuthor("Tyler’s Notes");
-    setNoteMessage("Note created.");
+    setNoteAuthorGroup("tyler");
+    setEditingNoteId(null);
+    setNoteMessage(editingNoteId ? "Note updated." : "Note created.");
+    loadNotes();
   } else {
-   setNoteMessage("Error creating note.");
+    console.log(error);
+    setNoteMessage(error.message || "Error saving note.");
   }
 };
    const deleteNote = async (id) => {
@@ -598,6 +608,13 @@ setNoteMessage("Please add a note title and content.");
     console.log(error);
     setNoteMessage(error.message || "Error deleting note.");
   }
+};
+   const startEditNote = (note) => {
+  setEditingNoteId(note.id);
+  setNoteTitle(note.title || "");
+  setNoteContent(note.content || "");
+  setNoteAuthorGroup(note.author_group || "tyler");
+  setNoteMessage("");
 };
 useEffect(() => {
   loadMembers();
@@ -1028,9 +1045,9 @@ return (
   <option value="ryan">Ryan's Notes</option>
   <option value="mike_derek">Mike & Derek Notes</option>
 </select>
-  <AppButton onClick={createNote}>
-    Create Note
-  </AppButton>
+ <AppButton onClick={createNote}>
+  {editingNoteId ? "Update Note" : "Create Note"}
+</AppButton>
         {noteMessage ? (
   <div
     style={{
@@ -1074,25 +1091,43 @@ return (
             {note.author}
           </div>
 
-          <p style={{ margin: "8px 0 0", color: "#444", lineHeight: 1.4 }}>
-            {note.content}
-          </p>
+         <p style={{ margin: "8px 0 0", color: "#444", lineHeight: 1.4 }}>
+  {note.content}
+</p>
 
-          <button
-            onClick={() => deleteNote(note.id)}
-            style={{
-              marginTop: 12,
-              border: 0,
-              borderRadius: 12,
-              padding: "10px 12px",
-              background: "#8a1f1f",
-              color: "white",
-              fontWeight: 700,
-              cursor: "pointer",
-            }}
-          >
-            Delete Note
-          </button>
+<div style={{ display: "flex", gap: 8, marginTop: 12 }}>
+
+  <button
+    onClick={() => startEditNote(note)}
+    style={{
+      border: 0,
+      borderRadius: 12,
+      padding: "10px 12px",
+      background: burgundy,
+      color: "white",
+      fontWeight: 700,
+      cursor: "pointer",
+    }}
+  >
+    Edit Note
+  </button>
+
+  <button
+    onClick={() => deleteNote(note.id)}
+    style={{
+      border: 0,
+      borderRadius: 12,
+      padding: "10px 12px",
+      background: "#8a1f1f",
+      color: "white",
+      fontWeight: 700,
+      cursor: "pointer",
+    }}
+  >
+    Delete Note
+  </button>
+
+</div>
         </div>
       ))}
     </div>
