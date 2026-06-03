@@ -1392,7 +1392,7 @@ function FeedPost({ post, setFullscreenImage, currentMember }) {
    const [postLikes, setPostLikes] = useState([]);
 const [postComments, setPostComments] = useState([]);
 const [commentText, setCommentText] = useState("");
-
+const [showComments, setShowComments] = useState(false);
 useEffect(() => {
   loadPostEngagement();
 }, []);
@@ -1526,7 +1526,8 @@ const togglePostLike = async () => {
   </button>
 
   <button
-    style={{
+  onClick={() => setShowComments(!showComments)}
+  style={{
       border: 0,
       background: "#f4f1ed",
       borderRadius: 12,
