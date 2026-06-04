@@ -1102,7 +1102,15 @@ return (
       No club notes yet.
     </p>
   ) : (
-    <div style={{ display: "grid", gap: 12 }}>
+    <div
+  style={{
+    display: "grid",
+    gap: 10,
+    maxHeight: "60vh",
+    overflowY: "auto",
+    paddingRight: 6,
+  }}
+>
       {notes.map((note) => (
         <div
           key={note.id}
