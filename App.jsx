@@ -1775,6 +1775,8 @@ function HomeScreen({
   setFullscreenImage,
   notificationsRead,
   setNotificationsRead,
+   unreadNotifications,
+setUnreadNotifications,
 }) {
   const [clubhouseFeed, setClubhouseFeed] = useState([]);
 
@@ -3508,6 +3510,8 @@ const isAdmin =
 setNotificationsRead={setNotificationsRead}
   notifications={notifications}
   setFullscreenImage={setFullscreenImage}
+   unreadNotifications={unreadNotifications}
+setUnreadNotifications={setUnreadNotifications}
 />
 );
   if (activeTab === "calendar") screen = <CalendarScreen />;
