@@ -1810,10 +1810,28 @@ function HomeScreen({
 
           <div style={{ position: "relative" }}>
             <div
-             onClick={() => {
+        onClick={async () => {
+  const now = new Date().toISOString();
+
   setShowNotifications(!showNotifications);
   setNotificationsRead(true);
-               localStorage.setItem("notificationsRead", "true");
+  setUnreadNotifications(0);
+  localStorage.setItem("notificationsRead", "true");
+
+  if (currentMember?.email) {
+    await supabase
+      .from("members")
+      .update({ last_notifications_viewed: now })
+      .eq("email", currentMember.email);
+
+    const updatedMember = {
+      ...currentMember,
+      last_notifications_viewed: now,
+    };
+
+    setCurrentMember(updatedMember);
+    localStorage.setItem("addysMember", JSON.stringify(updatedMember));
+  }
 }}
               style={{
                 fontSize: 26,
@@ -1822,7 +1840,7 @@ function HomeScreen({
             >
               🔔
             </div>
-{!notificationsRead && notifications.length > 0 ? (
+{unreadNotifications > 0 ? (
   <div
     style={{
       position: "absolute",
@@ -1840,7 +1858,7 @@ function HomeScreen({
       padding: "0 5px",
     }}
   >
-    {notificationsRead ? 0 : notifications.length}
+   {unreadNotifications}
   </div>
 ) : null}
             {showNotifications ? (
