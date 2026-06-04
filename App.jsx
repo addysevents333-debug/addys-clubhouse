@@ -1270,15 +1270,7 @@ return (
 <div style={{ marginBottom: 12 }}>
   Loaded Posts: {adminPosts.length}
 </div>
- <div
-  style={{
-    display: "grid",
-    gap: 10,
-    maxHeight: "60vh",
-    overflowY: "auto",
-    paddingRight: 6,
-  }}
->
+ <div style={{ display: "grid", gap: 10, maxHeight: "60vh", overflowY: "auto", paddingRight: 6 }}>
   {adminPosts.map((post) => (
       <div
         key={post.id}
