@@ -3610,9 +3610,27 @@ setUnreadNotifications={setUnreadNotifications}
               .map((tab) => {
                 const active = activeTab === tab.id;
                 return (
-                  <button
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id)}
+                 <button
+  key={tab.id}
+  onClick={() => {
+    setActiveTab(tab.id);
+
+    if (tab.id === "notes" && currentMember?.email) {
+      localStorage.setItem(
+        `notesLastSeen:${currentMember.email}`,
+        new Date().toISOString()
+      );
+      setHasNewNotes(false);
+    }
+
+    if (tab.id === "offers" && currentMember?.email) {
+      localStorage.setItem(
+        `offersLastSeen:${currentMember.email}`,
+        new Date().toISOString()
+      );
+      setHasNewOffers(false);
+    }
+  }}
                     style={{
                       border: 0,
                       borderRadius: 14,
@@ -3623,7 +3641,43 @@ setUnreadNotifications={setUnreadNotifications}
                       cursor: "pointer",
                     }}
                   >
-                    <div style={{ fontSize: 18 }}>{tab.icon}</div>
+                    <div
+  style={{
+    fontSize: 18,
+    position: "relative",
+    display: "inline-block",
+  }}
+>
+  {tab.icon}
+
+  {tab.id === "notes" && hasNewNotes ? (
+    <span
+      style={{
+        position: "absolute",
+        top: -4,
+        right: -6,
+        width: 8,
+        height: 8,
+        borderRadius: "50%",
+        background: "#d50000",
+      }}
+    />
+  ) : null}
+
+  {tab.id === "offers" && hasNewOffers ? (
+    <span
+      style={{
+        position: "absolute",
+        top: -4,
+        right: -6,
+        width: 8,
+        height: 8,
+        borderRadius: "50%",
+        background: "#d50000",
+      }}
+    />
+  ) : null}
+</div>
                     <div style={{ fontSize: 11 }}>{tab.label}</div>
                   </button>
                 );
