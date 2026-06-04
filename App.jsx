@@ -1183,7 +1183,15 @@ return (
   }}
 />
 
-<div style={{ display: "grid", gap: 10 }}>
+<div
+  style={{
+    display: "grid",
+    gap: 10,
+    maxHeight: "60vh",
+    overflowY: "auto",
+    paddingRight: 6,
+  }}
+>
   {filteredMembers.map((member) => (
       <div
         key={member.email}
