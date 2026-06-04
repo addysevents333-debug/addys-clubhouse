@@ -3448,6 +3448,8 @@ export default function AddysClubhousePrototype() {
   );
 const [fullscreenImage, setFullscreenImage] = useState(null);
  const [activeTab, setActiveTab] = useState("home");
+   const [hasNewNotes, setHasNewNotes] = useState(false);
+const [hasNewOffers, setHasNewOffers] = useState(false);
 const [unreadNotes, setUnreadNotes] = useState(0);
 const [unreadOffers, setUnreadOffers] = useState(0);
 const [notifications, setNotifications] = useState([]);
@@ -3459,9 +3461,9 @@ const [showNotifications, setShowNotifications] = useState(false);
 useEffect(() => {
   if (currentMember?.email) {
     loadNotifications();
+    checkNewContentBadges();
   }
 }, [currentMember]);
-
 const loadNotifications = async () => {
   const { data, error } = await supabase
     .from("notifications")
@@ -3483,6 +3485,41 @@ const loadNotifications = async () => {
         ).length
       );
     }
+  }
+};
+   const checkNewContentBadges = async () => {
+  if (!currentMember?.email) return;
+
+  const notesLastSeenKey = `notesLastSeen:${currentMember.email}`;
+  const offersLastSeenKey = `offersLastSeen:${currentMember.email}`;
+
+  const notesLastSeen = localStorage.getItem(notesLastSeenKey);
+  const offersLastSeen = localStorage.getItem(offersLastSeenKey);
+
+  const { data: latestNotes } = await supabase
+    .from("notes")
+    .select("created_at")
+    .order("created_at", { ascending: false })
+    .limit(1);
+
+  const { data: latestOffers } = await supabase
+    .from("offers")
+    .select("created_at")
+    .order("created_at", { ascending: false })
+    .limit(1);
+
+  if (latestNotes?.[0]?.created_at) {
+    setHasNewNotes(
+      !notesLastSeen ||
+        new Date(latestNotes[0].created_at) > new Date(notesLastSeen)
+    );
+  }
+
+  if (latestOffers?.[0]?.created_at) {
+    setHasNewOffers(
+      !offersLastSeen ||
+        new Date(latestOffers[0].created_at) > new Date(offersLastSeen)
+    );
   }
 };
 const isAdmin =
