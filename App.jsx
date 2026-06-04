@@ -3431,13 +3431,16 @@ const [fullscreenImage, setFullscreenImage] = useState(null);
 const [unreadNotes, setUnreadNotes] = useState(0);
 const [unreadOffers, setUnreadOffers] = useState(0);
 const [notifications, setNotifications] = useState([]);
+   const [unreadNotifications, setUnreadNotifications] = useState(0);
   const [notificationsRead, setNotificationsRead] = useState(
   localStorage.getItem("notificationsRead") === "true"
 );
 const [showNotifications, setShowNotifications] = useState(false);
- useEffect(() => {
-loadNotifications();
- }, []);
+useEffect(() => {
+  if (currentMember?.email) {
+    loadNotifications();
+  }
+}, [currentMember]);
 
 const loadNotifications = async () => {
   const { data, error } = await supabase
@@ -3447,6 +3450,19 @@ const loadNotifications = async () => {
 
   if (!error && data) {
     setNotifications(data);
+
+    const lastViewed = currentMember?.last_notifications_viewed;
+
+    if (!lastViewed) {
+      setUnreadNotifications(data.length);
+    } else {
+      setUnreadNotifications(
+        data.filter(
+          (notification) =>
+            new Date(notification.created_at) > new Date(lastViewed)
+        ).length
+      );
+    }
   }
 };
 const isAdmin =
