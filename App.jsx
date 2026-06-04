@@ -502,15 +502,26 @@ const deletePost = async (id) => {
       },
     ]);
 
-  if (!error) {
-    setOfferTitle("");
-    setOfferDetail("");
-    setOfferPrice("");
-    setOfferBadge("Member Offer");
-    setOfferImage(null);
-    setOfferMessage("Offer created. Go to Offers to view it.");
-    loadAdminOffers();
-  } else {
+ if (!error) {
+  setOfferTitle("");
+  setOfferDetail("");
+  setOfferPrice("");
+  setOfferBadge("Member Offer");
+  setOfferImage(null);
+
+  await supabase.from("notifications").insert([
+    {
+      title: "New Member Offer",
+      message: offerTitle,
+      category: "Offers",
+    },
+  ]);
+
+  setOfferMessage("Offer created. Go to Offers to view it.");
+
+  loadAdminOffers();
+}
+ else {
     console.log(error);
     setOfferMessage("Error creating offer.");
   }
@@ -598,7 +609,16 @@ console.log("NOTE SAVE RESULT:", { editingNoteId, noteData, data, error });
     setNoteContent("");
     setNoteAuthorGroup("tyler");
     setEditingNoteId(null);
-    setNoteMessage(editingNoteId ? "Note updated." : "Note created.");
+    if (!editingNoteId) {
+  await supabase.from("notifications").insert([
+    {
+      title: "New Tasting Note",
+      message: noteTitle,
+      category: "Notes",
+    },
+  ]);
+}
+     setNoteMessage(editingNoteId ? "Note updated." : "Note created.");
     loadNotes();
   } else {
     console.log(error);
@@ -3408,6 +3428,8 @@ export default function AddysClubhousePrototype() {
   );
 const [fullscreenImage, setFullscreenImage] = useState(null);
  const [activeTab, setActiveTab] = useState("home");
+const [unreadNotes, setUnreadNotes] = useState(0);
+const [unreadOffers, setUnreadOffers] = useState(0);
 const [notifications, setNotifications] = useState([]);
   const [notificationsRead, setNotificationsRead] = useState(
   localStorage.getItem("notificationsRead") === "true"
