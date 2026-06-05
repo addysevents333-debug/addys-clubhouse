@@ -1378,6 +1378,11 @@ adminMessages
 onClick={async () => {
   setSelectedConversation(msg);
   setSelectedMemberEmail(msg.sender_email);
+   console.log("CLICKED CONVERSATION", {
+  member_email: msg.member_email,
+  staff_email: msg.staff_email,
+  sender_email: msg.sender_email,
+});
 await supabase
   .from("messages")
   .update({ is_read: true })
