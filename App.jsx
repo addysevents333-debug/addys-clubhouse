@@ -2261,22 +2261,28 @@ const sendMessage = async () => {
     paddingRight: 6,
   }}
 >
-{messages
-  .filter((msg) => msg.recipient_email === selectedStaff.email)
+ {messages
+  .filter(
+    (msg) =>
+      (msg.sender_email === currentMember?.email &&
+        msg.recipient_email === selectedStaff.email) ||
+      (msg.sender_email === selectedStaff.email &&
+        msg.recipient_email === currentMember?.email)
+  )
   .map((msg) => (
     <div
       key={msg.id}
       style={{
         alignSelf:
-          msg.sender_name || msg.sender_email=== currentMember?.email
+          msg.sender_email === currentMember?.email
             ? "flex-end"
             : "flex-start",
         background:
-          msg.sender_name || msg.sender_email === currentMember?.email
+         msg.sender_email === currentMember?.email
             ? burgundy
             : "#ece7df",
         color:
-          msg.sender_name || msg.sender_email === currentMember?.email
+          msg.sender_email === currentMember?.email
             ? "white"
             : "#111",
         borderRadius: 18,
