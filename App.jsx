@@ -773,7 +773,26 @@ const sendAdminReply = async () => {
     alert("Reply failed: " + error.message);
   }
 };
+const archiveConversation = async () => {
+  if (!selectedConversation) return;
 
+  const confirmed = window.confirm("Archive this conversation from the inbox?");
+  if (!confirmed) return;
+
+  const { error } = await supabase
+    .from("messages")
+    .update({ archived: true })
+    .eq("member_email", selectedConversation.member_email)
+    .eq("staff_email", selectedConversation.staff_email);
+
+  if (!error) {
+    setSelectedConversation(null);
+    setSelectedMemberEmail(null);
+    loadAdminMessages();
+  } else {
+    alert("Archive failed: " + error.message);
+  }
+};
 const filteredMembers = members.filter((member) => {
   const search = memberSearch.toLowerCase();
 
@@ -1515,6 +1534,22 @@ border:
     >
      Send Message
     </button>
+     <button
+  onClick={archiveConversation}
+  style={{
+    width: "100%",
+    border: 0,
+    borderRadius: 14,
+    padding: "12px 14px",
+    background: "#8a1f1f",
+    color: "white",
+    fontWeight: 900,
+    cursor: "pointer",
+    marginTop: 10,
+  }}
+>
+  Delete Conversation
+</button>
   </Card>
 ) : null}
     </div>
