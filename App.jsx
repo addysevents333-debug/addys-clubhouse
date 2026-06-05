@@ -1500,7 +1500,7 @@ border:
         cursor: "pointer",
       }}
     >
-     SendReply
+     Send Reply
     </button>
   </Card>
 ) : null}
