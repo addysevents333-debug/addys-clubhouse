@@ -730,10 +730,11 @@ const updateMemberStatus = async (email, newStatus) => {
 
 
   const loadAdminMessages = async () => {
-  const { data, error } = await supabase
-    .from("messages")
-    .select("*")
-    .order("created_at", { ascending: false });
+const { data, error } = await supabase
+  .from("messages")
+  .select("*")
+  .or("archived.is.null,archived.eq.false")
+  .order("created_at", { ascending: false });
 
   if (!error && data) {
     setAdminMessages(data);
