@@ -2193,7 +2193,16 @@ const sendMessage = async () => {
         </p>
       </Card>
 
-      <div style={{ display: "grid", gap: 10, marginBottom: 14 }}>
+      <div
+  style={{
+    display: "grid",
+    gap: 10,
+    marginBottom: 14,
+    maxHeight: "35vh",
+    overflowY: "auto",
+    paddingRight: 6,
+  }}
+>
         {staffContacts.map((staff) => {
           const active = selectedStaff.id === staff.id;
           return (
@@ -2247,6 +2256,9 @@ const sendMessage = async () => {
     flexDirection: "column",
     gap: 10,
     marginBottom: 12,
+    maxHeight: "45vh",
+    overflowY: "auto",
+    paddingRight: 6,
   }}
 >
 {messages
