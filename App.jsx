@@ -1378,13 +1378,12 @@ adminMessages
 onClick={async () => {
   setSelectedConversation(msg);
   setSelectedMemberEmail(msg.sender_email);
-
 await supabase
   .from("messages")
   .update({ is_read: true })
   .eq("member_email", msg.member_email)
   .eq("staff_email", msg.staff_email)
-  .neq("sender_email", msg.staff_email);
+  .eq("sender_email", msg.member_email);
 
   loadAdminMessages();
 }}
@@ -1405,7 +1404,13 @@ border:
     Conversation with {msg.sender_name || msg.sender_email}
   </span>
 
-  {!msg.is_read && (
+  {adminMessages.some(
+  (message) =>
+    message.member_email === msg.member_email &&
+    message.staff_email === msg.staff_email &&
+    message.sender_email === msg.member_email &&
+    !message.is_read
+) && (
     <div
       style={{
         width: 10,
