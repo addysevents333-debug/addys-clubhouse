@@ -1362,7 +1362,7 @@ return (
     Admin DM Inbox
   </h2>
 
-  <div style={{ display: "grid", gap: 10 }}>
+ <div style={{ display: "grid", gap: 10, maxHeight: "45vh", overflowY: "auto", paddingRight: 6 }}>
     {[
   ...new Map(
 adminMessages
