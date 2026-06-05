@@ -1431,7 +1431,44 @@ border:
     <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>
       Reply to {selectedConversation.sender_name || selectedConversation.sender_email}
     </h2>
+<div
+  style={{
+    display: "flex",
+    flexDirection: "column",
+    gap: 10,
+    maxHeight: "45vh",
+    overflowY: "auto",
+    paddingRight: 6,
+    marginBottom: 12,
+  }}
+>
+  {adminMessages
+    .filter(
+      (msg) =>
+        msg.sender_email === selectedConversation.sender_email ||
+        msg.recipient_email === selectedConversation.sender_email
+    )
+    .map((msg) => {
+      const fromStaff = msg.sender_email === "addysevents333@gmail.com";
 
+      return (
+        <div
+          key={msg.id}
+          style={{
+            alignSelf: fromStaff ? "flex-end" : "flex-start",
+            background: fromStaff ? burgundy : "#ece7df",
+            color: fromStaff ? "white" : "#111",
+            borderRadius: 18,
+            padding: 12,
+            maxWidth: "80%",
+            fontSize: 14,
+          }}
+        >
+          {msg.message}
+        </div>
+      );
+    })}
+</div>
     <textarea
       value={adminReply}
       onChange={(event) => setAdminReply(event.target.value)}
