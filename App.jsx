@@ -2185,7 +2185,14 @@ const sendMessage = async () => {
       <p style={{ margin: "0 0 18px", color: "#666", lineHeight: 1.5 }}>
         Members can privately message approved Addy’s staff for bottle requests, pairing help, class follow-ups, and photo-based questions.
       </p>
-
+{currentMember?.role === "admin" ? (
+  <Card style={{ marginBottom: 14, background: "#fffaf0", border: `1px solid ${gold}` }}>
+    <h3 style={{ margin: "0 0 6px" }}>Staff Inbox</h3>
+    <p style={{ margin: 0, color: "#666", fontSize: 14, lineHeight: 1.45 }}>
+      Member conversations are handled in the Admin tab under Admin DM Inbox.
+    </p>
+  </Card>
+) : null}
       <Card style={{ marginBottom: 14, background: "#fffaf0", border: `1px solid ${gold}` }}>
         <h3 style={{ margin: "0 0 6px" }}>Controlled Messaging</h3>
         <p style={{ margin: 0, color: "#666", fontSize: 14, lineHeight: 1.45 }}>
