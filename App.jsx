@@ -735,7 +735,11 @@ const { data, error } = await supabase
         loadAdminMessages();
       }
     )
-    .subscribe();
+    .subscribe((status) => {
+  if (status === "SUBSCRIBED") {
+    loadAdminMessages();
+  }
+});
 
   return () => {
     supabase.removeChannel(channel);
