@@ -3884,13 +3884,38 @@ const loadCommunityReactions = async () => {
   const validUsernames = new Set(
     communityMembers.map((member) => member.username?.toLowerCase())
   );
+const renderMentions = (text) => {
+  const validUsernames = new Set(
+    communityMembers.map((member) =>
+      member.username?.toLowerCase()
+    )
+  );
 
+  return String(text || "")
+    .split(/(@[a-zA-Z0-9_]+)/g)
+    .map((part, index) => {
+      const username = part.startsWith("@")
+        ? part.slice(1).toLowerCase()
+        : "";
+
+      if (validUsernames.has(username)) {
+        return (
+          <strong key={index} style={{ color: burgundy }}>
+            {part}
+          </strong>
+        );
+      }
+
+      return part;
+    });
+};
   return text.split(/(@[a-zA-Z0-9_]+)/g).map((part, index) => {
     const username = part.startsWith("@")
       ? part.slice(1).toLowerCase()
       : "";
 
     if (validUsernames.has(username)) {
+       
       return (
         <strong key={index} style={{ color: burgundy }}>
           {part}
