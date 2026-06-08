@@ -2116,7 +2116,7 @@ function CalendarScreen() {
   );
 }
 
-function OffersScreen({ setFullscreenImage }) {
+function OffersScreen({ setFullscreenImage, currentMember }) {
   const [liveOffers, setLiveOffers] = useState([]);
 
   useEffect(() => {
@@ -3705,6 +3705,7 @@ setUnreadNotifications={setUnreadNotifications}
   if (activeTab === "notes") screen = <NotesScreen
   currentMember={currentMember}
   setFullscreenImage={setFullscreenImage}
+  currentMember={currentMember}
 />
   if (activeTab === "messages") {
   screen = <MessagesScreen currentMember={currentMember} />;
