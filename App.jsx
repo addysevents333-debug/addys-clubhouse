@@ -4092,6 +4092,29 @@ const renderMentions = (text) => {
       return part;
     });
 };
+   const renderMentions = (text) => {
+  // existing helper
+};
+
+const mentionMatch = content.match(/@([a-zA-Z0-9_]*)$/);
+const mentionSearch = mentionMatch?.[1]?.toLowerCase();
+
+const mentionSuggestions =
+  mentionSearch !== undefined
+    ? communityMembers
+        .filter((member) =>
+          member.username?.toLowerCase().startsWith(mentionSearch)
+        )
+        .slice(0, 5)
+    : [];
+
+const selectPostMention = (username) => {
+  setContent(
+    content.replace(/@([a-zA-Z0-9_]*)$/, `@${username} `)
+  );
+};
+
+return (
   return (
     <div style={{ padding: 20, paddingBottom: 92 }}>
       <button
