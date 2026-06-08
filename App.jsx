@@ -3693,6 +3693,94 @@ function CommunityBoardScreen({
   currentMember,
   setFullscreenImage,
 }) {
+  const [posts, setPosts] = useState([]);
+  const [content, setContent] = useState("");
+  const [postImage, setPostImage] = useState(null);
+  const [postMessage, setPostMessage] = useState("");
+  const [isPosting, setIsPosting] = useState(false);
+
+  useEffect(() => {
+    loadCommunityPosts();
+  }, []);
+
+  const loadCommunityPosts = async () => {
+    const { data, error } = await supabase
+      .from("community_posts")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (!error && data) {
+      setPosts(data);
+    }
+  };
+
+  const createCommunityPost = async () => {
+    if (!content.trim() && !postImage) {
+      setPostMessage("Please add a message or photo.");
+      return;
+    }
+
+    if (!currentMember?.email) {
+      setPostMessage("Please log in to create a post.");
+      return;
+    }
+
+    setIsPosting(true);
+    setPostMessage("");
+
+    let imageUrl = "";
+
+    if (postImage) {
+      const safeName = postImage.name.replace(/[^a-zA-Z0-9.-]/g, "-");
+      const fileName = `${Date.now()}-${safeName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from("community-images")
+        .upload(fileName, postImage);
+
+      if (uploadError) {
+        setPostMessage("Photo upload failed: " + uploadError.message);
+        setIsPosting(false);
+        return;
+      }
+
+      const { data } = supabase.storage
+        .from("community-images")
+        .getPublicUrl(fileName);
+
+      imageUrl = data.publicUrl;
+    }
+
+    const memberName =
+      `${currentMember.first_name || ""} ${
+        currentMember.last_name || ""
+      }`.trim() ||
+      currentMember.name ||
+      currentMember.email;
+
+    const { error } = await supabase
+      .from("community_posts")
+      .insert([
+        {
+          member_email: currentMember.email,
+          member_name: memberName,
+          content: content.trim(),
+          image_url: imageUrl || null,
+        },
+      ]);
+
+    if (error) {
+      setPostMessage("Post failed: " + error.message);
+    } else {
+      setContent("");
+      setPostImage(null);
+      setPostMessage("Posted successfully.");
+      await loadCommunityPosts();
+    }
+
+    setIsPosting(false);
+  };
+
   return (
     <div style={{ padding: 20, paddingBottom: 92 }}>
       <button
@@ -3715,13 +3803,78 @@ function CommunityBoardScreen({
         Community Board
       </h1>
 
-      <p style={{ color: "#666" }}>
+      <p style={{ margin: "0 0 18px", color: "#666" }}>
         Share bottles, dinners, winery tours, and Clubhouse moments.
       </p>
 
       <Card>
-        <strong>Community posting is coming next.</strong>
+        <textarea
+          value={content}
+          onChange={(event) => setContent(event.target.value)}
+          placeholder="What are you drinking or exploring?"
+          style={{
+            width: "100%",
+            minHeight: 100,
+            borderRadius: 14,
+            border: "1px solid #ddd",
+            padding: 12,
+            boxSizing: "border-box",
+            fontFamily: "Arial, sans-serif",
+            fontSize: 15,
+            marginBottom: 12,
+          }}
+        />
+
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(event) => setPostImage(event.target.files[0])}
+          style={{ marginBottom: 12 }}
+        />
+
+        <AppButton onClick={createCommunityPost}>
+          {isPosting ? "Posting..." : "Share Post"}
+        </AppButton>
+
+        {postMessage ? (
+          <div style={{ marginTop: 10, color: "#666" }}>
+            {postMessage}
+          </div>
+        ) : null}
       </Card>
+
+      <div style={{ display: "grid", gap: 12, marginTop: 16 }}>
+        {posts.map((post) => (
+          <Card key={post.id}>
+            <div style={{ fontWeight: 800 }}>
+              {post.member_name}
+            </div>
+
+            <div style={{ color: "#888", fontSize: 12, marginTop: 3 }}>
+              {new Date(post.created_at).toLocaleString()}
+            </div>
+
+            {post.content ? (
+              <p style={{ lineHeight: 1.5 }}>{post.content}</p>
+            ) : null}
+
+            {post.image_url ? (
+              <img
+                src={post.image_url}
+                alt="Community post"
+                onClick={() => setFullscreenImage(post.image_url)}
+                style={{
+                  width: "100%",
+                  maxHeight: 400,
+                  objectFit: "contain",
+                  borderRadius: 16,
+                  cursor: "pointer",
+                }}
+              />
+            ) : null}
+          </Card>
+        ))}
+      </div>
     </div>
   );
 }
