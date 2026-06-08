@@ -2052,22 +2052,32 @@ setUnreadNotifications,
       <div style={{ padding: "0 20px" }}>
         <SectionHeader title="Clubhouse Tools" />
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-          <ToolCard icon="🎟️" title="Digital Card" subtitle="Show at checkout" />
-          <ToolCard icon="👥" title="Referrals" subtitle="$50 credit tracker" />
-          <ToolCard icon="📚" title="Club Notes" subtitle="Jim, Tyler & Spirits Team" />
-          <ToolCard icon="🎁" title="Offers" subtitle="Club exclusives" />
-          <ToolCard icon="💬" title="Staff DMs" subtitle="Message Tyler, Ryan & team" />
+  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+  <ToolCard icon="🎟️" title="Digital Card" subtitle="Show at checkout" />
 
-          <a
-            href="https://docs.google.com/forms/d/e/1FAIpQLSfIDTyHiSCDS5_Lupz7Ksb9qR5qphayTSKR1lIWU4kw5FUXkQ/viewform?usp=header"
-            target="_blank"
-            rel="noreferrer"
-            style={{ textDecoration: "none" }}
-          >
-            <ToolCard icon="🧪" title="Beta Feedback" subtitle="Tell us what to improve" />
-          </a>
-        </div>
+  <ToolCard icon="👥" title="Referrals" subtitle="$50 credit tracker" />
+
+  <div onClick={() => setActiveTab("notes")} style={{ cursor: "pointer" }}>
+    <ToolCard icon="📚" title="Club Notes" subtitle="Jim, Tyler & Spirits Team" />
+  </div>
+
+  <div onClick={() => setActiveTab("offers")} style={{ cursor: "pointer" }}>
+    <ToolCard icon="🎁" title="Offers" subtitle="Club exclusives" />
+  </div>
+
+  <div onClick={() => setActiveTab("messages")} style={{ cursor: "pointer" }}>
+    <ToolCard icon="💬" title="Staff DMs" subtitle="Message Tyler, Ryan & team" />
+  </div>
+
+  <a
+    href="https://docs.google.com/forms/d/e/1FAIpQLSfIDTyHiSCDS5_Lupz7Ksb9qR5qphayTSKR1lIWU4kw5FUXkQ/viewform?usp=header"
+    target="_blank"
+    rel="noreferrer"
+    style={{ textDecoration: "none" }}
+  >
+    <ToolCard icon="🧪" title="Beta Feedback" subtitle="Tell us what to improve" />
+  </a>
+</div>
       </div>
     </div>
   );
