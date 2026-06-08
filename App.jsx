@@ -3701,6 +3701,8 @@ const [commentTextByPost, setCommentTextByPost] = useState({});
   const [postImage, setPostImage] = useState(null);
   const [postMessage, setPostMessage] = useState("");
   const [isPosting, setIsPosting] = useState(false);
+   const [editingPostId, setEditingPostId] = useState(null);
+const [editingPostContent, setEditingPostContent] = useState("");
 
  useEffect(() => {
   loadCommunityPosts();
@@ -3831,6 +3833,29 @@ const loadCommunityReactions = async () => {
   }
 
   await loadCommunityComments();
+};
+   const saveCommunityPostEdit = async (postId) => {
+  const text = editingPostContent.trim();
+
+  if (!text) {
+    alert("Post cannot be empty.");
+    return;
+  }
+
+  const { error } = await supabase
+    .from("community_posts")
+    .update({ content: text })
+    .eq("id", postId)
+    .eq("member_email", currentMember?.email);
+
+  if (error) {
+    alert("Edit failed: " + error.message);
+    return;
+  }
+
+  setEditingPostId(null);
+  setEditingPostContent("");
+  await loadCommunityPosts();
 };
    const deleteCommunityPost = async (post) => {
   const confirmed = window.confirm(
@@ -4024,14 +4049,85 @@ const loadCommunityReactions = async () => {
     </button>
   ) : null}
 </div>
-
+<button
+  type="button"
+  onClick={() => {
+    setEditingPostId(post.id);
+    setEditingPostContent(post.content || "");
+  }}
+  style={{
+    border: 0,
+    background: "transparent",
+    color: burgundy,
+    fontWeight: 800,
+    cursor: "pointer",
+    fontSize: 12,
+  }}
+>
+  Edit
+</button>
             <div style={{ color: "#888", fontSize: 12, marginTop: 3 }}>
               {new Date(post.created_at).toLocaleString()}
             </div>
 
-            {post.content ? (
-              <p style={{ lineHeight: 1.5 }}>{post.content}</p>
-            ) : null}
+         {editingPostId === post.id ? (
+  <div style={{ marginTop: 12 }}>
+    <textarea
+      value={editingPostContent}
+      onChange={(event) => setEditingPostContent(event.target.value)}
+      style={{
+        width: "100%",
+        minHeight: 90,
+        borderRadius: 12,
+        border: "1px solid #ddd",
+        padding: 10,
+        boxSizing: "border-box",
+        fontFamily: "Arial, sans-serif",
+        fontSize: 14,
+        marginBottom: 8,
+      }}
+    />
+
+    <div style={{ display: "flex", gap: 8 }}>
+      <button
+        type="button"
+        onClick={() => saveCommunityPostEdit(post.id)}
+        style={{
+          border: 0,
+          background: burgundy,
+          color: "white",
+          borderRadius: 12,
+          padding: "8px 12px",
+          fontWeight: 800,
+          cursor: "pointer",
+        }}
+      >
+        Save
+      </button>
+
+      <button
+        type="button"
+        onClick={() => {
+          setEditingPostId(null);
+          setEditingPostContent("");
+        }}
+        style={{
+          border: "1px solid #ddd",
+          background: "white",
+          color: "#555",
+          borderRadius: 12,
+          padding: "8px 12px",
+          fontWeight: 800,
+          cursor: "pointer",
+        }}
+      >
+        Cancel
+      </button>
+    </div>
+  </div>
+) : post.content ? (
+  <p style={{ lineHeight: 1.5 }}>{post.content}</p>
+) : null}
 
             {post.image_url ? (
               <img
