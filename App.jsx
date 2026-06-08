@@ -2051,6 +2051,13 @@ setUnreadNotifications,
 
       <div style={{ padding: "0 20px" }}>
         <SectionHeader title="Clubhouse Tools" />
+         <div
+  style={{
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr",
+    gap: 12,
+  }}
+>
 
  <div onClick={() => setActiveTab("profile")} style={{ cursor: "pointer" }}>
   <ToolCard icon="🎟️" title="Digital Card" subtitle="Show at checkout" />
