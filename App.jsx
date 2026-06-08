@@ -3784,7 +3784,22 @@ const loadCommunityReactions = async () => {
     alert("Please log in to comment.");
     return;
   }
+const deleteCommunityComment = async (commentId) => {
+  const confirmed = window.confirm("Delete this comment?");
+  if (!confirmed) return;
 
+  const { error } = await supabase
+    .from("community_comments")
+    .delete()
+    .eq("id", commentId);
+
+  if (error) {
+    alert("Delete failed: " + error.message);
+    return;
+  }
+
+  await loadCommunityComments();
+};
   const memberName =
     `${currentMember.first_name || ""} ${
       currentMember.last_name || ""
@@ -4037,12 +4052,38 @@ const loadCommunityReactions = async () => {
             padding: 10,
           }}
         >
-          <div style={{ fontWeight: 800, fontSize: 13 }}>
-            {comment.member_name}
-          </div>
-          <div style={{ color: "#555", marginTop: 4 }}>
-            {comment.content}
-          </div>
+         <div
+  style={{
+    display: "flex",
+    justifyContent: "space-between",
+    gap: 8,
+  }}
+>
+  <div style={{ fontWeight: 800, fontSize: 13 }}>
+    {comment.member_name}
+  </div>
+
+  {comment.member_email === currentMember?.email ? (
+    <button
+      type="button"
+      onClick={() => deleteCommunityComment(comment.id)}
+      style={{
+        border: 0,
+        background: "transparent",
+        color: burgundy,
+        fontWeight: 800,
+        cursor: "pointer",
+        fontSize: 12,
+      }}
+    >
+      Delete
+    </button>
+  ) : null}
+</div>
+
+<div style={{ color: "#555", marginTop: 4 }}>
+  {comment.content}
+</div>
         </div>
       ))}
   </div>
