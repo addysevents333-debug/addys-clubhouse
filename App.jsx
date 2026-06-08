@@ -4031,24 +4031,6 @@ const loadCommunityReactions = async () => {
   <div style={{ fontWeight: 800 }}>
     {post.member_name}
   </div>
-
-  {post.member_email === currentMember?.email ? (
-    <button
-      type="button"
-      onClick={() => deleteCommunityPost(post)}
-      style={{
-        border: 0,
-        background: "transparent",
-        color: burgundy,
-        fontWeight: 800,
-        cursor: "pointer",
-        fontSize: 12,
-      }}
-    >
-      Delete Post
-    </button>
-  ) : null}
-</div>
 <button
   type="button"
   onClick={() => {
@@ -4066,6 +4048,24 @@ const loadCommunityReactions = async () => {
 >
   Edit
 </button>
+  {post.member_email === currentMember?.email ? (
+    <button
+      type="button"
+      onClick={() => deleteCommunityPost(post)}
+      style={{
+        border: 0,
+        background: "transparent",
+        color: burgundy,
+        fontWeight: 800,
+        cursor: "pointer",
+        fontSize: 12,
+      }}
+    >
+      Delete Post
+    </button>
+  ) : null}
+</div>
+
             <div style={{ color: "#888", fontSize: 12, marginTop: 3 }}>
               {new Date(post.created_at).toLocaleString()}
             </div>
