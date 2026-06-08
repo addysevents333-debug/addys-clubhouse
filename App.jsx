@@ -781,8 +781,6 @@ const archiveConversation = async () => {
   );
   if (!confirmed) return;
 
-  console.log("Archiving:", selectedConversation);
-
 const { data, error } = await supabase
   .from("messages")
   .update({ archived: true })
@@ -790,8 +788,6 @@ const { data, error } = await supabase
     `and(sender_email.eq.${selectedConversation.sender_email},recipient_email.eq.${selectedConversation.recipient_email}),and(sender_email.eq.${selectedConversation.recipient_email},recipient_email.eq.${selectedConversation.sender_email})`
   )
   .select();
-
-  console.log("Archive result:", { data, error });
 
   if (error) {
     alert("Archive failed: " + error.message);
