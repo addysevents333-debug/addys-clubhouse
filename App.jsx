@@ -3782,9 +3782,10 @@ setUnreadNotifications={setUnreadNotifications}
   if (activeTab === "calendar") screen = <CalendarScreen />;
   if (activeTab === "offers")
   screen = (
-    <OffersScreen
-      setFullscreenImage={setFullscreenImage}
-    />
+   <OffersScreen
+  setFullscreenImage={setFullscreenImage}
+  currentMember={currentMember}
+/>
   );
   if (activeTab === "notes") screen = <NotesScreen
   currentMember={currentMember}
