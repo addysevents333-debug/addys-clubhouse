@@ -3920,6 +3920,57 @@ const loadCommunityReactions = async () => {
                 }}
               />
             ) : null}
+             <div
+  style={{
+    display: "flex",
+    flexWrap: "wrap",
+    gap: 8,
+    marginTop: 14,
+  }}
+>
+  {[
+    ["love", "❤️"],
+    ["cheers", "🥂"],
+    ["fire", "🔥"],
+    ["wow", "🤩"],
+    ["wine", "🍷"],
+  ].map(([reaction, emoji]) => {
+    const count = reactions.filter(
+      (item) =>
+        item.post_id === post.id &&
+        item.reaction === reaction
+    ).length;
+
+    const selected = reactions.some(
+      (item) =>
+        item.post_id === post.id &&
+        item.member_email === currentMember?.email &&
+        item.reaction === reaction
+    );
+
+    return (
+      <button
+        key={reaction}
+        type="button"
+        onClick={() =>
+          toggleCommunityReaction(post.id, reaction)
+        }
+        style={{
+          border: selected
+            ? `2px solid ${burgundy}`
+            : "1px solid #ddd",
+          background: selected ? blush : "white",
+          borderRadius: 999,
+          padding: "7px 10px",
+          cursor: "pointer",
+          fontSize: 16,
+        }}
+      >
+        {emoji} {count || ""}
+      </button>
+    );
+  })}
+</div>
           </Card>
         ))}
       </div>
