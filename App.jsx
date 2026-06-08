@@ -4113,8 +4113,6 @@ const selectPostMention = (username) => {
     content.replace(/@([a-zA-Z0-9_]*)$/, `@${username} `)
   );
 };
-
-return (
   return (
     <div style={{ padding: 20, paddingBottom: 92 }}>
       <button
