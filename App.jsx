@@ -3770,22 +3770,7 @@ const loadCommunityReactions = async () => {
 
   if (error) {
     alert("Reaction failed: " + error.message);
-     const deleteCommunityComment = async (commentId) => {
-  const confirmed = window.confirm("Delete this comment?");
-  if (!confirmed) return;
-
-  const { error } = await supabase
-    .from("community_comments")
-    .delete()
-    .eq("id", commentId);
-
-  if (error) {
-    alert("Delete failed: " + error.message);
-    return;
-  }
-
-  await loadCommunityComments();
-};
+     
     return;
   }
 
@@ -3800,22 +3785,7 @@ const loadCommunityReactions = async () => {
     alert("Please log in to comment.");
     return;
   }
-const deleteCommunityComment = async (commentId) => {
-  const confirmed = window.confirm("Delete this comment?");
-  if (!confirmed) return;
 
-  const { error } = await supabase
-    .from("community_comments")
-    .delete()
-    .eq("id", commentId);
-
-  if (error) {
-    alert("Delete failed: " + error.message);
-    return;
-  }
-
-  await loadCommunityComments();
-};
   const memberName =
     `${currentMember.first_name || ""} ${
       currentMember.last_name || ""
@@ -3843,6 +3813,22 @@ const deleteCommunityComment = async (commentId) => {
     ...commentTextByPost,
     [postId]: "",
   });
+
+  await loadCommunityComments();
+};
+   const deleteCommunityComment = async (commentId) => {
+  const confirmed = window.confirm("Delete this comment?");
+  if (!confirmed) return;
+
+  const { error } = await supabase
+    .from("community_comments")
+    .delete()
+    .eq("id", commentId);
+
+  if (error) {
+    alert("Delete failed: " + error.message);
+    return;
+  }
 
   await loadCommunityComments();
 };
