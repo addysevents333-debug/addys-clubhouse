@@ -2262,7 +2262,8 @@ function OffersScreen({ setFullscreenImage, currentMember }) {
                     cursor: "pointer",
                   }}
                 >
-                  {memberLiked ? "Unlike" : "Like"} ({likeCount})
+                  {memberLiked ? "❤️" : "🤍"}{" "}
+{likeCount}
                 </button>
               </div>
             </Card>
