@@ -646,32 +646,7 @@ console.log("NOTE SAVE RESULT:", { editingNoteId, noteData, data, error });
   setNoteAuthorGroup(note.author_group || "tyler");
   setNoteMessage("");
 };
-useEffect(() => {
-  loadMembers();
-  loadAdminPosts();
-  loadAdminMessages();
-  loadNotes();
-  loadAdminOffers();
 
-  const channel = supabase
-    .channel("admin-messages-realtime")
-    .on(
-      "postgres_changes",
-      {
-        event: "*",
-        schema: "public",
-        table: "messages",
-      },
-      () => {
-        loadAdminMessages();
-      }
-    )
-    .subscribe();
-
-  return () => {
-    supabase.removeChannel(channel);
-  };
-}, []);
 const loadMembers = async () => {
   const { data, error } = await supabase
     .from("members")
@@ -740,6 +715,32 @@ const { data, error } = await supabase
     setAdminMessages(data);
   }
 };
+   useEffect(() => {
+  loadMembers();
+  loadAdminPosts();
+  loadAdminMessages();
+  loadNotes();
+  loadAdminOffers();
+
+  const channel = supabase
+    .channel("admin-messages-realtime")
+    .on(
+      "postgres_changes",
+      {
+        event: "*",
+        schema: "public",
+        table: "messages",
+      },
+      () => {
+        loadAdminMessages();
+      }
+    )
+    .subscribe();
+
+  return () => {
+    supabase.removeChannel(channel);
+  };
+}, []);
   const loadNotes = async () => {
   const { data, error } = await supabase
     .from("notes")
