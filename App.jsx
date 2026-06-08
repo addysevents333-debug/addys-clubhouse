@@ -783,12 +783,13 @@ const archiveConversation = async () => {
 
   console.log("Archiving:", selectedConversation);
 
-  const { data, error } = await supabase
-    .from("messages")
-    .update({ archived: true })
-    .eq("member_email", selectedConversation.member_email)
-    .eq("staff_email", selectedConversation.staff_email)
-    .select();
+const { data, error } = await supabase
+  .from("messages")
+  .update({ archived: true })
+  .or(
+    `and(sender_email.eq.${selectedConversation.sender_email},recipient_email.eq.${selectedConversation.recipient_email}),and(sender_email.eq.${selectedConversation.recipient_email},recipient_email.eq.${selectedConversation.sender_email})`
+  )
+  .select();
 
   console.log("Archive result:", { data, error });
 
