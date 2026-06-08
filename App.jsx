@@ -3688,7 +3688,43 @@ function LoginScreen({ onLogin }) {
     </div>
   );
 }
+function CommunityBoardScreen({
+  setActiveTab,
+  currentMember,
+  setFullscreenImage,
+}) {
+  return (
+    <div style={{ padding: 20, paddingBottom: 92 }}>
+      <button
+        type="button"
+        onClick={() => setActiveTab("home")}
+        style={{
+          border: 0,
+          background: "transparent",
+          color: burgundy,
+          fontWeight: 800,
+          cursor: "pointer",
+          padding: 0,
+          marginBottom: 18,
+        }}
+      >
+        Back to Home
+      </button>
 
+      <h1 style={{ margin: "0 0 6px", fontSize: 28 }}>
+        Community Board
+      </h1>
+
+      <p style={{ color: "#666" }}>
+        Share bottles, dinners, winery tours, and Clubhouse moments.
+      </p>
+
+      <Card>
+        <strong>Community posting is coming next.</strong>
+      </Card>
+    </div>
+  );
+}
 export default function AddysClubhousePrototype() {
   const savedMember = localStorage.getItem("addysMember");
 
