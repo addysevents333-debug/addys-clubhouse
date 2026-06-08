@@ -3595,7 +3595,9 @@ function LoginScreen({ onLogin }) {
 
     const { data: memberData, error: memberError } = await supabase
       .from("members")
-      .select("email, role, first_name, last_name, membership_type, status")
+     .select(
+  "email, role, first_name, last_name, membership_type, status, username"
+)
       .eq("email", normalizedEmail)
       .single();
 
