@@ -3385,12 +3385,14 @@ if (error) {
   if (
     error.code === "23505" ||
     error.message.includes("duplicate") ||
-    error.message.includes("unique")
+    error.message.includes("unique") ||
+    error.message.includes("Cannot coerce")
   ) {
-    setUsernameMessage("That username is already taken.");
+    setUsernameMessage("Username taken.");
   } else {
     setUsernameMessage("Username update failed: " + error.message);
   }
+
   return;
 }
 
