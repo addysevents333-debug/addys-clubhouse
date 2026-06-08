@@ -3856,6 +3856,15 @@ setUnreadNotifications={setUnreadNotifications}
   if (activeTab === "messages") {
   screen = <MessagesScreen currentMember={currentMember} />;
 }
+   if (activeTab === "community") {
+  screen = (
+    <CommunityBoardScreen
+      setActiveTab={setActiveTab}
+      currentMember={currentMember}
+      setFullscreenImage={setFullscreenImage}
+    />
+  );
+}
   if (activeTab === "profile") {
   screen = (
     <ProfileScreen
