@@ -3694,14 +3694,16 @@ function CommunityBoardScreen({
   setFullscreenImage,
 }) {
   const [posts, setPosts] = useState([]);
+   const [reactions, setReactions] = useState([]);
   const [content, setContent] = useState("");
   const [postImage, setPostImage] = useState(null);
   const [postMessage, setPostMessage] = useState("");
   const [isPosting, setIsPosting] = useState(false);
 
   useEffect(() => {
-    loadCommunityPosts();
-  }, []);
+  loadCommunityPosts();
+  loadCommunityReactions();
+}, []);
 
   const loadCommunityPosts = async () => {
     const { data, error } = await supabase
@@ -3713,7 +3715,15 @@ function CommunityBoardScreen({
       setPosts(data);
     }
   };
+const loadCommunityReactions = async () => {
+  const { data, error } = await supabase
+    .from("community_reactions")
+    .select("*");
 
+  if (!error && data) {
+    setReactions(data);
+  }
+};
   const createCommunityPost = async () => {
     if (!content.trim() && !postImage) {
       setPostMessage("Please add a message or photo.");
