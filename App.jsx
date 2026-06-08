@@ -2118,72 +2118,156 @@ function CalendarScreen() {
 
 function OffersScreen({ setFullscreenImage, currentMember }) {
   const [liveOffers, setLiveOffers] = useState([]);
+  const [offerLikes, setOfferLikes] = useState([]);
 
   useEffect(() => {
     loadOffers();
-  }, []);
+    loadOfferLikes();
+  }, [currentMember?.email]);
 
   const loadOffers = async () => {
-    const response = await fetch(`${SUPABASE_URL}/rest/v1/offers?select=*&order=created_at.desc`, {
-      headers: {
-        apikey: SUPABASE_KEY,
-        Authorization: `Bearer ${SUPABASE_KEY}`,
-      },
-    });
+    const { data, error } = await supabase
+      .from("offers")
+      .select("*")
+      .order("created_at", { ascending: false });
 
-    const data = await response.json();
-    setLiveOffers(data);
+    if (!error && data) {
+      setLiveOffers(data);
+    }
+  };
+
+  const loadOfferLikes = async () => {
+    const { data, error } = await supabase
+      .from("offer_likes")
+      .select("offer_created_at, member_email");
+
+    if (!error && data) {
+      setOfferLikes(data);
+    }
+  };
+
+  const toggleOfferLike = async (offer) => {
+    const memberEmail = currentMember?.email;
+
+    if (!memberEmail) {
+      alert("Please log in to like an offer.");
+      return;
+    }
+
+    const alreadyLiked = offerLikes.some(
+      (like) =>
+        like.offer_created_at === offer.created_at &&
+        like.member_email === memberEmail
+    );
+
+    let error;
+
+    if (alreadyLiked) {
+      ({ error } = await supabase
+        .from("offer_likes")
+        .delete()
+        .eq("offer_created_at", offer.created_at)
+        .eq("member_email", memberEmail));
+    } else {
+      ({ error } = await supabase.from("offer_likes").insert([
+        {
+          offer_created_at: offer.created_at,
+          member_email: memberEmail,
+        },
+      ]));
+    }
+
+    if (error) {
+      alert("Unable to update like: " + error.message);
+      return;
+    }
+
+    await loadOfferLikes();
   };
 
   return (
     <div style={{ padding: 20, paddingBottom: 92 }}>
-      <h1 style={{ margin: "0 0 6px", fontSize: 28 }}>Member Offers</h1>
+      <h1 style={{ margin: "0 0 6px", fontSize: 28 }}>
+        Member Offers
+      </h1>
+
       <p style={{ margin: "0 0 18px", color: "#666" }}>
         Rare bottles, early access, and club-only opportunities.
       </p>
 
       <div style={{ display: "grid", gap: 12 }}>
-        {liveOffers.map((offer) => (
-          <Card key={offer.created_at}>
-            {offer.image_url ? (
- <img
-  src={offer.image_url}
-  alt={offer.title}
-  onClick={() => setFullscreenImage(offer.image_url)}
-  style={{
-    width: "100%",
-    borderRadius: 16,
-    marginBottom: 12,
-    objectFit: "contain",
-    maxHeight: 300,
-    cursor: "pointer",
-  }}
-/>
-) : null}
-            <span
-              style={{
-                background: blush,
-                color: burgundy,
-                borderRadius: 999,
-                padding: "6px 10px",
-                fontSize: 12,
-                fontWeight: 800,
-              }}
-            >
-              {offer.badge}
-            </span>
+        {liveOffers.map((offer) => {
+          const likeCount = offerLikes.filter(
+            (like) => like.offer_created_at === offer.created_at
+          ).length;
 
-            <h3 style={{ margin: "14px 0 6px", fontSize: 20 }}>
-              {offer.title}
-            </h3>
+          const memberLiked = offerLikes.some(
+            (like) =>
+              like.offer_created_at === offer.created_at &&
+              like.member_email === currentMember?.email
+          );
 
-            <p style={{ color: "#666", lineHeight: 1.5 }}>
-              {offer.detail}
-            </p>
+          return (
+            <Card key={offer.created_at}>
+              {offer.image_url ? (
+                <img
+                  src={offer.image_url}
+                  alt={offer.title}
+                  onClick={() => setFullscreenImage(offer.image_url)}
+                  style={{
+                    width: "100%",
+                    borderRadius: 16,
+                    marginBottom: 12,
+                    objectFit: "contain",
+                    maxHeight: 300,
+                    cursor: "pointer",
+                  }}
+                />
+              ) : null}
 
-            <strong>{offer.price}</strong>
-          </Card>
-        ))}
+              <span
+                style={{
+                  background: blush,
+                  color: burgundy,
+                  borderRadius: 999,
+                  padding: "6px 10px",
+                  fontSize: 12,
+                  fontWeight: 800,
+                }}
+              >
+                {offer.badge}
+              </span>
+
+              <h3 style={{ margin: "14px 0 6px", fontSize: 20 }}>
+                {offer.title}
+              </h3>
+
+              <p style={{ color: "#666", lineHeight: 1.5 }}>
+                {offer.detail}
+              </p>
+
+              <strong>{offer.price}</strong>
+
+              <div style={{ marginTop: 14 }}>
+                <button
+                  type="button"
+                  onClick={() => toggleOfferLike(offer)}
+                  style={{
+                    border: 0,
+                    borderRadius: 12,
+                    padding: "9px 13px",
+                    background: memberLiked ? burgundy : "#eee8e2",
+                    color: memberLiked ? "white" : burgundy,
+                    fontWeight: 800,
+                    cursor: "pointer",
+                  }}
+                >
+                  {memberLiked ? "Unlike" : "Like"} ({likeCount})
+                </button>
+              </div>
+            </Card>
+          );
+        })}
       </div>
     </div>
   );
