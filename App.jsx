@@ -3800,13 +3800,24 @@ const [commentTextByPost, setCommentTextByPost] = useState({});
   const [isPosting, setIsPosting] = useState(false);
    const [editingPostId, setEditingPostId] = useState(null);
 const [editingPostContent, setEditingPostContent] = useState("");
+   const [communityMembers, setCommunityMembers] = useState([]);
 
  useEffect(() => {
   loadCommunityPosts();
   loadCommunityReactions();
   loadCommunityComments();
+    loadCommunityMembers();
 }, []);
+const loadCommunityMembers = async () => {
+  const { data, error } = await supabase
+    .from("members")
+    .select("username, first_name, last_name")
+    .not("username", "is", null);
 
+  if (!error && data) {
+    setCommunityMembers(data);
+  }
+};
   const loadCommunityPosts = async () => {
     const { data, error } = await supabase
       .from("community_posts")
@@ -3869,7 +3880,27 @@ const loadCommunityReactions = async () => {
 
   if (error) {
     alert("Reaction failed: " + error.message);
-     
+     const renderMentions = (text) => {
+  const validUsernames = new Set(
+    communityMembers.map((member) => member.username?.toLowerCase())
+  );
+
+  return text.split(/(@[a-zA-Z0-9_]+)/g).map((part, index) => {
+    const username = part.startsWith("@")
+      ? part.slice(1).toLowerCase()
+      : "";
+
+    if (validUsernames.has(username)) {
+      return (
+        <strong key={index} style={{ color: burgundy }}>
+          {part}
+        </strong>
+      );
+    }
+
+    return part;
+  });
+};
     return;
   }
 
@@ -4228,7 +4259,9 @@ onClick={() => {
     </div>
   </div>
 ) : post.content ? (
-  <p style={{ lineHeight: 1.5 }}>{post.content}</p>
+ <p style={{ lineHeight: 1.5 }}>
+  {renderMentions(post.content)}
+</p>
 ) : null}
 
             {post.image_url ? (
@@ -4339,7 +4372,7 @@ onClick={() => {
 </div>
 
 <div style={{ color: "#555", marginTop: 4 }}>
-  {comment.content}
+  {renderMentions(comment.content)}
 </div>
         </div>
       ))}
