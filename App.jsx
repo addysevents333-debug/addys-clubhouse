@@ -2052,10 +2052,17 @@ setUnreadNotifications,
       <div style={{ padding: "0 20px" }}>
         <SectionHeader title="Clubhouse Tools" />
 
-  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+ <div onClick={() => setActiveTab("profile")} style={{ cursor: "pointer" }}>
   <ToolCard icon="🎟️" title="Digital Card" subtitle="Show at checkout" />
+</div>
 
-  <ToolCard icon="👥" title="Referrals" subtitle="$50 credit tracker" />
+<div onClick={() => setActiveTab("community")} style={{ cursor: "pointer" }}>
+  <ToolCard
+    icon="📸"
+    title="Community Board"
+    subtitle="Share bottles, dinners & tours"
+  />
+</div>
 
   <div onClick={() => setActiveTab("notes")} style={{ cursor: "pointer" }}>
     <ToolCard icon="📚" title="Club Notes" subtitle="Jim, Tyler & Spirits Team" />
