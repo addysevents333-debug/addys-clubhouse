@@ -3842,17 +3842,28 @@ const loadCommunityReactions = async () => {
     return;
   }
 
-  const { error } = await supabase
-    .from("community_posts")
-    .update({ content: text })
-    .eq("id", postId)
-    .eq("member_email", currentMember?.email);
+const { data, error } = await supabase
+  .from("community_posts")
+  .update({ content: text })
+  .eq("id", postId)
+  .eq("member_email", currentMember?.email)
+  .select();
+
+console.log("SAVE POST EDIT:", {
+  postId,
+  memberEmail: currentMember?.email,
+  data,
+  error,
+});
 
   if (error) {
     alert("Edit failed: " + error.message);
     return;
   }
-
+if (!data || data.length === 0) {
+  alert("No matching post was found to edit.");
+  return;
+}
   setEditingPostId(null);
   setEditingPostContent("");
   await loadCommunityPosts();
