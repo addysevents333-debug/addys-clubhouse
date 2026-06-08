@@ -3352,7 +3352,54 @@ if (journalPhoto) {
   );
 }
 
-function ProfileScreen({ currentMember, onLogout }) {
+function ProfileScreen({ currentMember, onLogout, setCurrentMember }) {
+  const [username, setUsername] = useState(currentMember?.username || "");
+  const [usernameMessage, setUsernameMessage] = useState("");
+
+  const saveUsername = async () => {
+    const cleanUsername = username
+      .trim()
+      .toLowerCase()
+      .replace(/^@/, "");
+
+    if (!cleanUsername) {
+      setUsernameMessage("Please enter a username.");
+      return;
+    }
+
+    if (!/^[a-z0-9_]{3,20}$/.test(cleanUsername)) {
+      setUsernameMessage(
+        "Use 3-20 letters, numbers, or underscores only."
+      );
+      return;
+    }
+
+    const { data, error } = await supabase
+      .from("members")
+      .update({ username: cleanUsername })
+      .eq("email", currentMember?.email)
+      .select()
+      .single();
+
+    if (error) {
+      if (error.message.includes("duplicate")) {
+        setUsernameMessage("That username is already taken.");
+      } else {
+        setUsernameMessage("Username update failed: " + error.message);
+      }
+      return;
+    }
+
+    const updatedMember = {
+      ...currentMember,
+      username: data.username,
+    };
+
+    setCurrentMember(updatedMember);
+    localStorage.setItem("addysMember", JSON.stringify(updatedMember));
+    setUsernameMessage("Username saved.");
+  };
+
   return (
     <div style={{ padding: 20, paddingBottom: 92 }}>
       <BrandLogo compact />
@@ -3438,7 +3485,49 @@ function ProfileScreen({ currentMember, onLogout }) {
        <p style={{ margin: "6px 0", color: "#666" }}>
   <strong>Email:</strong> {currentMember?.email}
 </p>
+<p style={{ margin: "6px 0", color: "#666" }}>
+  <strong>Username:</strong>{" "}
+  {currentMember?.username ? `@${currentMember.username}` : "Not set"}
+</p>
 
+<div style={{ marginTop: 12 }}>
+  <input
+    value={username}
+    onChange={(event) => setUsername(event.target.value)}
+    placeholder="Choose a username"
+    style={{
+      width: "100%",
+      borderRadius: 14,
+      border: "1px solid #ddd6cf",
+      padding: 12,
+      boxSizing: "border-box",
+      fontSize: 15,
+      marginBottom: 8,
+    }}
+  />
+
+  <button
+    type="button"
+    onClick={saveUsername}
+    style={{
+      border: 0,
+      background: burgundy,
+      color: "white",
+      borderRadius: 12,
+      padding: "9px 12px",
+      fontWeight: 800,
+      cursor: "pointer",
+    }}
+  >
+    Save Username
+  </button>
+
+  {usernameMessage ? (
+    <div style={{ marginTop: 8, color: "#666", fontSize: 13 }}>
+      {usernameMessage}
+    </div>
+  ) : null}
+</div>
 <p style={{ margin: "6px 0", color: "#666" }}>
   <strong>Membership Year:</strong> {currentMember?.membership_year || "Not listed"}
 </p>
@@ -4435,14 +4524,15 @@ setUnreadNotifications={setUnreadNotifications}
   if (activeTab === "profile") {
   screen = (
     <ProfileScreen
-      currentMember={currentMember}
-      onLogout={() => {
-        localStorage.removeItem("addysMember");
-        setCurrentMember(null);
-        setIsLoggedIn(false);
-        setActiveTab("home");
-      }}
-    />
+  currentMember={currentMember}
+  setCurrentMember={setCurrentMember}
+  onLogout={() => {
+    localStorage.removeItem("addysMember");
+    setCurrentMember(null);
+    setIsLoggedIn(false);
+    setActiveTab("home");
+  }}
+/>
   );
 }
   if (activeTab === "admin" && isAdmin) screen = <AdminScreen />;
