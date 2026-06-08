@@ -3849,12 +3849,6 @@ const { data, error } = await supabase
   .eq("member_email", currentMember?.email)
   .select();
 
-console.log("SAVE POST EDIT:", {
-  postId,
-  memberEmail: currentMember?.email,
-  data,
-  error,
-});
 
   if (error) {
     alert("Edit failed: " + error.message);
@@ -4045,7 +4039,6 @@ if (!data || data.length === 0) {
 <button
   type="button"
 onClick={() => {
-  console.log("EDIT POST", post.id, post.content);
   setEditingPostId(post.id);
   setEditingPostContent(post.content || "");
 }}
@@ -4081,9 +4074,7 @@ onClick={() => {
             <div style={{ color: "#888", fontSize: 12, marginTop: 3 }}>
               {new Date(post.created_at).toLocaleString()}
             </div>
-<div style={{ fontSize: 12, color: "red" }}>
-  Editing: {String(editingPostId)} | Post: {String(post.id)}
-</div>
+
          {String(editingPostId) === String(post.id) ? (
   <div style={{ marginTop: 12 }}>
     <textarea
