@@ -3724,6 +3724,44 @@ const loadCommunityReactions = async () => {
     setReactions(data);
   }
 };
+   const toggleCommunityReaction = async (postId, reaction) => {
+  if (!currentMember?.email) return;
+
+  const existing = reactions.find(
+    (item) =>
+      item.post_id === postId &&
+      item.member_email === currentMember.email
+  );
+
+  let error;
+
+  if (existing?.reaction === reaction) {
+    ({ error } = await supabase
+      .from("community_reactions")
+      .delete()
+      .eq("id", existing.id));
+  } else if (existing) {
+    ({ error } = await supabase
+      .from("community_reactions")
+      .update({ reaction })
+      .eq("id", existing.id));
+  } else {
+    ({ error } = await supabase
+      .from("community_reactions")
+      .insert({
+        post_id: postId,
+        member_email: currentMember.email,
+        reaction,
+      }));
+  }
+
+  if (error) {
+    alert("Reaction failed: " + error.message);
+    return;
+  }
+
+  await loadCommunityReactions();
+};
   const createCommunityPost = async () => {
     if (!content.trim() && !postImage) {
       setPostMessage("Please add a message or photo.");
