@@ -3388,7 +3388,7 @@ if (error) {
     error.message.includes("unique") ||
     error.message.includes("Cannot coerce")
   ) {
-    setUsernameMessage("Username taken.");
+    setUsernameMessage("Username taken. Please pick another one.");
   } else {
     setUsernameMessage("Username update failed: " + error.message);
   }
