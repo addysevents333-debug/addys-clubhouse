@@ -2209,7 +2209,7 @@ const [newMessage, setNewMessage] = useState("");
   return () => {
     supabase.removeChannel(channel);
   };
-}, []);
+}, [currentMember?.email]);
 const loadMessages = async () => {
  const { data, error } = await supabase
   .from("messages")
