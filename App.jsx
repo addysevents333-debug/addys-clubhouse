@@ -3695,14 +3695,17 @@ function CommunityBoardScreen({
 }) {
   const [posts, setPosts] = useState([]);
    const [reactions, setReactions] = useState([]);
+   const [comments, setComments] = useState([]);
+const [commentTextByPost, setCommentTextByPost] = useState({});
   const [content, setContent] = useState("");
   const [postImage, setPostImage] = useState(null);
   const [postMessage, setPostMessage] = useState("");
   const [isPosting, setIsPosting] = useState(false);
 
-  useEffect(() => {
+ useEffect(() => {
   loadCommunityPosts();
   loadCommunityReactions();
+  loadCommunityComments();
 }, []);
 
   const loadCommunityPosts = async () => {
@@ -3722,6 +3725,16 @@ const loadCommunityReactions = async () => {
 
   if (!error && data) {
     setReactions(data);
+  }
+};
+   const loadCommunityComments = async () => {
+  const { data, error } = await supabase
+    .from("community_comments")
+    .select("*")
+    .order("created_at", { ascending: true });
+
+  if (!error && data) {
+    setComments(data);
   }
 };
    const toggleCommunityReaction = async (postId, reaction) => {
