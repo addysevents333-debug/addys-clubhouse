@@ -3770,6 +3770,22 @@ const loadCommunityReactions = async () => {
 
   if (error) {
     alert("Reaction failed: " + error.message);
+     const deleteCommunityComment = async (commentId) => {
+  const confirmed = window.confirm("Delete this comment?");
+  if (!confirmed) return;
+
+  const { error } = await supabase
+    .from("community_comments")
+    .delete()
+    .eq("id", commentId);
+
+  if (error) {
+    alert("Delete failed: " + error.message);
+    return;
+  }
+
+  await loadCommunityComments();
+};
     return;
   }
 
