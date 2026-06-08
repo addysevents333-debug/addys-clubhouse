@@ -3775,6 +3775,46 @@ const loadCommunityReactions = async () => {
 
   await loadCommunityReactions();
 };
+   const addCommunityComment = async (postId) => {
+  const text = commentTextByPost[postId]?.trim();
+
+  if (!text) return;
+
+  if (!currentMember?.email) {
+    alert("Please log in to comment.");
+    return;
+  }
+
+  const memberName =
+    `${currentMember.first_name || ""} ${
+      currentMember.last_name || ""
+    }`.trim() ||
+    currentMember.name ||
+    currentMember.email;
+
+  const { error } = await supabase
+    .from("community_comments")
+    .insert([
+      {
+        post_id: postId,
+        member_email: currentMember.email,
+        member_name: memberName,
+        content: text,
+      },
+    ]);
+
+  if (error) {
+    alert("Comment failed: " + error.message);
+    return;
+  }
+
+  setCommentTextByPost({
+    ...commentTextByPost,
+    [postId]: "",
+  });
+
+  await loadCommunityComments();
+};
   const createCommunityPost = async () => {
     if (!content.trim() && !postImage) {
       setPostMessage("Please add a message or photo.");
@@ -3983,6 +4023,67 @@ const loadCommunityReactions = async () => {
       </button>
     );
   })}
+</div>
+             <div style={{ marginTop: 14 }}>
+  <div style={{ display: "grid", gap: 8, marginBottom: 10 }}>
+    {comments
+      .filter((comment) => comment.post_id === post.id)
+      .map((comment) => (
+        <div
+          key={comment.id}
+          style={{
+            background: "#faf7f3",
+            borderRadius: 12,
+            padding: 10,
+          }}
+        >
+          <div style={{ fontWeight: 800, fontSize: 13 }}>
+            {comment.member_name}
+          </div>
+          <div style={{ color: "#555", marginTop: 4 }}>
+            {comment.content}
+          </div>
+        </div>
+      ))}
+  </div>
+
+  <textarea
+    value={commentTextByPost[post.id] || ""}
+    onChange={(event) =>
+      setCommentTextByPost({
+        ...commentTextByPost,
+        [post.id]: event.target.value,
+      })
+    }
+    placeholder="Write a comment..."
+    style={{
+      width: "100%",
+      minHeight: 60,
+      borderRadius: 12,
+      border: "1px solid #ddd",
+      padding: 10,
+      boxSizing: "border-box",
+      fontFamily: "Arial, sans-serif",
+      fontSize: 14,
+      marginBottom: 8,
+    }}
+  />
+
+  <button
+    type="button"
+    onClick={() => addCommunityComment(post.id)}
+    style={{
+      border: 0,
+      background: burgundy,
+      color: "white",
+      borderRadius: 12,
+      padding: "9px 12px",
+      fontWeight: 800,
+      cursor: "pointer",
+    }}
+  >
+    Post Comment
+  </button>
 </div>
           </Card>
         ))}
