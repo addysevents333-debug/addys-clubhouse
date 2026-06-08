@@ -3381,14 +3381,18 @@ function ProfileScreen({ currentMember, onLogout, setCurrentMember }) {
       .select()
       .single();
 
-    if (error) {
-      if (error.message.includes("duplicate")) {
-        setUsernameMessage("That username is already taken.");
-      } else {
-        setUsernameMessage("Username update failed: " + error.message);
-      }
-      return;
-    }
+if (error) {
+  if (
+    error.code === "23505" ||
+    error.message.includes("duplicate") ||
+    error.message.includes("unique")
+  ) {
+    setUsernameMessage("That username is already taken.");
+  } else {
+    setUsernameMessage("Username update failed: " + error.message);
+  }
+  return;
+}
 
     const updatedMember = {
       ...currentMember,
