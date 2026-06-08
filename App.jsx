@@ -3832,6 +3832,37 @@ const loadCommunityReactions = async () => {
 
   await loadCommunityComments();
 };
+   const deleteCommunityPost = async (post) => {
+  const confirmed = window.confirm(
+    "Delete this post and all of its comments and reactions?"
+  );
+  if (!confirmed) return;
+
+  if (post.image_url) {
+    const fileName = post.image_url.split("/community-images/")[1];
+
+    if (fileName) {
+      await supabase.storage
+        .from("community-images")
+        .remove([decodeURIComponent(fileName)]);
+    }
+  }
+
+  const { error } = await supabase
+    .from("community_posts")
+    .delete()
+    .eq("id", post.id)
+    .eq("member_email", currentMember?.email);
+
+  if (error) {
+    alert("Delete failed: " + error.message);
+    return;
+  }
+
+  await loadCommunityPosts();
+  await loadCommunityComments();
+  await loadCommunityReactions();
+};
   const createCommunityPost = async () => {
     if (!content.trim() && !postImage) {
       setPostMessage("Please add a message or photo.");
@@ -3964,9 +3995,35 @@ const loadCommunityReactions = async () => {
       <div style={{ display: "grid", gap: 12, marginTop: 16 }}>
         {posts.map((post) => (
           <Card key={post.id}>
-            <div style={{ fontWeight: 800 }}>
-              {post.member_name}
-            </div>
+      <div
+  style={{
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    gap: 10,
+  }}
+>
+  <div style={{ fontWeight: 800 }}>
+    {post.member_name}
+  </div>
+
+  {post.member_email === currentMember?.email ? (
+    <button
+      type="button"
+      onClick={() => deleteCommunityPost(post)}
+      style={{
+        border: 0,
+        background: "transparent",
+        color: burgundy,
+        fontWeight: 800,
+        cursor: "pointer",
+        fontSize: 12,
+      }}
+    >
+      Delete Post
+    </button>
+  ) : null}
+</div>
 
             <div style={{ color: "#888", fontSize: 12, marginTop: 3 }}>
               {new Date(post.created_at).toLocaleString()}
