@@ -4033,10 +4033,11 @@ const loadCommunityReactions = async () => {
   </div>
 <button
   type="button"
-  onClick={() => {
-    setEditingPostId(post.id);
-    setEditingPostContent(post.content || "");
-  }}
+onClick={() => {
+  console.log("EDIT POST", post.id, post.content);
+  setEditingPostId(post.id);
+  setEditingPostContent(post.content || "");
+}}
   style={{
     border: 0,
     background: "transparent",
@@ -4070,7 +4071,7 @@ const loadCommunityReactions = async () => {
               {new Date(post.created_at).toLocaleString()}
             </div>
 
-         {editingPostId === post.id ? (
+         {String(editingPostId) === String(post.id) ? (
   <div style={{ marginTop: 12 }}>
     <textarea
       value={editingPostContent}
