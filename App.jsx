@@ -776,22 +776,35 @@ const sendAdminReply = async () => {
 const archiveConversation = async () => {
   if (!selectedConversation) return;
 
-  const confirmed = window.confirm("Archive this conversation from the inbox?");
+  const confirmed = window.confirm(
+    "Archive this conversation from the inbox?"
+  );
   if (!confirmed) return;
 
-  const { error } = await supabase
+  console.log("Archiving:", selectedConversation);
+
+  const { data, error } = await supabase
     .from("messages")
     .update({ archived: true })
     .eq("member_email", selectedConversation.member_email)
-    .eq("staff_email", selectedConversation.staff_email);
+    .eq("staff_email", selectedConversation.staff_email)
+    .select();
 
-  if (!error) {
-    setSelectedConversation(null);
-    setSelectedMemberEmail(null);
-    loadAdminMessages();
-  } else {
+  console.log("Archive result:", { data, error });
+
+  if (error) {
     alert("Archive failed: " + error.message);
+    return;
   }
+
+  if (!data || data.length === 0) {
+    alert("No matching messages were found to archive.");
+    return;
+  }
+
+  setSelectedConversation(null);
+  setSelectedMemberEmail(null);
+  await loadAdminMessages();
 };
 const filteredMembers = members.filter((member) => {
   const search = memberSearch.toLowerCase();
