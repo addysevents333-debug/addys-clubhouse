@@ -380,7 +380,17 @@ const [noteAuthor, setNoteAuthor] = useState("Tyler’s Notes");
   const [postMessage, setPostMessage] = useState("");
 const [offerMessage, setOfferMessage] = useState("");
 const [noteMessage, setNoteMessage] = useState("");
-
+const [adminEvents, setAdminEvents] = useState([]);
+const [eventClub, setEventClub] = useState("Wine Club");
+const [eventTitle, setEventTitle] = useState("");
+const [eventDescription, setEventDescription] = useState("");
+const [eventDateTime, setEventDateTime] = useState("");
+const [eventLocation, setEventLocation] = useState("Addy’s Classroom");
+const [eventCapacity, setEventCapacity] = useState("");
+const [eventReservedSpots, setEventReservedSpots] = useState("0");
+const [eventRsvpCutoff, setEventRsvpCutoff] = useState("");
+const [eventRsvpOpen, setEventRsvpOpen] = useState(true);
+const [eventMessage, setEventMessage] = useState("");
   const uploadPostImage = async () => {
   if (!postImage) {
     return "";
@@ -722,7 +732,20 @@ const { data, error } = await supabase
   loadAdminMessages();
   loadNotes();
   loadAdminOffers();
+  loadAdminEvents();
+      
+const loadAdminEvents = async () => {
+  const { data, error } = await supabase
+    .from("events")
+    .select("*")
+    .order("event_at", { ascending: true });
 
+  if (!error && data) {
+    setAdminEvents(data);
+  } else if (error) {
+    console.log("Error loading events:", error);
+  }
+};
   const channel = supabase
     .channel("admin-messages-realtime")
     .on(
