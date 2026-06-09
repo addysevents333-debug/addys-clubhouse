@@ -899,6 +899,70 @@ const filteredMembers = members.filter((member) => {
     member.membership_type?.toLowerCase().includes(search)
   );
 });
+   const filteredMembers = members.filter((member) => {
+  const search = memberSearch.toLowerCase();
+
+  return (
+    member.first_name?.toLowerCase().includes(search) ||
+    member.last_name?.toLowerCase().includes(search) ||
+    member.email?.toLowerCase().includes(search) ||
+    member.membership_type?.toLowerCase().includes(search)
+  );
+});
+
+const createEvent = async () => {
+  if (!eventTitle.trim() || !eventDateTime || !eventCapacity) {
+    setEventMessage("Please add a title, date/time, and capacity.");
+    return;
+  }
+
+  const capacity = Number(eventCapacity);
+  const reservedSpots = Number(eventReservedSpots || 0);
+
+  if (
+    !Number.isInteger(capacity) ||
+    capacity < 1 ||
+    !Number.isInteger(reservedSpots) ||
+    reservedSpots < 0 ||
+    reservedSpots > capacity
+  ) {
+    setEventMessage("Please enter valid capacity and reserved spots.");
+    return;
+  }
+
+  const { error } = await supabase.from("events").insert([
+    {
+      club: eventClub,
+      title: eventTitle.trim(),
+      description: eventDescription.trim() || null,
+      event_at: new Date(eventDateTime).toISOString(),
+      location: eventLocation.trim() || "Addy’s Classroom",
+      capacity,
+      manual_reserved_spots: reservedSpots,
+      rsvp_cutoff: eventRsvpCutoff
+        ? new Date(eventRsvpCutoff).toISOString()
+        : null,
+      rsvp_open: eventRsvpOpen,
+    },
+  ]);
+
+  if (error) {
+    setEventMessage("Event creation failed: " + error.message);
+    return;
+  }
+
+  setEventTitle("");
+  setEventDescription("");
+  setEventDateTime("");
+  setEventCapacity("");
+  setEventReservedSpots("0");
+  setEventRsvpCutoff("");
+  setEventRsvpOpen(true);
+  setEventMessage("Event created successfully.");
+  await loadAdminEvents();
+};
+
+return (
 return (
     <div style={{ padding: 20, paddingBottom: 160 }}>
       <BrandLogo compact />
