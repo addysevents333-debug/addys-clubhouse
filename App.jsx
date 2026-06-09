@@ -2443,31 +2443,122 @@ function SectionHeader({ title, action, onAction }) {
   );
 }
 
-function CalendarScreen() {
+function CalendarScreen({ currentMember }) {
+  const [calendarEvents, setCalendarEvents] = useState([]);
+  const [eventRsvps, setEventRsvps] = useState([]);
+
+  useEffect(() => {
+    loadCalendarEvents();
+    loadEventRsvps();
+  }, []);
+
+  const loadCalendarEvents = async () => {
+    const { data, error } = await supabase
+      .from("events")
+      .select("*")
+      .gte("event_at", new Date().toISOString())
+      .order("event_at", { ascending: true });
+
+    if (!error && data) {
+      setCalendarEvents(data);
+    }
+  };
+
+  const loadEventRsvps = async () => {
+    const { data, error } = await supabase
+      .from("event_rsvps")
+      .select("*")
+      .eq("status", "confirmed");
+
+    if (!error && data) {
+      setEventRsvps(data);
+    }
+  };
+
   return (
     <div style={{ padding: 20, paddingBottom: 92 }}>
-      <h1 style={{ margin: "0 0 6px", fontSize: 28 }}>Club Calendar</h1>
+      <h1 style={{ margin: "0 0 6px", fontSize: 28 }}>
+        Club Calendar
+      </h1>
+
       <p style={{ margin: "0 0 18px", color: "#666", lineHeight: 1.5 }}>
-        Click the live calendar or view and RSVP upcoming events for both clubs.
+        View and RSVP to upcoming events for both clubs.
       </p>
 
       <Card style={{ marginBottom: 16 }}>
         <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-          <div style={{ width: 48, height: 48, borderRadius: 18, background: blush, display: "grid", placeItems: "center", fontSize: 24 }}>📅</div>
+          <div
+            style={{
+              width: 48,
+              height: 48,
+              borderRadius: 18,
+              background: blush,
+              display: "grid",
+              placeItems: "center",
+              fontSize: 24,
+            }}
+          >
+            📅
+          </div>
+
           <div>
             <h3 style={{ margin: 0 }}>Live Google Calendar</h3>
-            <p style={{ margin: "4px 0 0", color: "#666", fontSize: 14 }}>Wine & Spirits Club calendars connected.</p>
+            <p style={{ margin: "4px 0 0", color: "#666", fontSize: 14 }}>
+              Wine & Spirits Club calendars connected.
+            </p>
           </div>
         </div>
+
         <div style={{ marginTop: 14 }}>
           <AppButton href={calendarLink}>Open Live Calendar</AppButton>
         </div>
       </Card>
 
       <div style={{ display: "grid", gap: 12 }}>
-        {events.map((event) => (
-          <EventCard key={event.id} event={event} />
-        ))}
+        {calendarEvents.map((event) => {
+          const reservedByApp = eventRsvps
+            .filter((rsvp) => rsvp.event_id === event.id)
+            .reduce((total, rsvp) => total + rsvp.guest_count, 0);
+
+          const spotsLeft = Math.max(
+            0,
+            event.capacity -
+              event.manual_reserved_spots -
+              reservedByApp
+          );
+
+          const eventDate = new Date(event.event_at);
+          const cutoffPassed =
+            event.rsvp_cutoff &&
+            new Date(event.rsvp_cutoff) <= new Date();
+
+          const status =
+            spotsLeft <= 0
+              ? "Sold Out"
+              : !event.rsvp_open || cutoffPassed
+                ? "RSVP Closed"
+                : "RSVP Open";
+
+          return (
+            <EventCard
+              key={event.id}
+              event={{
+                ...event,
+                date: eventDate.toLocaleDateString([], {
+                  weekday: "short",
+                  month: "long",
+                  day: "numeric",
+                }),
+                time: eventDate.toLocaleTimeString([], {
+                  hour: "numeric",
+                  minute: "2-digit",
+                }),
+                spots: `${spotsLeft} spots left`,
+                status,
+              }}
+            />
+          );
+        })}
       </div>
     </div>
   );
@@ -4908,7 +4999,9 @@ setNotificationsRead={setNotificationsRead}
 setUnreadNotifications={setUnreadNotifications}
 />
 );
-  if (activeTab === "calendar") screen = <CalendarScreen />;
+ if (activeTab === "calendar") {
+  screen = <CalendarScreen currentMember={currentMember} />;
+}
   if (activeTab === "offers")
   screen = (
    <OffersScreen
