@@ -578,7 +578,6 @@ const [rsvpMessage, setRsvpMessage] = useState("");
     </div>
   ) : null}
 </div>
-      </div>
     </Card>
   );
 }
