@@ -1473,6 +1473,102 @@ return (
     </div>
   ) : null}
 </Card>
+       <Card style={{ marginTop: 16 }}>
+  <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>
+    Manage Events & Attendees
+  </h2>
+
+  <div style={{ display: "grid", gap: 12 }}>
+    {adminEvents.map((event) => {
+      const attendees = adminEventRsvps.filter(
+        (rsvp) => rsvp.event_id === event.id
+      );
+
+      const appReserved = attendees.reduce(
+        (total, rsvp) => total + rsvp.guest_count,
+        0
+      );
+
+      const totalReserved =
+        event.manual_reserved_spots + appReserved;
+
+      const spotsLeft = Math.max(
+        0,
+        event.capacity - totalReserved
+      );
+
+      return (
+        <div
+          key={event.id}
+          style={{
+            border: "1px solid #ddd",
+            borderRadius: 14,
+            padding: 12,
+            background: "#faf7f3",
+          }}
+        >
+          <div style={{ fontWeight: 900 }}>
+            {event.title}
+          </div>
+
+          <div style={{ color: "#666", fontSize: 13, marginTop: 4 }}>
+            {new Date(event.event_at).toLocaleString()}
+          </div>
+
+          <div style={{ marginTop: 8, fontWeight: 800 }}>
+            {totalReserved} reserved · {spotsLeft} spots left
+          </div>
+
+          <div style={{ marginTop: 10, display: "grid", gap: 8 }}>
+            {attendees.length > 0 ? (
+              attendees.map((rsvp) => (
+                <div
+                  key={rsvp.id}
+                  style={{
+                    background: "white",
+                    borderRadius: 12,
+                    padding: 10,
+                  }}
+                >
+                  <div style={{ fontWeight: 800 }}>
+                    {rsvp.member_name} ({rsvp.guest_count})
+                  </div>
+
+                  <div style={{ color: "#666", fontSize: 13 }}>
+                    {rsvp.member_email}
+                  </div>
+
+                  <div style={{ marginTop: 5 }}>
+                    <strong>Attending:</strong>{" "}
+                    {rsvp.attendee_names}
+                  </div>
+
+                  <div style={{ marginTop: 5 }}>
+                    <strong>Dish:</strong>{" "}
+                    {rsvp.bringing_dish
+                      ? rsvp.dish_details || "Yes"
+                      : "No"}
+                  </div>
+
+                  {rsvp.discussion_request ? (
+                    <div style={{ marginTop: 5 }}>
+                      <strong>Discussion request:</strong>{" "}
+                      {rsvp.discussion_request}
+                    </div>
+                  ) : null}
+                </div>
+              ))
+            ) : (
+              <div style={{ color: "#777", fontSize: 13 }}>
+                No app RSVPs yet.
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    })}
+  </div>
+</Card>
      <Card style={{ marginTop: 16 }}>
   <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>
     Manage Notifications
