@@ -889,16 +889,6 @@ const { data, error } = await supabase
   setSelectedMemberEmail(null);
   await loadAdminMessages();
 };
-const filteredMembers = members.filter((member) => {
-  const search = memberSearch.toLowerCase();
-
-  return (
-    member.first_name?.toLowerCase().includes(search) ||
-    member.last_name?.toLowerCase().includes(search) ||
-    member.email?.toLowerCase().includes(search) ||
-    member.membership_type?.toLowerCase().includes(search)
-  );
-});
    const filteredMembers = members.filter((member) => {
   const search = memberSearch.toLowerCase();
 
