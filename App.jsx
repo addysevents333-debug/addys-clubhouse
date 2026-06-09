@@ -2070,15 +2070,19 @@ const [unreadCommunityPosts, setUnreadCommunityPosts] = useState(0);
 
       <div style={{ padding: "0 20px" }}>
         <SectionHeader title="Clubhouse Tools" />
-         <div
+        <div
   style={{
     display: "grid",
-    gridTemplateColumns: "1fr 1fr",
+    gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+    gridAutoRows: "1fr",
     gap: 12,
+    alignItems: "stretch",
   }}
 >
-
- <div onClick={() => setActiveTab("profile")} style={{ cursor: "pointer" }}>
+ <div
+  onClick={() => setActiveTab("profile")}
+  style={{ cursor: "pointer", height: "100%" }}
+>
   <ToolCard icon="🎟️" title="Digital Card" subtitle="Show at checkout" />
 </div>
 
@@ -2138,15 +2142,24 @@ const [unreadCommunityPosts, setUnreadCommunityPosts] = useState(0);
   ) : null}
 </div>
 
-  <div onClick={() => setActiveTab("notes")} style={{ cursor: "pointer" }}>
+  <div
+  onClick={() => setActiveTab("profile")}
+  style={{ cursor: "pointer", height: "100%" }}
+>
     <ToolCard icon="📚" title="Club Notes" subtitle="Jim, Tyler & Spirits Team" />
   </div>
 
-  <div onClick={() => setActiveTab("offers")} style={{ cursor: "pointer" }}>
+  <div
+  onClick={() => setActiveTab("profile")}
+  style={{ cursor: "pointer", height: "100%" }}
+>
     <ToolCard icon="🎁" title="Offers" subtitle="Club exclusives" />
   </div>
 
-  <div onClick={() => setActiveTab("messages")} style={{ cursor: "pointer" }}>
+  <div
+  onClick={() => setActiveTab("profile")}
+  style={{ cursor: "pointer", height: "100%" }}
+>
     <ToolCard icon="💬" title="Staff DMs" subtitle="Message Tyler, Ryan & team" />
   </div>
 
@@ -2154,7 +2167,11 @@ const [unreadCommunityPosts, setUnreadCommunityPosts] = useState(0);
     href="https://docs.google.com/forms/d/e/1FAIpQLSfIDTyHiSCDS5_Lupz7Ksb9qR5qphayTSKR1lIWU4kw5FUXkQ/viewform?usp=header"
     target="_blank"
     rel="noreferrer"
-    style={{ textDecoration: "none" }}
+    style={{
+  textDecoration: "none",
+  display: "block",
+  height: "100%",
+}}
   >
     <ToolCard icon="🧪" title="Beta Feedback" subtitle="Tell us what to improve" />
   </a>
@@ -3623,14 +3640,28 @@ if (error) {
 
 function ToolCard({ icon, title, subtitle }) {
   return (
-    <Card>
+    <Card
+      style={{
+        height: "100%",
+        minHeight: 120,
+        boxSizing: "border-box",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+      }}
+    >
       <div style={{ fontSize: 24 }}>{icon}</div>
-      <h3 style={{ margin: "10px 0 4px", fontSize: 16 }}>{title}</h3>
-      <p style={{ margin: 0, color: "#666", fontSize: 14 }}>{subtitle}</p>
+
+      <h3 style={{ margin: "10px 0 4px", fontSize: 16 }}>
+        {title}
+      </h3>
+
+      <p style={{ margin: 0, color: "#666", fontSize: 14 }}>
+        {subtitle}
+      </p>
     </Card>
   );
 }
-
 const tabs = [
   { id: "home", label: "Feed", icon: "📣" },
   { id: "calendar", label: "Calendar", icon: "📅" },
