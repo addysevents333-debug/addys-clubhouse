@@ -385,6 +385,28 @@ const [rsvpMessage, setRsvpMessage] = useState("");
   setShowRsvpForm(false);
   await onRsvpComplete?.();
 };
+const cancelEventRsvp = async () => {
+  if (!memberRsvp) return;
+
+  const confirmed = window.confirm("Cancel your RSVP for this event?");
+  if (!confirmed) return;
+
+  const { error } = await supabase
+    .from("event_rsvps")
+    .delete()
+    .eq("id", memberRsvp.id)
+    .eq("member_email", currentMember?.email);
+
+  if (error) {
+    setRsvpMessage("Cancellation failed: " + error.message);
+    return;
+  }
+
+  setRsvpMessage("Your RSVP has been cancelled.");
+  setShowRsvpForm(false);
+  await onRsvpComplete?.();
+};
+   
   return (
     <Card>
       <div style={{ display: "flex", gap: 12 }}>
@@ -578,6 +600,26 @@ const [rsvpMessage, setRsvpMessage] = useState("");
     </div>
   ) : null}
 </div>
+       {memberRsvp ? (
+  <button
+    type="button"
+    onClick={cancelEventRsvp}
+    style={{
+      width: "100%",
+      boxSizing: "border-box",
+      marginTop: 10,
+      border: "1px solid #8a1f1f",
+      background: "white",
+      color: "#8a1f1f",
+      borderRadius: 12,
+      padding: "10px 12px",
+      fontWeight: 800,
+      cursor: "pointer",
+    }}
+  >
+    Cancel RSVP
+  </button>
+) : null}
     </Card>
   );
 }
