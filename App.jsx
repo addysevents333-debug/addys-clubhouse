@@ -433,7 +433,151 @@ const [rsvpMessage, setRsvpMessage] = useState("");
       </div>
 
       <div style={{ marginTop: 14 }}>
-        <AppButton href={event.formLink}>{event.status}</AppButton>
+  <AppButton
+    onClick={() => {
+      if (event.status === "RSVP Open" || memberRsvp) {
+        setShowRsvpForm(!showRsvpForm);
+      }
+    }}
+  >
+    {memberRsvp
+      ? "View or Update RSVP"
+      : event.status}
+  </AppButton>
+
+  {rsvpMessage ? (
+    <div style={{ marginTop: 10, color: "#666", fontSize: 13 }}>
+      {rsvpMessage}
+    </div>
+  ) : null}
+
+  {showRsvpForm ? (
+    <div
+      style={{
+        marginTop: 14,
+        borderTop: "1px solid #eee",
+        paddingTop: 14,
+      }}
+    >
+      <label style={{ display: "block", fontWeight: 800, marginBottom: 6 }}>
+        Names of everyone attending
+      </label>
+      <textarea
+        value={attendeeNames}
+        onChange={(event) => setAttendeeNames(event.target.value)}
+        placeholder="Enter attendee names"
+        style={{
+          width: "100%",
+          minHeight: 70,
+          borderRadius: 12,
+          border: "1px solid #ddd",
+          padding: 10,
+          boxSizing: "border-box",
+          fontFamily: "Arial, sans-serif",
+          fontSize: 14,
+          marginBottom: 12,
+        }}
+      />
+
+      <label style={{ display: "block", fontWeight: 800, marginBottom: 6 }}>
+        Number attending
+      </label>
+      <select
+        value={guestCount}
+        onChange={(event) => setGuestCount(Number(event.target.value))}
+        style={{
+          width: "100%",
+          borderRadius: 12,
+          border: "1px solid #ddd",
+          padding: 10,
+          boxSizing: "border-box",
+          fontSize: 14,
+          marginBottom: 12,
+        }}
+      >
+        {Array.from(
+          {
+            length: Math.min(
+              10,
+              Math.max(
+                1,
+                event.spotsLeft + (memberRsvp?.guest_count || 0)
+              )
+            ),
+          },
+          (_, index) => index + 1
+        ).map((number) => (
+          <option key={number} value={number}>
+            {number}
+          </option>
+        ))}
+      </select>
+
+      <label style={{ display: "block", fontWeight: 800, marginBottom: 6 }}>
+        Are you bringing a dish to pass?
+      </label>
+      <select
+        value={bringingDish ? "yes" : "no"}
+        onChange={(event) => setBringingDish(event.target.value === "yes")}
+        style={{
+          width: "100%",
+          borderRadius: 12,
+          border: "1px solid #ddd",
+          padding: 10,
+          boxSizing: "border-box",
+          fontSize: 14,
+          marginBottom: 12,
+        }}
+      >
+        <option value="no">No</option>
+        <option value="yes">Yes</option>
+      </select>
+
+      {bringingDish ? (
+        <textarea
+          value={dishDetails}
+          onChange={(event) => setDishDetails(event.target.value)}
+          placeholder="What are you bringing?"
+          style={{
+            width: "100%",
+            minHeight: 60,
+            borderRadius: 12,
+            border: "1px solid #ddd",
+            padding: 10,
+            boxSizing: "border-box",
+            fontFamily: "Arial, sans-serif",
+            fontSize: 14,
+            marginBottom: 12,
+          }}
+        />
+      ) : null}
+
+      <label style={{ display: "block", fontWeight: 800, marginBottom: 6 }}>
+        Anything you would like discussed?
+      </label>
+      <textarea
+        value={discussionRequest}
+        onChange={(event) => setDiscussionRequest(event.target.value)}
+        placeholder="Optional"
+        style={{
+          width: "100%",
+          minHeight: 70,
+          borderRadius: 12,
+          border: "1px solid #ddd",
+          padding: 10,
+          boxSizing: "border-box",
+          fontFamily: "Arial, sans-serif",
+          fontSize: 14,
+          marginBottom: 12,
+        }}
+      />
+
+      <AppButton onClick={saveEventRsvp}>
+        {memberRsvp ? "Update RSVP" : "Submit RSVP"}
+      </AppButton>
+    </div>
+  ) : null}
+</div>
       </div>
     </Card>
   );
