@@ -218,6 +218,7 @@ function Button({ children, onClick, href }) {
   const style = {
     display: "block",
     width: "100%",
+     boxSizing: "border-box",
     padding: "12px 14px",
     borderRadius: 14,
     background: burgundy,
