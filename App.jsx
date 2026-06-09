@@ -2067,7 +2067,7 @@ setUnreadNotifications,
   <ToolCard
     icon="📸"
     title="Community Board"
-    subtitle="Share bottles, dinners & tours *UNDER DEVELOPMENT*"
+    subtitle="Share bottles, dinners, tours and more"
   />
 </div>
 
