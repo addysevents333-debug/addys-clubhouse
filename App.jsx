@@ -746,6 +746,63 @@ const loadAdminEvents = async () => {
     console.log("Error loading events:", error);
   }
 };
+      const createEvent = async () => {
+  if (
+    !eventTitle.trim() ||
+    !eventDateTime ||
+    !eventCapacity
+  ) {
+    setEventMessage("Please add a title, date/time, and capacity.");
+    return;
+  }
+
+  const capacity = Number(eventCapacity);
+  const reservedSpots = Number(eventReservedSpots || 0);
+
+  if (
+    !Number.isInteger(capacity) ||
+    capacity < 1 ||
+    !Number.isInteger(reservedSpots) ||
+    reservedSpots < 0 ||
+    reservedSpots > capacity
+  ) {
+    setEventMessage("Please enter valid capacity and reserved spots.");
+    return;
+  }
+
+  const { error } = await supabase
+    .from("events")
+    .insert([
+      {
+        club: eventClub,
+        title: eventTitle.trim(),
+        description: eventDescription.trim() || null,
+        event_at: new Date(eventDateTime).toISOString(),
+        location: eventLocation.trim() || "Addy’s Classroom",
+        capacity,
+        manual_reserved_spots: reservedSpots,
+        rsvp_cutoff: eventRsvpCutoff
+          ? new Date(eventRsvpCutoff).toISOString()
+          : null,
+        rsvp_open: eventRsvpOpen,
+      },
+    ]);
+
+  if (error) {
+    setEventMessage("Event creation failed: " + error.message);
+    return;
+  }
+
+  setEventTitle("");
+  setEventDescription("");
+  setEventDateTime("");
+  setEventCapacity("");
+  setEventReservedSpots("0");
+  setEventRsvpCutoff("");
+  setEventRsvpOpen(true);
+  setEventMessage("Event created successfully.");
+  await loadAdminEvents();
+};
   const channel = supabase
     .channel("admin-messages-realtime")
     .on(
@@ -957,6 +1014,175 @@ return (
   <AppButton onClick={createNotification}>
     Create Notification
   </AppButton>
+</Card>
+       <Card style={{ marginTop: 16 }}>
+  <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>
+    Create Event
+  </h2>
+
+  <select
+    value={eventClub}
+    onChange={(event) => setEventClub(event.target.value)}
+    style={{
+      width: "100%",
+      borderRadius: 16,
+      border: "1px solid #ddd6cf",
+      padding: 13,
+      boxSizing: "border-box",
+      fontSize: 15,
+      marginBottom: 12,
+    }}
+  >
+    <option>Wine Club</option>
+    <option>Spirits Club</option>
+    <option>Wine Bonus Class</option>
+    <option>Spirits Bonus Class</option>
+    <option>Special Event</option>
+  </select>
+
+  <input
+    value={eventTitle}
+    onChange={(event) => setEventTitle(event.target.value)}
+    placeholder="Event title"
+    style={{
+      width: "100%",
+      borderRadius: 16,
+      border: "1px solid #ddd6cf",
+      padding: 13,
+      boxSizing: "border-box",
+      fontSize: 15,
+      marginBottom: 12,
+    }}
+  />
+
+  <textarea
+    value={eventDescription}
+    onChange={(event) => setEventDescription(event.target.value)}
+    placeholder="Brief event description"
+    style={{
+      width: "100%",
+      minHeight: 90,
+      borderRadius: 16,
+      border: "1px solid #ddd6cf",
+      padding: 13,
+      boxSizing: "border-box",
+      fontFamily: "Arial, sans-serif",
+      fontSize: 15,
+      marginBottom: 12,
+    }}
+  />
+
+  <label style={{ display: "block", fontWeight: 800, marginBottom: 6 }}>
+    Event date and time
+  </label>
+  <input
+    type="datetime-local"
+    value={eventDateTime}
+    onChange={(event) => setEventDateTime(event.target.value)}
+    style={{
+      width: "100%",
+      borderRadius: 16,
+      border: "1px solid #ddd6cf",
+      padding: 13,
+      boxSizing: "border-box",
+      fontSize: 15,
+      marginBottom: 12,
+    }}
+  />
+
+  <input
+    value={eventLocation}
+    onChange={(event) => setEventLocation(event.target.value)}
+    placeholder="Location"
+    style={{
+      width: "100%",
+      borderRadius: 16,
+      border: "1px solid #ddd6cf",
+      padding: 13,
+      boxSizing: "border-box",
+      fontSize: 15,
+      marginBottom: 12,
+    }}
+  />
+
+  <input
+    type="number"
+    min="1"
+    value={eventCapacity}
+    onChange={(event) => setEventCapacity(event.target.value)}
+    placeholder="Total capacity"
+    style={{
+      width: "100%",
+      borderRadius: 16,
+      border: "1px solid #ddd6cf",
+      padding: 13,
+      boxSizing: "border-box",
+      fontSize: 15,
+      marginBottom: 12,
+    }}
+  />
+
+  <input
+    type="number"
+    min="0"
+    value={eventReservedSpots}
+    onChange={(event) => setEventReservedSpots(event.target.value)}
+    placeholder="Already reserved spots"
+    style={{
+      width: "100%",
+      borderRadius: 16,
+      border: "1px solid #ddd6cf",
+      padding: 13,
+      boxSizing: "border-box",
+      fontSize: 15,
+      marginBottom: 12,
+    }}
+  />
+
+  <label style={{ display: "block", fontWeight: 800, marginBottom: 6 }}>
+    RSVP cutoff
+  </label>
+  <input
+    type="datetime-local"
+    value={eventRsvpCutoff}
+    onChange={(event) => setEventRsvpCutoff(event.target.value)}
+    style={{
+      width: "100%",
+      borderRadius: 16,
+      border: "1px solid #ddd6cf",
+      padding: 13,
+      boxSizing: "border-box",
+      fontSize: 15,
+      marginBottom: 12,
+    }}
+  />
+
+  <label
+    style={{
+      display: "flex",
+      alignItems: "center",
+      gap: 8,
+      marginBottom: 12,
+      fontWeight: 800,
+    }}
+  >
+    <input
+      type="checkbox"
+      checked={eventRsvpOpen}
+      onChange={(event) => setEventRsvpOpen(event.target.checked)}
+    />
+    RSVP open
+  </label>
+
+  <AppButton onClick={createEvent}>
+    Create Event
+  </AppButton>
+
+  {eventMessage ? (
+    <div style={{ marginTop: 10, color: "#666" }}>
+      {eventMessage}
+    </div>
+  ) : null}
 </Card>
      <Card style={{ marginTop: 16 }}>
   <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>
