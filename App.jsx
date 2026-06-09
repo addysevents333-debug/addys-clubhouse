@@ -726,15 +726,7 @@ const { data, error } = await supabase
     setAdminMessages(data);
   }
 };
-   useEffect(() => {
-  loadMembers();
-  loadAdminPosts();
-  loadAdminMessages();
-  loadNotes();
-  loadAdminOffers();
-  loadAdminEvents();
-      
-const loadAdminEvents = async () => {
+   const loadAdminEvents = async () => {
   const { data, error } = await supabase
     .from("events")
     .select("*")
@@ -746,6 +738,15 @@ const loadAdminEvents = async () => {
     console.log("Error loading events:", error);
   }
 };
+   useEffect(() => {
+  loadMembers();
+  loadAdminPosts();
+  loadAdminMessages();
+  loadNotes();
+  loadAdminOffers();
+  loadAdminEvents();
+      
+
    
   const channel = supabase
     .channel("admin-messages-realtime")
