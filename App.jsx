@@ -1057,7 +1057,7 @@ return (
   <textarea
     value={eventDescription}
     onChange={(event) => setEventDescription(event.target.value)}
-    placeholder="Brief event description"
+    placeholder="Event Description"
     style={{
       width: "100%",
       minHeight: 90,
