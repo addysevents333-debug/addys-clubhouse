@@ -1622,6 +1622,212 @@ return (
     Delete Event
   </button>
 </div>
+         {editingEventId === event.id && editingEvent ? (
+  <div
+    style={{
+      marginTop: 12,
+      background: "white",
+      borderRadius: 14,
+      padding: 12,
+      border: "1px solid #ddd",
+    }}
+  >
+    <select
+      value={editingEvent.club}
+      onChange={(e) =>
+        setEditingEvent({ ...editingEvent, club: e.target.value })
+      }
+      style={{
+        width: "100%",
+        padding: 10,
+        marginBottom: 8,
+        boxSizing: "border-box",
+      }}
+    >
+      <option>Wine Club</option>
+      <option>Spirits Club</option>
+      <option>Wine Bonus Class</option>
+      <option>Spirits Bonus Class</option>
+      <option>Special Event</option>
+    </select>
+
+    <input
+      value={editingEvent.title}
+      onChange={(e) =>
+        setEditingEvent({ ...editingEvent, title: e.target.value })
+      }
+      placeholder="Event title"
+      style={{
+        width: "100%",
+        padding: 10,
+        marginBottom: 8,
+        boxSizing: "border-box",
+      }}
+    />
+
+    <textarea
+      value={editingEvent.description}
+      onChange={(e) =>
+        setEditingEvent({
+          ...editingEvent,
+          description: e.target.value,
+        })
+      }
+      placeholder="Description"
+      style={{
+        width: "100%",
+        minHeight: 70,
+        padding: 10,
+        marginBottom: 8,
+        boxSizing: "border-box",
+      }}
+    />
+
+    <label style={{ display: "block", fontWeight: 800 }}>
+      Event date and time
+    </label>
+    <input
+      type="datetime-local"
+      value={editingEvent.event_at}
+      onChange={(e) =>
+        setEditingEvent({ ...editingEvent, event_at: e.target.value })
+      }
+      style={{
+        width: "100%",
+        padding: 10,
+        margin: "6px 0 8px",
+        boxSizing: "border-box",
+      }}
+    />
+
+    <input
+      value={editingEvent.location}
+      onChange={(e) =>
+        setEditingEvent({ ...editingEvent, location: e.target.value })
+      }
+      placeholder="Location"
+      style={{
+        width: "100%",
+        padding: 10,
+        marginBottom: 8,
+        boxSizing: "border-box",
+      }}
+    />
+
+    <input
+      type="number"
+      min="1"
+      value={editingEvent.capacity}
+      onChange={(e) =>
+        setEditingEvent({ ...editingEvent, capacity: e.target.value })
+      }
+      placeholder="Capacity"
+      style={{
+        width: "100%",
+        padding: 10,
+        marginBottom: 8,
+        boxSizing: "border-box",
+      }}
+    />
+
+    <input
+      type="number"
+      min="0"
+      value={editingEvent.manual_reserved_spots}
+      onChange={(e) =>
+        setEditingEvent({
+          ...editingEvent,
+          manual_reserved_spots: e.target.value,
+        })
+      }
+      placeholder="Manual reserved spots"
+      style={{
+        width: "100%",
+        padding: 10,
+        marginBottom: 8,
+        boxSizing: "border-box",
+      }}
+    />
+
+    <label style={{ display: "block", fontWeight: 800 }}>
+      RSVP cutoff
+    </label>
+    <input
+      type="datetime-local"
+      value={editingEvent.rsvp_cutoff}
+      onChange={(e) =>
+        setEditingEvent({
+          ...editingEvent,
+          rsvp_cutoff: e.target.value,
+        })
+      }
+      style={{
+        width: "100%",
+        padding: 10,
+        margin: "6px 0 8px",
+        boxSizing: "border-box",
+      }}
+    />
+
+    <label
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 8,
+        marginBottom: 10,
+      }}
+    >
+      <input
+        type="checkbox"
+        checked={editingEvent.rsvp_open}
+        onChange={(e) =>
+          setEditingEvent({
+            ...editingEvent,
+            rsvp_open: e.target.checked,
+          })
+        }
+      />
+      RSVP open
+    </label>
+
+    <div style={{ display: "flex", gap: 8 }}>
+      <button
+        type="button"
+        onClick={saveEventEdit}
+        style={{
+          border: 0,
+          borderRadius: 10,
+          padding: "9px 12px",
+          background: burgundy,
+          color: "white",
+          fontWeight: 800,
+          cursor: "pointer",
+        }}
+      >
+        Save Changes
+      </button>
+
+      <button
+        type="button"
+        onClick={() => {
+          setEditingEventId(null);
+          setEditingEvent(null);
+        }}
+        style={{
+          border: "1px solid #ddd",
+          borderRadius: 10,
+          padding: "9px 12px",
+          background: "white",
+          color: "#555",
+          fontWeight: 800,
+          cursor: "pointer",
+        }}
+      >
+        Cancel
+      </button>
+    </div>
+  </div>
+) : null}  
           <div style={{ marginTop: 10, display: "grid", gap: 8 }}>
             {attendees.length > 0 ? (
               attendees.map((rsvp) => (
