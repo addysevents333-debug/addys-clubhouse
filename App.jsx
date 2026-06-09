@@ -1886,6 +1886,7 @@ function NotificationPanel({ notifications }) {
 function HomeScreen({
   setActiveTab,
   currentMember,
+   setCurrentMember,
   showNotifications,
   setShowNotifications,
   notifications,
@@ -4615,6 +4616,7 @@ const isAdmin =
 <HomeScreen
   setActiveTab={setActiveTab}
   currentMember={currentMember}
+   setCurrentMember={setCurrentMember}
   setFullscreenImage={setFullscreenImage}
   showNotifications={showNotifications}
   setShowNotifications={setShowNotifications}
