@@ -299,6 +299,7 @@ function EventCard({
   onRsvpComplete,
 }) {
    const [showRsvpForm, setShowRsvpForm] = useState(false);
+   const [showDetails, setShowDetails] = useState(false);
 const [attendeeNames, setAttendeeNames] = useState(
   memberRsvp?.attendee_names || ""
 );
@@ -453,7 +454,53 @@ const cancelEventRsvp = async () => {
           </div>
         </div>
       </div>
+{event.description ? (
+  <div style={{ marginTop: 10 }}>
+    <button
+      type="button"
+      onClick={() => setShowDetails(!showDetails)}
+      style={{
+        border: 0,
+        background: "transparent",
+        color: burgundy,
+        padding: 0,
+        fontWeight: 800,
+        cursor: "pointer",
+        fontSize: 13,
+      }}
+    >
+      {showDetails ? "Hide details" : "View event details"}
+    </button>
 
+    {showDetails ? (
+      <div
+        style={{
+          marginTop: 10,
+          background: "#faf7f3",
+          borderRadius: 12,
+          padding: 11,
+          color: "#555",
+          lineHeight: 1.5,
+          fontSize: 14,
+        }}
+      >
+        <div>{event.description}</div>
+
+        {event.rsvp_cutoff ? (
+          <div style={{ marginTop: 8, fontSize: 12 }}>
+            <strong>RSVP deadline:</strong>{" "}
+            {new Date(event.rsvp_cutoff).toLocaleString([], {
+              month: "long",
+              day: "numeric",
+              hour: "numeric",
+              minute: "2-digit",
+            })}
+          </div>
+        ) : null}
+      </div>
+    ) : null}
+  </div>
+) : null}
       <div style={{ marginTop: 14 }}>
   <AppButton
     onClick={() => {
