@@ -298,6 +298,93 @@ function EventCard({
   memberRsvp,
   onRsvpComplete,
 }) {
+   const [showRsvpForm, setShowRsvpForm] = useState(false);
+const [attendeeNames, setAttendeeNames] = useState(
+  memberRsvp?.attendee_names || ""
+);
+const [guestCount, setGuestCount] = useState(
+  memberRsvp?.guest_count || 1
+);
+const [bringingDish, setBringingDish] = useState(
+  memberRsvp?.bringing_dish ?? false
+);
+const [dishDetails, setDishDetails] = useState(
+  memberRsvp?.dish_details || ""
+);
+const [discussionRequest, setDiscussionRequest] = useState(
+  memberRsvp?.discussion_request || ""
+);
+const [rsvpMessage, setRsvpMessage] = useState("");
+   const saveEventRsvp = async () => {
+  if (!currentMember?.email) {
+    setRsvpMessage("Please log in to RSVP.");
+    return;
+  }
+
+  if (!attendeeNames.trim()) {
+    setRsvpMessage("Please enter the names of everyone attending.");
+    return;
+  }
+
+  const partySize = Number(guestCount);
+
+  if (
+    !Number.isInteger(partySize) ||
+    partySize < 1 ||
+    partySize > 10
+  ) {
+    setRsvpMessage("Please select a valid party size.");
+    return;
+  }
+
+  const availableWithCurrentReservation =
+    event.spotsLeft + (memberRsvp?.guest_count || 0);
+
+  if (partySize > availableWithCurrentReservation) {
+    setRsvpMessage(
+      `Only ${availableWithCurrentReservation} spots are available.`
+    );
+    return;
+  }
+
+  const memberName =
+    `${currentMember.first_name || ""} ${
+      currentMember.last_name || ""
+    }`.trim() ||
+    currentMember.name ||
+    currentMember.email;
+
+  const { error } = await supabase
+    .from("event_rsvps")
+    .upsert(
+      {
+        event_id: event.id,
+        member_email: currentMember.email,
+        member_name: memberName,
+        guest_count: partySize,
+        attendee_names: attendeeNames.trim(),
+        bringing_dish: bringingDish,
+        dish_details: bringingDish
+          ? dishDetails.trim() || null
+          : null,
+        discussion_request:
+          discussionRequest.trim() || null,
+        status: "confirmed",
+      },
+      {
+        onConflict: "event_id,member_email",
+      }
+    );
+
+  if (error) {
+    setRsvpMessage("RSVP failed: " + error.message);
+    return;
+  }
+
+  setRsvpMessage("Your RSVP has been saved.");
+  setShowRsvpForm(false);
+  await onRsvpComplete?.();
+};
   return (
     <Card>
       <div style={{ display: "flex", gap: 12 }}>
