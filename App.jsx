@@ -1589,7 +1589,39 @@ return (
           <div style={{ marginTop: 8, fontWeight: 800 }}>
             {totalReserved} reserved · {spotsLeft} spots left
           </div>
+<div style={{ display: "flex", gap: 8, marginTop: 10 }}>
+  <button
+    type="button"
+    onClick={() => startEditingEvent(event)}
+    style={{
+      border: 0,
+      borderRadius: 10,
+      padding: "8px 10px",
+      background: burgundy,
+      color: "white",
+      fontWeight: 800,
+      cursor: "pointer",
+    }}
+  >
+    Edit Event
+  </button>
 
+  <button
+    type="button"
+    onClick={() => deleteEvent(event)}
+    style={{
+      border: "1px solid #8a1f1f",
+      borderRadius: 10,
+      padding: "8px 10px",
+      background: "white",
+      color: "#8a1f1f",
+      fontWeight: 800,
+      cursor: "pointer",
+    }}
+  >
+    Delete Event
+  </button>
+</div>
           <div style={{ marginTop: 10, display: "grid", gap: 8 }}>
             {attendees.length > 0 ? (
               attendees.map((rsvp) => (
