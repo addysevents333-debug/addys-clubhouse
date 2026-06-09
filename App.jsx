@@ -292,7 +292,12 @@ function Card({ children, style = {} }) {
   );
 }
 
-function EventCard({ event }) {
+function EventCard({
+  event,
+  currentMember,
+  memberRsvp,
+  onRsvpComplete,
+}) {
   return (
     <Card>
       <div style={{ display: "flex", gap: 12 }}>
@@ -2474,7 +2479,10 @@ function CalendarScreen({ currentMember }) {
       setEventRsvps(data);
     }
   };
-
+const reloadCalendar = async () => {
+  await loadCalendarEvents();
+  await loadEventRsvps();
+};
   return (
     <div style={{ padding: 20, paddingBottom: 92 }}>
       <h1 style={{ margin: "0 0 6px", fontSize: 28 }}>
@@ -2540,23 +2548,31 @@ function CalendarScreen({ currentMember }) {
                 : "RSVP Open";
 
           return (
-            <EventCard
-              key={event.id}
-              event={{
-                ...event,
-                date: eventDate.toLocaleDateString([], {
-                  weekday: "short",
-                  month: "long",
-                  day: "numeric",
-                }),
-                time: eventDate.toLocaleTimeString([], {
-                  hour: "numeric",
-                  minute: "2-digit",
-                }),
-                spots: `${spotsLeft} spots left`,
-                status,
-              }}
-            />
+           <EventCard
+  key={event.id}
+  event={{
+    ...event,
+    date: eventDate.toLocaleDateString([], {
+      weekday: "short",
+      month: "long",
+      day: "numeric",
+    }),
+    time: eventDate.toLocaleTimeString([], {
+      hour: "numeric",
+      minute: "2-digit",
+    }),
+    spots: `${spotsLeft} spots left`,
+    spotsLeft,
+    status,
+  }}
+  currentMember={currentMember}
+  memberRsvp={eventRsvps.find(
+    (rsvp) =>
+      rsvp.event_id === event.id &&
+      rsvp.member_email === currentMember?.email
+  )}
+  onRsvpComplete={reloadCalendar}
+/>
           );
         })}
       </div>
