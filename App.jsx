@@ -746,63 +746,7 @@ const loadAdminEvents = async () => {
     console.log("Error loading events:", error);
   }
 };
-      const createEvent = async () => {
-  if (
-    !eventTitle.trim() ||
-    !eventDateTime ||
-    !eventCapacity
-  ) {
-    setEventMessage("Please add a title, date/time, and capacity.");
-    return;
-  }
-
-  const capacity = Number(eventCapacity);
-  const reservedSpots = Number(eventReservedSpots || 0);
-
-  if (
-    !Number.isInteger(capacity) ||
-    capacity < 1 ||
-    !Number.isInteger(reservedSpots) ||
-    reservedSpots < 0 ||
-    reservedSpots > capacity
-  ) {
-    setEventMessage("Please enter valid capacity and reserved spots.");
-    return;
-  }
-
-  const { error } = await supabase
-    .from("events")
-    .insert([
-      {
-        club: eventClub,
-        title: eventTitle.trim(),
-        description: eventDescription.trim() || null,
-        event_at: new Date(eventDateTime).toISOString(),
-        location: eventLocation.trim() || "Addy’s Classroom",
-        capacity,
-        manual_reserved_spots: reservedSpots,
-        rsvp_cutoff: eventRsvpCutoff
-          ? new Date(eventRsvpCutoff).toISOString()
-          : null,
-        rsvp_open: eventRsvpOpen,
-      },
-    ]);
-
-  if (error) {
-    setEventMessage("Event creation failed: " + error.message);
-    return;
-  }
-
-  setEventTitle("");
-  setEventDescription("");
-  setEventDateTime("");
-  setEventCapacity("");
-  setEventReservedSpots("0");
-  setEventRsvpCutoff("");
-  setEventRsvpOpen(true);
-  setEventMessage("Event created successfully.");
-  await loadAdminEvents();
-};
+   
   const channel = supabase
     .channel("admin-messages-realtime")
     .on(
@@ -952,7 +896,7 @@ const createEvent = async () => {
   await loadAdminEvents();
 };
 
-return (
+
 return (
     <div style={{ padding: 20, paddingBottom: 160 }}>
       <BrandLogo compact />
