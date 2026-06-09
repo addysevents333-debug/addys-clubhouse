@@ -669,6 +669,8 @@ const [eventRsvpCutoff, setEventRsvpCutoff] = useState("");
 const [eventRsvpOpen, setEventRsvpOpen] = useState(true);
 const [eventMessage, setEventMessage] = useState("");
    const [adminEventRsvps, setAdminEventRsvps] = useState([]);
+   const [editingEventId, setEditingEventId] = useState(null);
+const [editingEvent, setEditingEvent] = useState(null);
   const uploadPostImage = async () => {
   if (!postImage) {
     return "";
@@ -1187,7 +1189,76 @@ const createEvent = async () => {
   await loadAdminEvents();
 };
 
+const startEditingEvent = (event) => {
+  setEditingEventId(event.id);
+  setEditingEvent({
+    club: event.club || "Wine Club",
+    title: event.title || "",
+    description: event.description || "",
+    event_at: event.event_at
+      ? new Date(event.event_at).toISOString().slice(0, 16)
+      : "",
+    location: event.location || "Addy’s Classroom",
+    capacity: event.capacity || "",
+    manual_reserved_spots: event.manual_reserved_spots || 0,
+    rsvp_cutoff: event.rsvp_cutoff
+      ? new Date(event.rsvp_cutoff).toISOString().slice(0, 16)
+      : "",
+    rsvp_open: event.rsvp_open,
+  });
+};
 
+const saveEventEdit = async () => {
+  if (!editingEventId || !editingEvent) return;
+
+  const { error } = await supabase
+    .from("events")
+    .update({
+      club: editingEvent.club,
+      title: editingEvent.title.trim(),
+      description: editingEvent.description.trim() || null,
+      event_at: new Date(editingEvent.event_at).toISOString(),
+      location: editingEvent.location.trim(),
+      capacity: Number(editingEvent.capacity),
+      manual_reserved_spots: Number(
+        editingEvent.manual_reserved_spots || 0
+      ),
+      rsvp_cutoff: editingEvent.rsvp_cutoff
+        ? new Date(editingEvent.rsvp_cutoff).toISOString()
+        : null,
+      rsvp_open: editingEvent.rsvp_open,
+    })
+    .eq("id", editingEventId);
+
+  if (error) {
+    alert("Event update failed: " + error.message);
+    return;
+  }
+
+  setEditingEventId(null);
+  setEditingEvent(null);
+  await loadAdminEvents();
+};
+
+const deleteEvent = async (event) => {
+  const confirmed = window.confirm(
+    `Delete "${event.title}" and all of its RSVPs?`
+  );
+  if (!confirmed) return;
+
+  const { error } = await supabase
+    .from("events")
+    .delete()
+    .eq("id", event.id);
+
+  if (error) {
+    alert("Event deletion failed: " + error.message);
+    return;
+  }
+
+  await loadAdminEvents();
+  await loadAdminEventRsvps();
+};
 return (
     <div style={{ padding: 20, paddingBottom: 160 }}>
       <BrandLogo compact />
