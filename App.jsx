@@ -2841,6 +2841,8 @@ function HomeScreen({
 setUnreadNotifications,
 }) {
   const [clubhouseFeed, setClubhouseFeed] = useState([]);
+   const [homeEvents, setHomeEvents] = useState([]);
+const [homeEventRsvps, setHomeEventRsvps] = useState([]);
    const loadUnreadCommunityPosts = async () => {
   const lastViewed = currentMember?.last_community_viewed;
 
@@ -2859,9 +2861,11 @@ setUnreadNotifications,
   }
 };
 
-  useEffect(() => {
+ useEffect(() => {
   loadPosts();
   loadUnreadCommunityPosts();
+  loadHomeEvents();
+  loadHomeEventRsvps();
 }, [currentMember?.email, currentMember?.last_community_viewed]);
 const [unreadCommunityPosts, setUnreadCommunityPosts] = useState(0);
   const loadPosts = async () => {
@@ -2875,7 +2879,29 @@ const [unreadCommunityPosts, setUnreadCommunityPosts] = useState(0);
     const data = await response.json();
     setClubhouseFeed(data);
   };
+const loadHomeEvents = async () => {
+  const { data, error } = await supabase
+    .from("events")
+    .select("*")
+    .gte("event_at", new Date().toISOString())
+    .order("event_at", { ascending: true })
+    .limit(2);
 
+  if (!error && data) {
+    setHomeEvents(data);
+  }
+};
+
+const loadHomeEventRsvps = async () => {
+  const { data, error } = await supabase
+    .from("event_rsvps")
+    .select("*")
+    .eq("status", "confirmed");
+
+  if (!error && data) {
+    setHomeEventRsvps(data);
+  }
+};
   return (
     <div style={{ paddingBottom: 92 }}>
       <div
@@ -3006,9 +3032,61 @@ const [unreadCommunityPosts, setUnreadCommunityPosts] = useState(0);
         />
 
         <div style={{ display: "grid", gap: 12 }}>
-          {events.slice(0, 2).map((event) => (
-            <EventCard key={event.id} event={event} />
-          ))}
+          {homeEvents.map((event) => {
+  const reservedByApp = homeEventRsvps
+    .filter((rsvp) => rsvp.event_id === event.id)
+    .reduce((total, rsvp) => total + rsvp.guest_count, 0);
+
+  const spotsLeft = Math.max(
+    0,
+    event.capacity -
+      event.manual_reserved_spots -
+      reservedByApp
+  );
+
+  const eventDate = new Date(event.event_at);
+  const cutoffPassed =
+    event.rsvp_cutoff &&
+    new Date(event.rsvp_cutoff) <= new Date();
+
+  const status =
+    spotsLeft <= 0
+      ? "Sold Out"
+      : !event.rsvp_open || cutoffPassed
+        ? "RSVP Closed"
+        : "RSVP Open";
+
+  return (
+    <EventCard
+      key={event.id}
+      event={{
+        ...event,
+        date: eventDate.toLocaleDateString([], {
+          weekday: "short",
+          month: "long",
+          day: "numeric",
+        }),
+        time: eventDate.toLocaleTimeString([], {
+          hour: "numeric",
+          minute: "2-digit",
+        }),
+        spots: `${spotsLeft} spots left`,
+        spotsLeft,
+        status,
+      }}
+      currentMember={currentMember}
+      memberRsvp={homeEventRsvps.find(
+        (rsvp) =>
+          rsvp.event_id === event.id &&
+          rsvp.member_email === currentMember?.email
+      )}
+      onRsvpComplete={async () => {
+        await loadHomeEvents();
+        await loadHomeEventRsvps();
+      }}
+    />
+  );
+})}
         </div>
       </div>
 
