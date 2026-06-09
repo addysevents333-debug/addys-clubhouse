@@ -1896,11 +1896,29 @@ function HomeScreen({
 setUnreadNotifications,
 }) {
   const [clubhouseFeed, setClubhouseFeed] = useState([]);
+   const loadUnreadCommunityPosts = async () => {
+  const lastViewed = currentMember?.last_community_viewed;
+
+  let query = supabase
+    .from("community_posts")
+    .select("id", { count: "exact", head: true });
+
+  if (lastViewed) {
+    query = query.gt("created_at", lastViewed);
+  }
+
+  const { count, error } = await query;
+
+  if (!error) {
+    setUnreadCommunityPosts(count || 0);
+  }
+};
 
   useEffect(() => {
-    loadPosts();
-  }, []);
-
+  loadPosts();
+  loadUnreadCommunityPosts();
+}, [currentMember?.email, currentMember?.last_community_viewed]);
+const [unreadCommunityPosts, setUnreadCommunityPosts] = useState(0);
   const loadPosts = async () => {
    const response = await fetch(`${SUPABASE_URL}/rest/v1/posts?select=*&order=created_at.desc`, {
       headers: {
@@ -2063,12 +2081,60 @@ setUnreadNotifications,
   <ToolCard icon="🎟️" title="Digital Card" subtitle="Show at checkout" />
 </div>
 
-<div onClick={() => setActiveTab("community")} style={{ cursor: "pointer" }}>
+<div
+  onClick={async () => {
+    const now = new Date().toISOString();
+
+    if (currentMember?.email) {
+      await supabase
+        .from("members")
+        .update({ last_community_viewed: now })
+        .eq("email", currentMember.email);
+
+      const updatedMember = {
+        ...currentMember,
+        last_community_viewed: now,
+      };
+
+      setCurrentMember(updatedMember);
+      localStorage.setItem(
+        "addysMember",
+        JSON.stringify(updatedMember)
+      );
+    }
+
+    setUnreadCommunityPosts(0);
+    setActiveTab("community");
+  }}
+  style={{ cursor: "pointer", position: "relative" }}
+>
   <ToolCard
     icon="📸"
     title="Community Board"
-    subtitle="Share bottles, dinners, tours and more"
+    subtitle="Share bottles, dinners & tours"
   />
+
+  {unreadCommunityPosts > 0 ? (
+    <div
+      style={{
+        position: "absolute",
+        top: 10,
+        right: 10,
+        background: "#d50000",
+        color: "white",
+        borderRadius: 999,
+        minWidth: 20,
+        height: 20,
+        padding: "0 6px",
+        display: "grid",
+        placeItems: "center",
+        fontSize: 11,
+        fontWeight: 900,
+      }}
+    >
+      {unreadCommunityPosts}
+    </div>
+  ) : null}
 </div>
 
   <div onClick={() => setActiveTab("notes")} style={{ cursor: "pointer" }}>
