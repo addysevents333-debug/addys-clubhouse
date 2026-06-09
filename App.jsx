@@ -668,6 +668,7 @@ const [eventReservedSpots, setEventReservedSpots] = useState("0");
 const [eventRsvpCutoff, setEventRsvpCutoff] = useState("");
 const [eventRsvpOpen, setEventRsvpOpen] = useState(true);
 const [eventMessage, setEventMessage] = useState("");
+   const [adminEventRsvps, setAdminEventRsvps] = useState([]);
   const uploadPostImage = async () => {
   if (!postImage) {
     return "";
@@ -1003,6 +1004,17 @@ const { data, error } = await supabase
     setAdminMessages(data);
   }
 };
+   const loadAdminEventRsvps = async () => {
+  const { data, error } = await supabase
+    .from("event_rsvps")
+    .select("*")
+    .eq("status", "confirmed")
+    .order("created_at", { ascending: true });
+
+  if (!error && data) {
+    setAdminEventRsvps(data);
+  }
+};
    const loadAdminEvents = async () => {
   const { data, error } = await supabase
     .from("events")
@@ -1022,6 +1034,7 @@ const { data, error } = await supabase
   loadNotes();
   loadAdminOffers();
   loadAdminEvents();
+  loadAdminEventRsvps();
       
 
    
