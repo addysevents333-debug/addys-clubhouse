@@ -2849,7 +2849,10 @@ const togglePostLike = async () => {
       {
         post_id: post.id,
         member_email: currentMember.email,
-        member_name: currentMember.name || currentMember.email,
+       member_name:
+  `${currentMember.first_name || ""} ${
+    currentMember.last_name || ""
+  }`.trim() || currentMember.email,
         comment: commentText.trim(),
       },
     ]);
