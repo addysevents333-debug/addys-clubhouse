@@ -1454,6 +1454,54 @@ return (
           Create Feed Post
         </AppButton>
       </AdminSection>
+       <AdminSection
+  id="posts-manage"
+  title="Manage Feed Posts"
+  count={adminPosts.length}
+  activeSection={activeAdminSection}
+  setActiveSection={setActiveAdminSection}
+>
+<div style={{ marginBottom: 12 }}>
+  Loaded Posts: {adminPosts.length}
+</div>
+ <div style={{ display: "grid", gap: 10, maxHeight: "60vh", overflowY: "auto", paddingRight: 6 }}>
+  {adminPosts.map((post) => (
+      <div
+        key={post.id}
+        style={{
+          padding: 12,
+          border: "1px solid #ddd",
+          borderRadius: 14,
+          background: "#faf7f3",
+        }}
+      >
+        <div style={{ fontWeight: 700 }}>
+          {post.author}
+        </div>
+
+        <div style={{ marginTop: 6 }}>
+          {post.content}
+        </div>
+
+        <button
+          onClick={() => deletePost(post.id)}
+          style={{
+            marginTop: 12,
+            border: 0,
+            borderRadius: 12,
+            padding: "10px 12px",
+            background: "#8a1f1f",
+            color: "white",
+            fontWeight: 700,
+            cursor: "pointer",
+          }}
+        >
+          Delete Post
+        </button>
+      </div>
+    ))}
+  </div>
+</AdminSection>
 <AdminSection
   id="notifications-create"
   title="Create Notification"
@@ -2399,54 +2447,7 @@ return (
     ))}
   </div>
 </AdminSection>
-      <AdminSection
-  id="posts-manage"
-  title="Manage Feed Posts"
-  count={adminPosts.length}
-  activeSection={activeAdminSection}
-  setActiveSection={setActiveAdminSection}
->
-<div style={{ marginBottom: 12 }}>
-  Loaded Posts: {adminPosts.length}
-</div>
- <div style={{ display: "grid", gap: 10, maxHeight: "60vh", overflowY: "auto", paddingRight: 6 }}>
-  {adminPosts.map((post) => (
-      <div
-        key={post.id}
-        style={{
-          padding: 12,
-          border: "1px solid #ddd",
-          borderRadius: 14,
-          background: "#faf7f3",
-        }}
-      >
-        <div style={{ fontWeight: 700 }}>
-          {post.author}
-        </div>
-
-        <div style={{ marginTop: 6 }}>
-          {post.content}
-        </div>
-
-        <button
-          onClick={() => deletePost(post.id)}
-          style={{
-            marginTop: 12,
-            border: 0,
-            borderRadius: 12,
-            padding: "10px 12px",
-            background: "#8a1f1f",
-            color: "white",
-            fontWeight: 700,
-            cursor: "pointer",
-          }}
-        >
-          Delete Post
-        </button>
-      </div>
-    ))}
-  </div>
-</AdminSection>
+      
       <AdminSection
   id="offers-manage"
   title="Manage Offers"
