@@ -3118,11 +3118,11 @@ function HomeScreen({
    unreadNotifications,
 setUnreadNotifications,
 }) {
+   const [feedMemberProfiles, setFeedMemberProfiles] = useState({});
   const [clubhouseFeed, setClubhouseFeed] = useState([]);
    const [homeEvents, setHomeEvents] = useState([]);
 const [homeEventRsvps, setHomeEventRsvps] = useState([]);
    const loadUnreadCommunityPosts = async () => {
-  const [feedMemberProfiles, setFeedMemberProfiles] = useState({});
   const lastViewed = currentMember?.last_community_viewed;
 
   let query = supabase
