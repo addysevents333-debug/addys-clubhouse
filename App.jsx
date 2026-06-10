@@ -6146,9 +6146,28 @@ const selectPostMention = (username) => {
     gap: 10,
   }}
 >
+<div
+  style={{
+    display: "flex",
+    alignItems: "center",
+    gap: 10,
+    flex: 1,
+  }}
+>
+  <MemberAvatar
+    imageUrl={
+      communityMemberProfiles[post.member_email]?.imageUrl
+    }
+    name={
+      communityMemberProfiles[post.member_email]?.name ||
+      post.member_name
+    }
+  />
+
   <div style={{ fontWeight: 800 }}>
     {post.member_name}
   </div>
+</div>
 <button
   type="button"
 onClick={() => {
