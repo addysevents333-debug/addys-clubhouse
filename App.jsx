@@ -4915,6 +4915,57 @@ const saveProfile = async () => {
   setIsEditingProfile(false);
   setProfileMessage("Profile updated successfully.");
 };
+   const uploadProfilePicture = async () => {
+  if (!profilePicture || !currentMember?.email) return;
+
+  setIsUploadingPicture(true);
+  setProfileMessage("");
+
+  const extension = profilePicture.name.split(".").pop();
+  const safeEmail = currentMember.email.replace(/[^a-zA-Z0-9]/g, "_");
+  const fileName = `${safeEmail}-${Date.now()}.${extension}`;
+
+  const { error: uploadError } = await supabase.storage
+    .from("profile-pictures")
+    .upload(fileName, profilePicture);
+
+  if (uploadError) {
+    setProfileMessage("Picture upload failed: " + uploadError.message);
+    setIsUploadingPicture(false);
+    return;
+  }
+
+  const { data: publicUrlData } = supabase.storage
+    .from("profile-pictures")
+    .getPublicUrl(fileName);
+
+  const pictureUrl = publicUrlData.publicUrl;
+
+  const { data, error } = await supabase
+    .from("members")
+    .update({ profile_picture_url: pictureUrl })
+    .eq("email", currentMember.email)
+    .select()
+    .single();
+
+  if (error) {
+    setProfileMessage("Picture could not be saved: " + error.message);
+    setIsUploadingPicture(false);
+    return;
+  }
+
+  const updatedMember = {
+    ...currentMember,
+    ...data,
+  };
+
+  setCurrentMember(updatedMember);
+  localStorage.setItem("addysMember", JSON.stringify(updatedMember));
+  setProfilePicturePreview(pictureUrl);
+  setProfilePicture(null);
+  setIsUploadingPicture(false);
+  setProfileMessage("Profile picture updated.");
+};
   return (
     <div style={{ padding: 20, paddingBottom: 92 }}>
       <BrandLogo compact />
