@@ -6153,7 +6153,7 @@ setUnreadNotifications={setUnreadNotifications}
 }
   if (activeTab === "profile") {
   screen = (
-    <ProfileScreen
+  <ProfileScreen
   currentMember={currentMember}
   setCurrentMember={setCurrentMember}
   onLogout={() => {
