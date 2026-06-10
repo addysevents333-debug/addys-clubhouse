@@ -2775,7 +2775,12 @@ border:
 </div>
 );
 }
-function FeedPost({ post, setFullscreenImage, currentMember }) {
+function FeedPost({
+  post,
+  setFullscreenImage,
+  currentMember,
+  feedMemberProfiles,
+}) {
    const [postLikes, setPostLikes] = useState([]);
 const [postComments, setPostComments] = useState([]);
 const [commentText, setCommentText] = useState("");
@@ -3314,6 +3319,7 @@ const loadHomeEventRsvps = async () => {
   post={post}
   setFullscreenImage={setFullscreenImage}
   currentMember={currentMember}
+feedMemberProfiles={feedMemberProfiles}
 />
           ))}
         </div>
