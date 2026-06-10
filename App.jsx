@@ -2779,7 +2779,7 @@ function FeedPost({
   post,
   setFullscreenImage,
   currentMember,
-  feedMemberProfiles,
+  feedMemberProfiles = {},
 }) {
    const [postLikes, setPostLikes] = useState([]);
 const [postComments, setPostComments] = useState([]);
