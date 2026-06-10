@@ -5740,10 +5740,12 @@ const [commentTextByPost, setCommentTextByPost] = useState({});
    const [editingPostId, setEditingPostId] = useState(null);
 const [editingPostContent, setEditingPostContent] = useState("");
    const [communityMembers, setCommunityMembers] = useState([]);
+   const [communityMemberProfiles, setCommunityMemberProfiles] = useState({});
 
  useEffect(() => {
   loadCommunityPosts();
   loadCommunityReactions();
+    loadCommunityMemberProfiles();
   loadCommunityComments();
     loadCommunityMembers();
 }, []);
@@ -6049,6 +6051,27 @@ const selectPostMention = (username) => {
   setContent(
     content.replace(/@([a-zA-Z0-9_]*)$/, `@${username} `)
   );
+};
+   const loadCommunityMemberProfiles = async () => {
+  const { data, error } = await supabase
+    .from("members")
+    .select("email, first_name, last_name, profile_picture_url");
+
+  if (error || !data) return;
+
+  const profilesByEmail = Object.fromEntries(
+    data.map((member) => [
+      member.email,
+      {
+        name:
+          `${member.first_name || ""} ${member.last_name || ""}`.trim() ||
+          member.email,
+        imageUrl: member.profile_picture_url || "",
+      },
+    ])
+  );
+
+  setCommunityMemberProfiles(profilesByEmail);
 };
   return (
     <div style={{ padding: 20, paddingBottom: 92 }}>
