@@ -2557,7 +2557,75 @@ border:
         marginBottom: 12,
       }}
     />
- 
+ <label
+  style={{
+    display: "block",
+    border: `2px dashed ${burgundy}`,
+    borderRadius: 14,
+    padding: 12,
+    textAlign: "center",
+    color: burgundy,
+    background: blush,
+    fontWeight: 800,
+    cursor: "pointer",
+    marginBottom: 12,
+  }}
+>
+  📸 Add Photo
+  <input
+    type="file"
+    accept="image/*"
+    style={{ display: "none" }}
+    onChange={(event) =>
+      setAdminReplyPhoto(event.target.files?.[0] || null)
+    }
+  />
+</label>
+
+{adminReplyPhoto ? (
+  <div
+    style={{
+      display: "flex",
+      alignItems: "center",
+      gap: 10,
+      background: "#f4f1ed",
+      borderRadius: 14,
+      padding: 10,
+      marginBottom: 12,
+    }}
+  >
+    <img
+      src={URL.createObjectURL(adminReplyPhoto)}
+      alt="Reply attachment preview"
+      style={{
+        width: 70,
+        height: 70,
+        borderRadius: 12,
+        objectFit: "cover",
+      }}
+    />
+
+    <div style={{ flex: 1, minWidth: 0 }}>
+      <strong>{adminReplyPhoto.name}</strong>
+    </div>
+
+    <button
+      type="button"
+      onClick={() => setAdminReplyPhoto(null)}
+      style={{
+        border: 0,
+        background: "white",
+        color: burgundy,
+        borderRadius: 10,
+        padding: "7px 9px",
+        fontWeight: 800,
+        cursor: "pointer",
+      }}
+    >
+      Remove
+    </button>
+  </div>
+) : null}
     <button
       onClick={sendAdminReply}
       style={{
