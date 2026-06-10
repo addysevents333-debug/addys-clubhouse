@@ -2995,7 +2995,12 @@ const togglePostLike = async () => {
 >
  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
   <MemberAvatar
-    imageUrl={feedMemberProfiles[comment.member_email]?.imageUrl}
+   imageUrl={
+  feedMemberProfiles[comment.member_email]?.imageUrl ||
+  (comment.member_email === currentMember?.email
+    ? currentMember?.profile_picture_url
+    : "")
+}
     name={
       feedMemberProfiles[comment.member_email]?.name ||
       comment.member_name ||
