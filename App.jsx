@@ -2074,11 +2074,12 @@ return (
     ))}
   </div>
 </AdminSection>
-      <Card style={{ marginTop: 16 }}>
-        <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>
-          Create Member Offer
-        </h2>
-
+      <AdminSection
+  id="offers-create"
+  title="Create Member Offer"
+  activeSection={activeAdminSection}
+  setActiveSection={setActiveAdminSection}
+>
         <input
           value={offerTitle}
           onChange={(event) => setOfferTitle(event.target.value)}
@@ -2148,7 +2149,7 @@ return (
     {offerMessage}
   </div>
 ) : null}
-      </Card>
+</AdminSection>
       <Card style={{ marginTop: 16 }}>
   <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>
     Create Club Note
