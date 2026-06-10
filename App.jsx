@@ -983,6 +983,7 @@ const createNote = async () => {
         ? "Ryan's Notes"
         : "Mike & Derek Notes",
     author_group: noteAuthorGroup,
+     author_email: currentMember?.email,
   };
 
 let result;
