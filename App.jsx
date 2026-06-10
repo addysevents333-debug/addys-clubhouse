@@ -5285,6 +5285,7 @@ const savePreferences = async () => {
       "Rosé (Sweet)",
       "Sparkling Wine",
       "Zinfandel",
+    "other",
     ].map((wine) => (
       <button
         key={wine}
