@@ -2151,11 +2151,12 @@ return (
   </div>
 ) : null}
 </AdminSection>
-      <Card style={{ marginTop: 16 }}>
-  <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>
-    Create Club Note
-  </h2>
-
+      <AdminSection
+  id="notes-create"
+  title="Create Club Note"
+  activeSection={activeAdminSection}
+  setActiveSection={setActiveAdminSection}
+>
   <input
     value={noteTitle}
     onChange={(event) => setNoteTitle(event.target.value)}
@@ -2221,7 +2222,7 @@ return (
     {noteMessage}
   </div>
 ) : null}
-</Card>
+</AdminSection>
       <Card>
   <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>
     Manage Club Notes
