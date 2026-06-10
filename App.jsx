@@ -4506,9 +4506,33 @@ if (journalPhoto) {
             {liveNotes.map((note) => (
               <Card key={note.author}>
                 <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
-                  <div style={{ width: 46, height: 46, borderRadius: 18, background: blush, display: "grid", placeItems: "center", fontSize: 24 }}>
-                    {note.icon}
-                  </div>
+                  <div
+  style={{
+    width: 46,
+    height: 46,
+    borderRadius: 18,
+    background: blush,
+    overflow: "hidden",
+    display: "grid",
+    placeItems: "center",
+    fontSize: 24,
+    flexShrink: 0,
+  }}
+>
+  {note.author_profile_picture_url ? (
+    <img
+      src={note.author_profile_picture_url}
+      alt={note.author || "Note author"}
+      style={{
+        width: "100%",
+        height: "100%",
+        objectFit: "cover",
+      }}
+    />
+  ) : (
+    note.icon || "👤"
+  )}
+</div>
                   <div style={{ flex: 1 }}>
                     <div style={{ color: burgundy, fontSize: 12, fontWeight: 900, textTransform: "uppercase" }}>{note.author}</div>
                     <div style={{ color: "#777", fontSize: 13, marginTop: 2 }}>Club Note</div>
