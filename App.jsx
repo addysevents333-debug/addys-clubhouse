@@ -2024,10 +2024,13 @@ return (
   </div>
 </AdminSection>
        
-     <Card style={{ marginTop: 16 }}>
-  <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>
-    Manage Notifications
-  </h2>
+    <AdminSection
+  id="notifications-manage"
+  title="Manage Notifications"
+  count={adminNotifications.length}
+  activeSection={activeAdminSection}
+  setActiveSection={setActiveAdminSection}
+>
 
   <div style={{ display: "grid", gap: 10 }}>
    {adminNotifications.map((notification) => (
@@ -2070,7 +2073,7 @@ return (
       </div>
     ))}
   </div>
-</Card>
+</AdminSection>
       <Card style={{ marginTop: 16 }}>
         <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>
           Create Member Offer
