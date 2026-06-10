@@ -670,7 +670,7 @@ const cancelEventRsvp = async () => {
     </Card>
   );
 }
-function AdminScreen() {
+function AdminScreen({ currentMember }) {
   const [author, setAuthor] = useState("Tyler");
   const [role, setRole] = useState("Club Director");
   const [badge, setBadge] = useState("Announcement");
@@ -1049,6 +1049,7 @@ const { data, error } = await supabase
   .select("*")
   .or("archived.is.null,archived.eq.false")
   .order("created_at", { ascending: false });
+ .eq("staff_email", currentMember?.email)
 
   if (!error && data) {
     setAdminMessages(data);
@@ -5991,7 +5992,7 @@ setUnreadNotifications={setUnreadNotifications}
 />
   );
 }
-  if (activeTab === "admin" && isAdmin) screen = <AdminScreen />;
+  if (activeTab === "admin" && isAdmin) screen = <AdminScreen currentMember={currentMember} />;
   const handleLogout = () => {
   localStorage.removeItem("addysMember");
   setCurrentMember(null);
