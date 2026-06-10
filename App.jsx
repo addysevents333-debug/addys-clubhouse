@@ -3583,7 +3583,13 @@ function MessagesScreen({ currentMember }) {  const [selectedStaff, setSelectedS
   const [message, setMessage] = useState("");
   const [attachedPhotos, setAttachedPhotos] = useState([]);
   const [messages, setMessages] = useState([]);
+  const [attachedPhotos, setAttachedPhotos] = useState([]);
 const [newMessage, setNewMessage] = useState("");
+   const removePhoto = (indexToRemove) => {
+  setAttachedPhotos((photos) =>
+    photos.filter((_, index) => index !== indexToRemove)
+  );
+};                                         
   useEffect(() => {
   loadMessages();
 
