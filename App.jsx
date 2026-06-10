@@ -771,6 +771,12 @@ const [eventRsvpOpen, setEventRsvpOpen] = useState(true);
 const [eventMessage, setEventMessage] = useState("");
    const [activeAdminSection, setActiveAdminSection] =
   useState("messages");
+   useEffect(() => {
+  if (activeAdminSection !== "messages") {
+    setSelectedConversation(null);
+    setSelectedMemberEmail(null);
+  }
+}, [activeAdminSection]);
    const [adminEventRsvps, setAdminEventRsvps] = useState([]);
    const [editingEventId, setEditingEventId] = useState(null);
 const [editingEvent, setEditingEvent] = useState(null);
