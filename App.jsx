@@ -1358,33 +1358,6 @@ return (
   onChange={(event) => setPostImage(event.target.files[0])}
   style={{ marginBottom: 12 }}
 />
-         {attachedPhotos?.length > 0 ? (
-  <div
-    style={{
-      display: "flex",
-      flexWrap: "wrap",
-      gap: 8,
-      marginTop: 10,
-      marginBottom: 10,
-    }}
-  >
-    {Array.from(attachedPhotos).map((photo, index) => (
-      <div key={`${photo.name}-${index}`} style={{ position: "relative" }}>
-        <img
-          src={URL.createObjectURL(photo)}
-          alt={`Attachment preview ${index + 1}`}
-          style={{
-            width: 90,
-            height: 90,
-            objectFit: "cover",
-            borderRadius: 12,
-            border: "1px solid #ddd",
-          }}
-        />
-      </div>
-    ))}
-  </div>
-) : null}
         <AppButton onClick={createPost}>
           Create Feed Post
         </AppButton>
