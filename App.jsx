@@ -3588,8 +3588,7 @@ const [newMessage, setNewMessage] = useState("");
    const removePhoto = (indexToRemove) => {
   setAttachedPhotos((photos) =>
     photos.filter((_, index) => index !== indexToRemove)
-  );
-};                                         
+  );                                       
   useEffect(() => {
   loadMessages();
 
