@@ -1047,9 +1047,10 @@ const updateMemberStatus = async (email, newStatus) => {
 const { data, error } = await supabase
   .from("messages")
   .select("*")
+    .eq("staff_email", currentMember?.email)
   .or("archived.is.null,archived.eq.false")
   .order("created_at", { ascending: false });
- .eq("staff_email", currentMember?.email)
+
 
   if (!error && data) {
     setAdminMessages(data);
