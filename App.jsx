@@ -2200,6 +2200,59 @@ return (
   </div>
 ) : null}
 </AdminSection>
+       <AdminSection
+  id="offers-manage"
+  title="Manage Offers"
+  count={adminOffers.length}
+  activeSection={activeAdminSection}
+  setActiveSection={setActiveAdminSection}
+>
+  
+<p style={{ margin: "0 0 12px", color: "#666" }}>
+  {adminOffers.length} offers loaded
+</p>
+  <div style={{ display: "grid", gap: 10 }}>
+    {adminOffers.map((offer) => (
+      <div
+        key={offer.created_at}
+        style={{
+          padding: 12,
+          border: "1px solid #ddd",
+          borderRadius: 14,
+          background: "#faf7f3",
+        }}
+      >
+        <div style={{ fontWeight: 700 }}>
+          {offer.title}
+        </div>
+
+        <div style={{ marginTop: 6, color: "#666", fontSize: 14 }}>
+          {offer.detail}
+        </div>
+
+        <div style={{ marginTop: 6, fontWeight: 700 }}>
+          {offer.price}
+        </div>
+
+        <button
+         onClick={() => deleteOffer(offer.created_at)}
+          style={{
+            marginTop: 12,
+            border: 0,
+            borderRadius: 12,
+            padding: "10px 12px",
+            background: "#8a1f1f",
+            color: "white",
+            fontWeight: 700,
+            cursor: "pointer",
+          }}
+        >
+          Delete Offer
+        </button>
+      </div>
+    ))}
+  </div>
+</AdminSection>
       <AdminSection
   id="notes-create"
   title="Create Club Note"
@@ -2449,59 +2502,7 @@ return (
   </div>
 </AdminSection>
       
-      <AdminSection
-  id="offers-manage"
-  title="Manage Offers"
-  count={adminOffers.length}
-  activeSection={activeAdminSection}
-  setActiveSection={setActiveAdminSection}
->
-  
-<p style={{ margin: "0 0 12px", color: "#666" }}>
-  {adminOffers.length} offers loaded
-</p>
-  <div style={{ display: "grid", gap: 10 }}>
-    {adminOffers.map((offer) => (
-      <div
-        key={offer.created_at}
-        style={{
-          padding: 12,
-          border: "1px solid #ddd",
-          borderRadius: 14,
-          background: "#faf7f3",
-        }}
-      >
-        <div style={{ fontWeight: 700 }}>
-          {offer.title}
-        </div>
-
-        <div style={{ marginTop: 6, color: "#666", fontSize: 14 }}>
-          {offer.detail}
-        </div>
-
-        <div style={{ marginTop: 6, fontWeight: 700 }}>
-          {offer.price}
-        </div>
-
-        <button
-         onClick={() => deleteOffer(offer.created_at)}
-          style={{
-            marginTop: 12,
-            border: 0,
-            borderRadius: 12,
-            padding: "10px 12px",
-            background: "#8a1f1f",
-            color: "white",
-            fontWeight: 700,
-            cursor: "pointer",
-          }}
-        >
-          Delete Offer
-        </button>
-      </div>
-    ))}
-  </div>
-</AdminSection>
+      
        
       <AdminSection
   id="messages"
