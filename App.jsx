@@ -4263,15 +4263,45 @@ const [journalPhotoUrl, setJournalPhotoUrl] = useState("");
   }, []);
 
   const loadNotes = async () => {
-    const { data, error } = await supabase
-      .from("notes")
-      .select("*")
-      .order("created_at", { ascending: false });
+  const { data: notesData, error } = await supabase
+    .from("notes")
+    .select("*")
+    .order("created_at", { ascending: false });
 
-    if (!error && data) {
-      setLiveNotes(data);
-    }
-  };
+  if (error || !notesData) return;
+
+  const authorEmails = [
+    ...new Set(
+      notesData
+        .map((note) => note.author_email)
+        .filter(Boolean)
+    ),
+  ];
+
+  let membersByEmail = {};
+
+  if (authorEmails.length > 0) {
+    const { data: memberData } = await supabase
+      .from("members")
+      .select("email, profile_picture_url")
+      .in("email", authorEmails);
+
+    membersByEmail = Object.fromEntries(
+      (memberData || []).map((member) => [
+        member.email,
+        member.profile_picture_url,
+      ])
+    );
+  }
+
+  setLiveNotes(
+    notesData.map((note) => ({
+      ...note,
+      author_profile_picture_url:
+        membersByEmail[note.author_email] || "",
+    }))
+  );
+};
 
   const loadJournalEntries = async () => {
     const { data, error } = await supabase
