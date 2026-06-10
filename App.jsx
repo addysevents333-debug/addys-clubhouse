@@ -2583,7 +2583,6 @@ border:
       </div>
     ))}
   </div>
-</Card>
       {selectedConversation ? (
   <Card style={{ marginTop: 16 }}>
     <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>
@@ -2757,12 +2756,13 @@ border:
     marginTop: 10,
   }}
 >
-  Delete Conversation
+    Delete Conversation
 </button>
- </AdminSection>
+</Card>
 ) : null}
-    </div>
-  );
+</AdminSection>
+</div>
+);
 }
 function FeedPost({ post, setFullscreenImage, currentMember }) {
    const [postLikes, setPostLikes] = useState([]);
