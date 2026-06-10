@@ -670,6 +670,59 @@ const cancelEventRsvp = async () => {
     </Card>
   );
 }
+function AdminSection({
+  id,
+  title,
+  activeSection,
+  setActiveSection,
+  children,
+  count,
+}) {
+  const isOpen = activeSection === id;
+
+  return (
+    <Card style={{ marginTop: 16, padding: 0, overflow: "hidden" }}>
+      <button
+        type="button"
+        onClick={() =>
+          setActiveSection(isOpen ? null : id)
+        }
+        style={{
+          width: "100%",
+          border: 0,
+          background: "white",
+          padding: 16,
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          gap: 10,
+          cursor: "pointer",
+          textAlign: "left",
+        }}
+      >
+        <span style={{ fontSize: 18, fontWeight: 900 }}>
+          {title}
+          {typeof count === "number" ? ` (${count})` : ""}
+        </span>
+
+        <span style={{ color: burgundy, fontWeight: 900 }}>
+          {isOpen ? "▲" : "▼"}
+        </span>
+      </button>
+
+      {isOpen ? (
+        <div
+          style={{
+            borderTop: "1px solid #eee",
+            padding: 16,
+          }}
+        >
+          {children}
+        </div>
+      ) : null}
+    </Card>
+  );
+}
 function AdminScreen({ currentMember }) {
   const [author, setAuthor] = useState("Tyler");
   const [role, setRole] = useState("Club Director");
@@ -716,6 +769,8 @@ const [eventReservedSpots, setEventReservedSpots] = useState("0");
 const [eventRsvpCutoff, setEventRsvpCutoff] = useState("");
 const [eventRsvpOpen, setEventRsvpOpen] = useState(true);
 const [eventMessage, setEventMessage] = useState("");
+   const [activeAdminSection, setActiveAdminSection] =
+  useState("messages");
    const [adminEventRsvps, setAdminEventRsvps] = useState([]);
    const [editingEventId, setEditingEventId] = useState(null);
 const [editingEvent, setEditingEvent] = useState(null);
