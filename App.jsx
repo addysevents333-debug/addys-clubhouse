@@ -3592,7 +3592,7 @@ function MessagesScreen({ currentMember }) {
     );
   };
 
-  useEffect(() => {       
+ 
   useEffect(() => {
   loadMessages();
 
