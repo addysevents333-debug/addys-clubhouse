@@ -3579,16 +3579,20 @@ function OffersScreen({ setFullscreenImage, currentMember }) {
     </div>
   );
 }
-function MessagesScreen({ currentMember }) {  const [selectedStaff, setSelectedStaff] = useState(staffContacts[0]);
+function MessagesScreen({ currentMember }) {
+  const [selectedStaff, setSelectedStaff] = useState(staffContacts[0]);
   const [message, setMessage] = useState("");
-  const [attachedPhotos, setAttachedPhotos] = useState([]);
   const [messages, setMessages] = useState([]);
   const [attachedPhotos, setAttachedPhotos] = useState([]);
-const [newMessage, setNewMessage] = useState("");
-   const removePhoto = (indexToRemove) => {
-  setAttachedPhotos((photos) =>
-    photos.filter((_, index) => index !== indexToRemove)
-  );                                       
+  const [newMessage, setNewMessage] = useState("");
+
+  const removePhoto = (indexToRemove) => {
+    setAttachedPhotos((photos) =>
+      photos.filter((_, index) => index !== indexToRemove)
+    );
+  };
+
+  useEffect(() => {       
   useEffect(() => {
   loadMessages();
 
@@ -3669,12 +3673,7 @@ const sendMessage = async () => {
     alert("Message failed: " + error.message);
   }
 };
-  const removePhoto = (photoIndex) => {
-    setAttachedPhotos(attachedPhotos.filter((_, index) => index !== photoIndex));
-  };
-
-
-
+ 
   return (
     <div style={{ padding: 20, paddingBottom: 92 }}>
       <BrandLogo compact />
