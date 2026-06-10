@@ -2985,9 +2985,21 @@ const togglePostLike = async () => {
     alignItems: "center",
   }}
 >
+ <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+  <MemberAvatar
+    imageUrl={feedMemberProfiles[comment.member_email]?.imageUrl}
+    name={
+      feedMemberProfiles[comment.member_email]?.name ||
+      comment.member_name ||
+      "Member"
+    }
+    size={32}
+  />
+
   <div style={{ fontWeight: 900, color: burgundy }}>
     {comment.member_name || "Member"}
   </div>
+</div>
 
   <button
     onClick={() => deleteComment(comment.id)}
@@ -3105,6 +3117,7 @@ setUnreadNotifications,
    const [homeEvents, setHomeEvents] = useState([]);
 const [homeEventRsvps, setHomeEventRsvps] = useState([]);
    const loadUnreadCommunityPosts = async () => {
+  const [feedMemberProfiles, setFeedMemberProfiles] = useState({});
   const lastViewed = currentMember?.last_community_viewed;
 
   let query = supabase
@@ -3162,6 +3175,27 @@ const loadHomeEventRsvps = async () => {
   if (!error && data) {
     setHomeEventRsvps(data);
   }
+};
+   const loadFeedMemberProfiles = async () => {
+  const { data, error } = await supabase
+    .from("members")
+    .select("email, first_name, last_name, profile_picture_url");
+
+  if (error || !data) return;
+
+  setFeedMemberProfiles(
+    Object.fromEntries(
+      data.map((member) => [
+        member.email,
+        {
+          name:
+            `${member.first_name || ""} ${member.last_name || ""}`.trim() ||
+            member.email,
+          imageUrl: member.profile_picture_url || "",
+        },
+      ])
+    )
+  );
 };
   return (
     <div style={{ paddingBottom: 92 }}>
