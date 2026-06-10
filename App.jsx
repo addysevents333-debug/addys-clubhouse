@@ -1686,10 +1686,13 @@ return (
     </div>
   ) : null}
 </AdminSection>
-       <Card style={{ marginTop: 16 }}>
-  <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>
-    Manage Events & Attendees
-  </h2>
+       <AdminSection
+  id="events-manage"
+  title="Manage Events & Attendees"
+  count={adminEvents.length}
+  activeSection={activeAdminSection}
+  setActiveSection={setActiveAdminSection}
+>
 
   <div style={{ display: "grid", gap: 12 }}>
     {adminEvents.map((event) => {
@@ -2019,7 +2022,8 @@ return (
       );
     })}
   </div>
-</Card>
+</AdminSection>
+       
      <Card style={{ marginTop: 16 }}>
   <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>
     Manage Notifications
