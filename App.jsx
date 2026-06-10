@@ -2305,11 +2305,13 @@ return (
     </div>
   )}
 </AdminSection>
-      <Card>
- <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>
-  Member Directory
-</h2>
-
+      <AdminSection
+  id="members"
+  title="Member Directory"
+  count={members.length}
+  activeSection={activeAdminSection}
+  setActiveSection={setActiveAdminSection}
+>
 <input
   value={memberSearch}
   onChange={(event) => setMemberSearch(event.target.value)}
@@ -2396,7 +2398,7 @@ return (
       </div>
     ))}
   </div>
-</Card>
+</AdminSection>
       <AdminSection
   id="posts-manage"
   title="Manage Feed Posts"
