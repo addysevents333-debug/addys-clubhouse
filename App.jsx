@@ -2439,10 +2439,14 @@ return (
     ))}
   </div>
 </Card>
-      <Card style={{ marginTop: 16 }}>
-  <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>
-    Manage Offers
-  </h2>
+      <AdminSection
+  id="offers-manage"
+  title="Manage Offers"
+  count={adminOffers.length}
+  activeSection={activeAdminSection}
+  setActiveSection={setActiveAdminSection}
+>
+  
 <p style={{ margin: "0 0 12px", color: "#666" }}>
   {adminOffers.length} offers loaded
 </p>
@@ -2487,7 +2491,7 @@ return (
       </div>
     ))}
   </div>
-</Card>
+</AdminSection>
       <Card style={{ marginTop: 16 }}>
   <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>
     Admin DM Inbox
