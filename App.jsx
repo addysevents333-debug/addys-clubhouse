@@ -2500,10 +2500,12 @@ return (
     ))}
   </div>
 </AdminSection>
-      <Card style={{ marginTop: 16 }}>
-  <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>
-    Admin DM Inbox
-  </h2>
+      <AdminSection
+  id="messages"
+  title="Admin DM Inbox"
+  activeSection={activeAdminSection}
+  setActiveSection={setActiveAdminSection}
+>
 
  <div style={{ display: "grid", gap: 10, maxHeight: "45vh", overflowY: "auto", paddingRight: 6 }}>
     {[
@@ -2756,7 +2758,7 @@ border:
 >
   Delete Conversation
 </button>
-  </Card>
+ </AdminSection>
 ) : null}
     </div>
   );
