@@ -704,6 +704,7 @@ const [noteAuthor, setNoteAuthor] = useState("Tyler’s Notes");
   const [postMessage, setPostMessage] = useState("");
 const [offerMessage, setOfferMessage] = useState("");
 const [noteMessage, setNoteMessage] = useState("");
+   const [adminReplyPhoto, setAdminReplyPhoto] = useState(null);
 const [adminEvents, setAdminEvents] = useState([]);
 const [eventClub, setEventClub] = useState("Wine Club");
 const [eventTitle, setEventTitle] = useState("");
@@ -1121,7 +1122,37 @@ const { data, error } = await supabase
   }
 };
 const sendAdminReply = async () => {
-  if (!adminReply.trim() || !selectedConversation) return;
+  if (
+    (!adminReply.trim() && !adminReplyPhoto) ||
+    !selectedConversation
+  ) {
+    return;
+  }
+
+  let imageUrl = "";
+
+  if (adminReplyPhoto) {
+    const safeName = adminReplyPhoto.name.replace(
+      /[^a-zA-Z0-9.-]/g,
+      "-"
+    );
+    const filePath = `${Date.now()}-${safeName}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from("message-photos")
+      .upload(filePath, adminReplyPhoto);
+
+    if (uploadError) {
+      alert("Photo upload failed: " + uploadError.message);
+      return;
+    }
+
+    const { data } = supabase.storage
+      .from("message-photos")
+      .getPublicUrl(filePath);
+
+    imageUrl = data.publicUrl;
+  }
 
   const { error } = await supabase
     .from("messages")
@@ -1132,13 +1163,15 @@ const sendAdminReply = async () => {
         recipient_email: selectedConversation.member_email,
         member_email: selectedConversation.member_email,
         staff_email: selectedConversation.staff_email,
-        message: adminReply,
+        message: adminReply.trim(),
+        image_url: imageUrl || null,
       },
     ]);
 
   if (!error) {
     setAdminReply("");
-    loadAdminMessages();
+    setAdminReplyPhoto(null);
+    await loadAdminMessages();
   } else {
     alert("Reply failed: " + error.message);
   }
