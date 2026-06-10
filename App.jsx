@@ -1408,11 +1408,13 @@ return (
         Manage Clubhouse content.
       </p>
 
-      <Card>
-        <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>
-          Create Feed Post
-        </h2>
-
+      <AdminSection
+  id="feed"
+  title="Create Feed Post"
+  activeSection={activeAdminSection}
+  setActiveSection={setActiveAdminSection}
+>
+      
 {postMessage ? (
   <div
     style={{
@@ -1451,7 +1453,7 @@ return (
         <AppButton onClick={createPost}>
           Create Feed Post
         </AppButton>
-      </Card>
+      </AdminSection>
 <Card style={{ marginTop: 16 }}>
   <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>
     Create Notification
