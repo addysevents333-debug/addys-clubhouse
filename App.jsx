@@ -2536,7 +2536,22 @@ border:
             fontSize: 14,
           }}
         >
-          {msg.message}
+         {msg.message ? <div>{msg.message}</div> : null}
+
+{msg.image_url ? (
+  <img
+    src={msg.image_url}
+    alt="Message attachment"
+    style={{
+      display: "block",
+      width: "100%",
+      maxWidth: 260,
+      marginTop: msg.message ? 8 : 0,
+      borderRadius: 12,
+      objectFit: "contain",
+    }}
+  />
+) : null}
         </div>
       );
     })}
