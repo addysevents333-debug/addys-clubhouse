@@ -5285,7 +5285,7 @@ const savePreferences = async () => {
       "Rosé (Sweet)",
       "Sparkling Wine",
       "Zinfandel",
-    "Other",
+      "Other",
     ].map((wine) => (
       <button
         key={wine}
@@ -5312,7 +5312,7 @@ const savePreferences = async () => {
     Favorite Spirits
   </strong>
   <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 8 }}>
-    {["Bourbon", "Cans/RTDs", "Cognac", "Gin", "Irish Whiskey", "Mezcal", "Rum", "Scotch", "Tequila", "Vodka", "Other",].map(
+    {["Bourbon", "Cand and RTDs", "Cognac", "Gin", "Irish Whiskey", "Mezcal", "Rum", "Scotch", "Tequila", "Vodka", "Other",].map(
       (spirit) => (
         <button
           key={spirit}
