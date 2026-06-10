@@ -4837,6 +4837,19 @@ const [profilePicturePreview, setProfilePicturePreview] = useState(
   currentMember?.profile_picture_url || ""
 );
 const [isUploadingPicture, setIsUploadingPicture] = useState(false);
+  const [favoriteWines, setFavoriteWines] = useState(
+  currentMember?.favorite_wines || []
+);
+const [favoriteSpirits, setFavoriteSpirits] = useState(
+  currentMember?.favorite_spirits || []
+);
+const [preferredPriceRange, setPreferredPriceRange] = useState(
+  currentMember?.preferred_price_range || ""
+);
+const [tasteNotes, setTasteNotes] = useState(
+  currentMember?.taste_notes || ""
+);
+const [preferencesMessage, setPreferencesMessage] = useState(""); 
   const saveUsername = async () => {
     const cleanUsername = username
       .trim()
@@ -4965,6 +4978,43 @@ const saveProfile = async () => {
   setProfilePicture(null);
   setIsUploadingPicture(false);
   setProfileMessage("Profile picture updated.");
+};
+   const togglePreference = (value, currentValues, setter) => {
+  setter(
+    currentValues.includes(value)
+      ? currentValues.filter((item) => item !== value)
+      : [...currentValues, value]
+  );
+};
+
+const savePreferences = async () => {
+  const updates = {
+    favorite_wines: favoriteWines,
+    favorite_spirits: favoriteSpirits,
+    preferred_price_range: preferredPriceRange || null,
+    taste_notes: tasteNotes.trim() || null,
+  };
+
+  const { data, error } = await supabase
+    .from("members")
+    .update(updates)
+    .eq("email", currentMember?.email)
+    .select()
+    .single();
+
+  if (error) {
+    setPreferencesMessage("Preferences could not be saved: " + error.message);
+    return;
+  }
+
+  const updatedMember = {
+    ...currentMember,
+    ...data,
+  };
+
+  setCurrentMember(updatedMember);
+  localStorage.setItem("addysMember", JSON.stringify(updatedMember));
+  setPreferencesMessage("Preferences saved.");
 };
   return (
     <div style={{ padding: 20, paddingBottom: 92 }}>
