@@ -5047,6 +5047,67 @@ const saveProfile = async () => {
 
       <Card style={{ marginTop: 14 }}>
         <h3 style={{ margin: "0 0 8px" }}>Account Info</h3>
+         <div style={{ textAlign: "center", marginBottom: 16 }}>
+  <img
+    src={
+      profilePicturePreview ||
+      "https://placehold.co/120x120?text=Profile"
+    }
+    alt="Profile"
+    style={{
+      width: 120,
+      height: 120,
+      borderRadius: "50%",
+      objectFit: "cover",
+      border: `3px solid ${burgundy}`,
+    }}
+  />
+
+  <label
+    style={{
+      display: "block",
+      marginTop: 10,
+      color: burgundy,
+      fontWeight: 800,
+      cursor: "pointer",
+    }}
+  >
+    Choose Profile Picture
+    <input
+      type="file"
+      accept="image/*"
+      style={{ display: "none" }}
+      onChange={(event) => {
+        const file = event.target.files?.[0] || null;
+        setProfilePicture(file);
+
+        if (file) {
+          setProfilePicturePreview(URL.createObjectURL(file));
+        }
+      }}
+    />
+  </label>
+
+  {profilePicture ? (
+    <button
+      type="button"
+      onClick={uploadProfilePicture}
+      disabled={isUploadingPicture}
+      style={{
+        marginTop: 10,
+        border: 0,
+        borderRadius: 12,
+        padding: "9px 12px",
+        background: burgundy,
+        color: "white",
+        fontWeight: 800,
+        cursor: "pointer",
+      }}
+    >
+      {isUploadingPicture ? "Uploading..." : "Save Profile Picture"}
+    </button>
+  ) : null}
+</div>
 <button
   type="button"
   onClick={() => setIsEditingProfile(!isEditingProfile)}
