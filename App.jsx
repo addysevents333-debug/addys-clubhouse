@@ -4881,7 +4881,35 @@ if (error) {
     localStorage.setItem("addysMember", JSON.stringify(updatedMember));
     setUsernameMessage("Username saved.");
   };
+const saveProfile = async () => {
+  const updates = {
+    first_name: firstName.trim(),
+    last_name: lastName.trim(),
+    phone: phone.trim() || null,
+  };
 
+  const { data, error } = await supabase
+    .from("members")
+    .update(updates)
+    .eq("email", currentMember?.email)
+    .select()
+    .single();
+
+  if (error) {
+    setProfileMessage("Profile update failed: " + error.message);
+    return;
+  }
+
+  const updatedMember = {
+    ...currentMember,
+    ...data,
+  };
+
+  setCurrentMember(updatedMember);
+  localStorage.setItem("addysMember", JSON.stringify(updatedMember));
+  setIsEditingProfile(false);
+  setProfileMessage("Profile updated successfully.");
+};
   return (
     <div style={{ padding: 20, paddingBottom: 92 }}>
       <BrandLogo compact />
