@@ -1454,10 +1454,12 @@ return (
           Create Feed Post
         </AppButton>
       </AdminSection>
-<Card style={{ marginTop: 16 }}>
-  <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>
-    Create Notification
-  </h2>
+<AdminSection
+  id="notifications-create"
+  title="Create Notification"
+  activeSection={activeAdminSection}
+  setActiveSection={setActiveAdminSection}
+>
 
   <input
     value={notificationTitle}
@@ -1513,7 +1515,7 @@ return (
   <AppButton onClick={createNotification}>
     Create Notification
   </AppButton>
-</Card>
+</AdminSection>
        <Card style={{ marginTop: 16 }}>
   <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>
     Create Event
