@@ -1564,6 +1564,56 @@ return (
     Create Notification
   </AppButton>
 </AdminSection>
+        <AdminSection
+  id="notifications-manage"
+  title="Manage Notifications"
+  count={adminNotifications.length}
+  activeSection={activeAdminSection}
+  setActiveSection={setActiveAdminSection}
+>
+
+  <div style={{ display: "grid", gap: 10 }}>
+   {adminNotifications.map((notification) => (
+      <div
+        key={notification.id}
+        style={{
+          padding: 12,
+          border: "1px solid #ddd",
+          borderRadius: 14,
+          background: "#faf7f3",
+        }}
+      >
+        <div style={{ fontWeight: 800 }}>
+          {notification.title}
+        </div>
+
+        <div style={{ marginTop: 6, color: "#666", fontSize: 14 }}>
+          {notification.message}
+        </div>
+
+        <div style={{ marginTop: 6, fontSize: 12, color: burgundy, fontWeight: 800 }}>
+          {notification.category}
+        </div>
+
+        <button
+          onClick={() => deleteNotification(notification.id)}
+          style={{
+            marginTop: 12,
+            border: 0,
+            borderRadius: 12,
+            padding: "10px 12px",
+            background: "#8a1f1f",
+            color: "white",
+            fontWeight: 700,
+            cursor: "pointer",
+          }}
+        >
+          Delete Notification
+        </button>
+      </div>
+    ))}
+  </div>
+</AdminSection>
       <AdminSection
   id="events-create"
   title="Create Event"
@@ -1734,56 +1784,7 @@ return (
     </div>
   ) : null}
 </AdminSection>
-        <AdminSection
-  id="notifications-manage"
-  title="Manage Notifications"
-  count={adminNotifications.length}
-  activeSection={activeAdminSection}
-  setActiveSection={setActiveAdminSection}
->
-
-  <div style={{ display: "grid", gap: 10 }}>
-   {adminNotifications.map((notification) => (
-      <div
-        key={notification.id}
-        style={{
-          padding: 12,
-          border: "1px solid #ddd",
-          borderRadius: 14,
-          background: "#faf7f3",
-        }}
-      >
-        <div style={{ fontWeight: 800 }}>
-          {notification.title}
-        </div>
-
-        <div style={{ marginTop: 6, color: "#666", fontSize: 14 }}>
-          {notification.message}
-        </div>
-
-        <div style={{ marginTop: 6, fontSize: 12, color: burgundy, fontWeight: 800 }}>
-          {notification.category}
-        </div>
-
-        <button
-          onClick={() => deleteNotification(notification.id)}
-          style={{
-            marginTop: 12,
-            border: 0,
-            borderRadius: 12,
-            padding: "10px 12px",
-            background: "#8a1f1f",
-            color: "white",
-            fontWeight: 700,
-            cursor: "pointer",
-          }}
-        >
-          Delete Notification
-        </button>
-      </div>
-    ))}
-  </div>
-</AdminSection>
+       
        <AdminSection
   id="events-manage"
   title="Manage Events & Attendees"
