@@ -1516,11 +1516,12 @@ return (
     Create Notification
   </AppButton>
 </AdminSection>
-       <Card style={{ marginTop: 16 }}>
-  <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>
-    Create Event
-  </h2>
-
+      <AdminSection
+  id="events-create"
+  title="Create Event"
+  activeSection={activeAdminSection}
+  setActiveSection={setActiveAdminSection}
+>
   <select
     value={eventClub}
     onChange={(event) => setEventClub(event.target.value)}
@@ -1684,7 +1685,7 @@ return (
       {eventMessage}
     </div>
   ) : null}
-</Card>
+</AdminSection>
        <Card style={{ marginTop: 16 }}>
   <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>
     Manage Events & Attendees
