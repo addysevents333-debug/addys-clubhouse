@@ -2223,10 +2223,13 @@ return (
   </div>
 ) : null}
 </AdminSection>
-      <Card>
-  <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>
-    Manage Club Notes
-  </h2>
+      <AdminSection
+  id="notes-manage"
+  title="Manage Club Notes"
+  count={notes.length}
+  activeSection={activeAdminSection}
+  setActiveSection={setActiveAdminSection}
+>
 
   {notes.length === 0 ? (
     <p style={{ margin: 0, color: "#666" }}>
@@ -2301,7 +2304,7 @@ return (
       ))}
     </div>
   )}
-</Card>
+</AdminSection>
       <Card>
  <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>
   Member Directory
