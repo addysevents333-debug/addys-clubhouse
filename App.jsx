@@ -4878,7 +4878,42 @@ if (journalPhoto) {
     </div>
   );
 }
-
+function MemberAvatar({
+  imageUrl,
+  name = "Member",
+  size = 42,
+}) {
+  return (
+    <div
+      style={{
+        width: size,
+        height: size,
+        borderRadius: "50%",
+        background: blush,
+        overflow: "hidden",
+        display: "grid",
+        placeItems: "center",
+        flexShrink: 0,
+        fontWeight: 900,
+        color: burgundy,
+      }}
+    >
+      {imageUrl ? (
+        <img
+          src={imageUrl}
+          alt={name}
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+          }}
+        />
+      ) : (
+        String(name || "M").charAt(0).toUpperCase()
+      )}
+    </div>
+  );
+}
 function ProfileScreen({ currentMember, onLogout, setCurrentMember }) {
   const [username, setUsername] = useState(currentMember?.username || "");
   const [usernameMessage, setUsernameMessage] = useState("");
