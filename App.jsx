@@ -4827,7 +4827,11 @@ if (journalPhoto) {
 function ProfileScreen({ currentMember, onLogout, setCurrentMember }) {
   const [username, setUsername] = useState(currentMember?.username || "");
   const [usernameMessage, setUsernameMessage] = useState("");
-
+const [isEditingProfile, setIsEditingProfile] = useState(false);
+const [firstName, setFirstName] = useState(currentMember?.first_name || "");
+const [lastName, setLastName] = useState(currentMember?.last_name || "");
+const [phone, setPhone] = useState(currentMember?.phone || "");
+const [profileMessage, setProfileMessage] = useState("");
   const saveUsername = async () => {
     const cleanUsername = username
       .trim()
