@@ -5271,15 +5271,20 @@ const savePreferences = async () => {
   <strong>Favorite Wine Styles</strong>
   <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 8 }}>
     {[
+      "Bordeaux",
       "Cabernet Sauvignon",
+      "Chardonnay",
       "Pinot Noir",
+      "Malbec",
       "Merlot",
       "Red Blends",
-      "Chardonnay",
-      "Sauvignon Blanc",
       "Riesling",
-      "Rosé",
+      "Sauvignon Blanc",
+      "Rosé (Dry)",
+      "Rosé (Sparkling)",
+      "Rosé (Sweet)",
       "Sparkling Wine",
+      "Zinfandel",
     ].map((wine) => (
       <button
         key={wine}
@@ -5306,7 +5311,7 @@ const savePreferences = async () => {
     Favorite Spirits
   </strong>
   <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 8 }}>
-    {["Bourbon", "Scotch", "Tequila", "Rum", "Gin", "Vodka", "Cognac"].map(
+    {["Bourbon", "Irish Whiskey", "Scotch", "Tequila", "Mezcal", "Rum", "Gin", "Vodka", "Cognac", "Cans/RTDs", "Other",].map(
       (spirit) => (
         <button
           key={spirit}
