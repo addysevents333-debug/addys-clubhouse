@@ -2397,10 +2397,13 @@ return (
     ))}
   </div>
 </Card>
-      <Card style={{ marginTop: 16 }}>
-  <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>
-    Manage Feed Posts
-  </h2>
+      <AdminSection
+  id="posts-manage"
+  title="Manage Feed Posts"
+  count={adminPosts.length}
+  activeSection={activeAdminSection}
+  setActiveSection={setActiveAdminSection}
+>
 <div style={{ marginBottom: 12 }}>
   Loaded Posts: {adminPosts.length}
 </div>
@@ -2441,7 +2444,7 @@ return (
       </div>
     ))}
   </div>
-</Card>
+</AdminSection>
       <AdminSection
   id="offers-manage"
   title="Manage Offers"
