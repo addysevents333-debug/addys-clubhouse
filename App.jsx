@@ -6353,9 +6353,22 @@ onClick={() => {
     gap: 8,
   }}
 >
+<div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+  <MemberAvatar
+    imageUrl={
+      communityMemberProfiles[comment.member_email]?.imageUrl
+    }
+    name={
+      communityMemberProfiles[comment.member_email]?.name ||
+      comment.member_name
+    }
+    size={32}
+  />
+
   <div style={{ fontWeight: 800, fontSize: 13 }}>
     {comment.member_name}
   </div>
+</div>
 
   {comment.member_email === currentMember?.email ? (
     <button
