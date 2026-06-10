@@ -4832,6 +4832,11 @@ const [firstName, setFirstName] = useState(currentMember?.first_name || "");
 const [lastName, setLastName] = useState(currentMember?.last_name || "");
 const [phone, setPhone] = useState(currentMember?.phone || "");
 const [profileMessage, setProfileMessage] = useState("");
+   const [profilePicture, setProfilePicture] = useState(null);
+const [profilePicturePreview, setProfilePicturePreview] = useState(
+  currentMember?.profile_picture_url || ""
+);
+const [isUploadingPicture, setIsUploadingPicture] = useState(false);
   const saveUsername = async () => {
     const cleanUsername = username
       .trim()
