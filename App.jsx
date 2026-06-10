@@ -4991,7 +4991,52 @@ const saveProfile = async () => {
 
       <Card style={{ marginTop: 14 }}>
         <h3 style={{ margin: "0 0 8px" }}>Account Info</h3>
+<button
+  type="button"
+  onClick={() => setIsEditingProfile(!isEditingProfile)}
+  style={{
+    border: 0,
+    background: "transparent",
+    color: burgundy,
+    fontWeight: 800,
+    cursor: "pointer",
+    padding: 0,
+    marginBottom: 10,
+  }}
+>
+  {isEditingProfile ? "Cancel Editing" : "Edit Profile"}
+</button>
 
+{isEditingProfile ? (
+  <div style={{ display: "grid", gap: 10, marginBottom: 14 }}>
+    <input
+      value={firstName}
+      onChange={(event) => setFirstName(event.target.value)}
+      placeholder="First name"
+    />
+
+    <input
+      value={lastName}
+      onChange={(event) => setLastName(event.target.value)}
+      placeholder="Last name"
+    />
+
+    <input
+      value={phone}
+      onChange={(event) => setPhone(event.target.value)}
+      placeholder="Phone number"
+      type="tel"
+    />
+
+    <AppButton onClick={saveProfile}>Save Profile</AppButton>
+  </div>
+) : null}
+
+{profileMessage ? (
+  <div style={{ color: "#666", marginBottom: 10 }}>
+    {profileMessage}
+  </div>
+) : null}
        <p style={{ margin: "6px 0", color: "#666" }}>
   <strong>Email:</strong> {currentMember?.email}
 </p>
