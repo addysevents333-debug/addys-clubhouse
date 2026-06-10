@@ -5262,7 +5262,120 @@ const savePreferences = async () => {
   <strong>Role:</strong> {currentMember?.role || "member"}
 </p>
       </Card>
+<Card style={{ marginTop: 14 }}>
+  <h3 style={{ margin: "0 0 6px" }}>Your Taste Profile</h3>
+  <p style={{ margin: "0 0 14px", color: "#666", fontSize: 14 }}>
+    Help us personalize recommendations, offers, and events.
+  </p>
 
+  <strong>Favorite Wine Styles</strong>
+  <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 8 }}>
+    {[
+      "Cabernet Sauvignon",
+      "Pinot Noir",
+      "Merlot",
+      "Red Blends",
+      "Chardonnay",
+      "Sauvignon Blanc",
+      "Riesling",
+      "Rosé",
+      "Sparkling Wine",
+    ].map((wine) => (
+      <button
+        key={wine}
+        type="button"
+        onClick={() =>
+          togglePreference(wine, favoriteWines, setFavoriteWines)
+        }
+        style={{
+          border: `1px solid ${burgundy}`,
+          borderRadius: 999,
+          padding: "8px 10px",
+          background: favoriteWines.includes(wine) ? burgundy : "white",
+          color: favoriteWines.includes(wine) ? "white" : burgundy,
+          cursor: "pointer",
+          fontWeight: 700,
+        }}
+      >
+        {wine}
+      </button>
+    ))}
+  </div>
+
+  <strong style={{ display: "block", marginTop: 18 }}>
+    Favorite Spirits
+  </strong>
+  <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 8 }}>
+    {["Bourbon", "Scotch", "Tequila", "Rum", "Gin", "Vodka", "Cognac"].map(
+      (spirit) => (
+        <button
+          key={spirit}
+          type="button"
+          onClick={() =>
+            togglePreference(spirit, favoriteSpirits, setFavoriteSpirits)
+          }
+          style={{
+            border: `1px solid ${burgundy}`,
+            borderRadius: 999,
+            padding: "8px 10px",
+            background: favoriteSpirits.includes(spirit)
+              ? burgundy
+              : "white",
+            color: favoriteSpirits.includes(spirit) ? "white" : burgundy,
+            cursor: "pointer",
+            fontWeight: 700,
+          }}
+        >
+          {spirit}
+        </button>
+      )
+    )}
+  </div>
+
+  <select
+    value={preferredPriceRange}
+    onChange={(event) => setPreferredPriceRange(event.target.value)}
+    style={{
+      width: "100%",
+      marginTop: 18,
+      padding: 12,
+      borderRadius: 14,
+      border: "1px solid #ddd6cf",
+    }}
+  >
+    <option value="">Preferred price range</option>
+    <option value="Under $25">Under $25</option>
+    <option value="$25–$50">$25–$50</option>
+    <option value="$50–$100">$50–$100</option>
+    <option value="$100+">$100+</option>
+  </select>
+
+  <textarea
+    value={tasteNotes}
+    onChange={(event) => setTasteNotes(event.target.value)}
+    placeholder="Tell us what you enjoy or avoid..."
+    style={{
+      width: "100%",
+      minHeight: 90,
+      marginTop: 12,
+      padding: 12,
+      boxSizing: "border-box",
+      borderRadius: 14,
+      border: "1px solid #ddd6cf",
+      fontFamily: "Arial, sans-serif",
+    }}
+  />
+
+  <div style={{ marginTop: 12 }}>
+    <AppButton onClick={savePreferences}>Save Taste Profile</AppButton>
+  </div>
+
+  {preferencesMessage ? (
+    <div style={{ marginTop: 10, color: "#666" }}>
+      {preferencesMessage}
+    </div>
+  ) : null}
+</Card>
       <div style={{ marginTop: 14 }}>
         <AppButton onClick={onLogout}>Logout</AppButton>
       </div>
