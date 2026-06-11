@@ -770,6 +770,8 @@ const [eventRsvpCutoff, setEventRsvpCutoff] = useState("");
 const [eventRsvpOpen, setEventRsvpOpen] = useState(true);
    const [adminProducts, setAdminProducts] = useState([]);
 const [productMessage, setProductMessage] = useState("");
+   const [editingProductId, setEditingProductId] = useState(null);
+const [editingProduct, setEditingProduct] = useState(null);
 const [eventMessage, setEventMessage] = useState("");
    const [activeAdminSection, setActiveAdminSection] =
   useState("messages");
@@ -1420,6 +1422,24 @@ const deleteEvent = async (event) => {
   }
 
   setAdminProducts(data || []);
+};
+   const startEditingProduct = (product) => {
+  const merchandising = product.product_merchandising?.[0];
+
+  setEditingProductId(product.id);
+  setEditingProduct({
+    name: product.name || "",
+    brand: product.brand || "",
+    price: product.price ?? "",
+    inventory_quantity: product.inventory_quantity ?? 0,
+    active: product.active !== false,
+    recommendation_status:
+      merchandising?.recommendation_status || "neutral",
+    priority: merchandising?.priority ?? 0,
+    sponsored: merchandising?.sponsored || false,
+    internal_reason: merchandising?.internal_reason || "",
+    customer_message: merchandising?.customer_message || "",
+  });
 };
 return (
     <div style={{ padding: 20, paddingBottom: 160 }}>
