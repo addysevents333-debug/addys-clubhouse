@@ -2279,6 +2279,75 @@ return (
     ))}
   </div>
 </AdminSection>
+       <AdminSection
+  id="product-intelligence"
+  title="Product Intelligence"
+  count={adminProducts.length}
+  activeSection={activeAdminSection}
+  setActiveSection={setActiveAdminSection}
+>
+  {productMessage ? (
+    <div style={{ marginBottom: 12, color: "#666" }}>
+      {productMessage}
+    </div>
+  ) : null}
+
+  <div style={{ display: "grid", gap: 10 }}>
+    {adminProducts.map((product) => {
+      const merchandising = product.product_merchandising?.[0];
+      const status =
+        merchandising?.recommendation_status || "neutral";
+
+      return (
+        <div
+          key={product.id}
+          style={{
+            padding: 12,
+            border: "1px solid #ddd",
+            borderRadius: 14,
+            background: "#faf7f3",
+          }}
+        >
+          <div style={{ fontWeight: 900 }}>{product.name}</div>
+
+          <div style={{ color: "#666", fontSize: 13, marginTop: 4 }}>
+            {product.brand || "No brand"} ·{" "}
+            {product.category || "No category"} ·{" "}
+            {product.price != null
+              ? `$${Number(product.price).toFixed(2)}`
+              : "No price"}
+          </div>
+
+          <div
+            style={{
+              display: "inline-block",
+              marginTop: 8,
+              borderRadius: 999,
+              padding: "5px 9px",
+              background:
+                status === "promote"
+                  ? "#e5f6e8"
+                  : status === "suppress"
+                  ? "#fde7e7"
+                  : "#eeeeee",
+              color:
+                status === "promote"
+                  ? "#246b32"
+                  : status === "suppress"
+                  ? "#8a1f1f"
+                  : "#555",
+              fontSize: 12,
+              fontWeight: 900,
+              textTransform: "uppercase",
+            }}
+          >
+            {status}
+          </div>
+        </div>
+      );
+    })}
+  </div>
+</AdminSection>
       <AdminSection
   id="notes-create"
   title="Create Club Note"
