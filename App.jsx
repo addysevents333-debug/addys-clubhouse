@@ -2437,6 +2437,23 @@ return (
           >
             {status}
           </div>
+           <button
+  type="button"
+  onClick={() => startEditingProduct(product)}
+  style={{
+    display: "block",
+    marginTop: 10,
+    border: 0,
+    borderRadius: 10,
+    padding: "8px 10px",
+    background: burgundy,
+    color: "white",
+    fontWeight: 800,
+    cursor: "pointer",
+  }}
+>
+  Edit Product
+</button>
         </div>
       );
     })}
