@@ -2441,8 +2441,13 @@ return (
             }}
           >
             {status}
+                   </div>
+
+          <div style={{ marginTop: 6, color: "#666", fontSize: 13 }}>
+            Priority: {merchandising?.priority ?? 0}
           </div>
-           <button
+
+          <button
   type="button"
   onClick={() => startEditingProduct(product)}
   style={{
