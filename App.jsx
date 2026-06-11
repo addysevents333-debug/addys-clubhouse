@@ -2454,11 +2454,176 @@ return (
 >
   Edit Product
 </button>
+      {editingProductId === product.id && editingProduct ? (
+  <div style={{ display: "grid", gap: 10, marginTop: 12 }}>
+    <input
+      value={editingProduct.name}
+      onChange={(event) =>
+        setEditingProduct({
+          ...editingProduct,
+          name: event.target.value,
+        })
+      }
+      placeholder="Product name"
+    />
+
+    <input
+      value={editingProduct.brand}
+      onChange={(event) =>
+        setEditingProduct({
+          ...editingProduct,
+          brand: event.target.value,
+        })
+      }
+      placeholder="Brand"
+    />
+
+    <input
+      type="number"
+      step="0.01"
+      min="0"
+      value={editingProduct.price}
+      onChange={(event) =>
+        setEditingProduct({
+          ...editingProduct,
+          price: event.target.value,
+        })
+      }
+      placeholder="Price"
+    />
+
+    <input
+      type="number"
+      min="0"
+      value={editingProduct.inventory_quantity}
+      onChange={(event) =>
+        setEditingProduct({
+          ...editingProduct,
+          inventory_quantity: event.target.value,
+        })
+      }
+      placeholder="Inventory quantity"
+    />
+
+    <select
+      value={editingProduct.recommendation_status}
+      onChange={(event) =>
+        setEditingProduct({
+          ...editingProduct,
+          recommendation_status: event.target.value,
+        })
+      }
+    >
+      <option value="promote">Promote</option>
+      <option value="neutral">Neutral</option>
+      <option value="suppress">Suppress</option>
+    </select>
+
+    <input
+      type="number"
+      value={editingProduct.priority}
+      onChange={(event) =>
+        setEditingProduct({
+          ...editingProduct,
+          priority: event.target.value,
+        })
+      }
+      placeholder="Priority"
+    />
+
+    <label>
+      <input
+        type="checkbox"
+        checked={editingProduct.sponsored}
+        onChange={(event) =>
+          setEditingProduct({
+            ...editingProduct,
+            sponsored: event.target.checked,
+          })
+        }
+      />{" "}
+      Sponsored
+    </label>
+
+    <label>
+      <input
+        type="checkbox"
+        checked={editingProduct.active}
+        onChange={(event) =>
+          setEditingProduct({
+            ...editingProduct,
+            active: event.target.checked,
+          })
+        }
+      />{" "}
+      Product active
+    </label>
+
+    <textarea
+      value={editingProduct.internal_reason}
+      onChange={(event) =>
+        setEditingProduct({
+          ...editingProduct,
+          internal_reason: event.target.value,
+        })
+      }
+      placeholder="Internal recommendation reason"
+    />
+
+    <textarea
+      value={editingProduct.customer_message}
+      onChange={(event) =>
+        setEditingProduct({
+          ...editingProduct,
+          customer_message: event.target.value,
+        })
+      }
+      placeholder="Customer-facing recommendation message"
+    />
+
+    <div style={{ display: "flex", gap: 8 }}>
+      <button
+        type="button"
+        onClick={saveProductEdit}
+        style={{
+          border: 0,
+          borderRadius: 10,
+          padding: "9px 12px",
+          background: burgundy,
+          color: "white",
+          fontWeight: 800,
+          cursor: "pointer",
+        }}
+      >
+        Save Product
+      </button>
+
+      <button
+        type="button"
+        onClick={() => {
+          setEditingProductId(null);
+          setEditingProduct(null);
+        }}
+        style={{
+          border: "1px solid #ddd",
+          borderRadius: 10,
+          padding: "9px 12px",
+          background: "white",
+          fontWeight: 800,
+          cursor: "pointer",
+        }}
+      >
+        Cancel
+      </button>
+    </div>
+  </div>
+) : null}
         </div>
       );
     })}
   </div>
 </AdminSection>
+       
       <AdminSection
   id="notes-create"
   title="Create Club Note"
