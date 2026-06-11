@@ -1464,25 +1464,30 @@ const deleteEvent = async (event) => {
     return;
   }
 
-  const { error: productError } = await supabase
-    .from("products")
-    .update({
-      name: editingProduct.name.trim(),
-      brand: editingProduct.brand.trim() || null,
-      price,
-      inventory_quantity: inventory,
-      active: editingProduct.active,
-      updated_at: new Date().toISOString(),
-    })
-    .eq("id", editingProductId);
+ const { data: updatedProducts, error: productError } = await supabase
+  .from("products")
+  .update({
+    name: editingProduct.name.trim(),
+    brand: editingProduct.brand.trim() || null,
+    price,
+    inventory_quantity: inventory,
+    active: editingProduct.active,
+    updated_at: new Date().toISOString(),
+  })
+  .eq("id", editingProductId)
+  .select();
 
-  if (productError) {
-    setProductMessage(
-      "Product update failed: " + productError.message
-    );
-    return;
-  }
+if (productError) {
+  setProductMessage("Product update failed: " + productError.message);
+  return;
+}
 
+if (!updatedProducts?.length) {
+  setProductMessage(
+    "No product was updated. Check the products UPDATE policy."
+  );
+  return;
+}
   const merchandisingData = {
     product_id: editingProductId,
     recommendation_status:
