@@ -1441,6 +1441,80 @@ const deleteEvent = async (event) => {
     customer_message: merchandising?.customer_message || "",
   });
 };
+   const saveProductEdit = async () => {
+  if (!editingProductId || !editingProduct) return;
+
+  const price =
+    editingProduct.price === ""
+      ? null
+      : Number(editingProduct.price);
+
+  const inventory = Number(editingProduct.inventory_quantity || 0);
+  const priority = Number(editingProduct.priority || 0);
+
+  if (
+    (price !== null && (!Number.isFinite(price) || price < 0)) ||
+    !Number.isInteger(inventory) ||
+    inventory < 0 ||
+    !Number.isInteger(priority)
+  ) {
+    setProductMessage(
+      "Please enter a valid price, inventory quantity, and priority."
+    );
+    return;
+  }
+
+  const { error: productError } = await supabase
+    .from("products")
+    .update({
+      name: editingProduct.name.trim(),
+      brand: editingProduct.brand.trim() || null,
+      price,
+      inventory_quantity: inventory,
+      active: editingProduct.active,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", editingProductId);
+
+  if (productError) {
+    setProductMessage(
+      "Product update failed: " + productError.message
+    );
+    return;
+  }
+
+  const merchandisingData = {
+    product_id: editingProductId,
+    recommendation_status:
+      editingProduct.recommendation_status,
+    priority,
+    sponsored: editingProduct.sponsored,
+    internal_reason:
+      editingProduct.internal_reason.trim() || null,
+    customer_message:
+      editingProduct.customer_message.trim() || null,
+    updated_at: new Date().toISOString(),
+  };
+
+  const { error: merchandisingError } = await supabase
+    .from("product_merchandising")
+    .upsert(merchandisingData, {
+      onConflict: "product_id",
+    });
+
+  if (merchandisingError) {
+    setProductMessage(
+      "Recommendation settings failed: " +
+        merchandisingError.message
+    );
+    return;
+  }
+
+  setEditingProductId(null);
+  setEditingProduct(null);
+  setProductMessage("Product updated successfully.");
+  await loadAdminProducts();
+};
 return (
     <div style={{ padding: 20, paddingBottom: 160 }}>
       <BrandLogo compact />
