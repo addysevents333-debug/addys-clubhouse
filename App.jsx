@@ -768,6 +768,8 @@ const [eventCapacity, setEventCapacity] = useState("");
 const [eventReservedSpots, setEventReservedSpots] = useState("0");
 const [eventRsvpCutoff, setEventRsvpCutoff] = useState("");
 const [eventRsvpOpen, setEventRsvpOpen] = useState(true);
+   const [adminProducts, setAdminProducts] = useState([]);
+const [productMessage, setProductMessage] = useState("");
 const [eventMessage, setEventMessage] = useState("");
    const [activeAdminSection, setActiveAdminSection] =
   useState("messages");
@@ -1149,7 +1151,7 @@ const { data, error } = await supabase
   loadAdminOffers();
   loadAdminEvents();
   loadAdminEventRsvps();
-      
+  loadAdminProducts(); 
 
    
   const channel = supabase
@@ -1402,6 +1404,22 @@ const deleteEvent = async (event) => {
 
   await loadAdminEvents();
   await loadAdminEventRsvps();
+};
+   const loadAdminProducts = async () => {
+  const { data, error } = await supabase
+    .from("products")
+    .select(`
+      *,
+      product_merchandising (*)
+    `)
+    .order("name", { ascending: true });
+
+  if (error) {
+    setProductMessage("Products could not be loaded: " + error.message);
+    return;
+  }
+
+  setAdminProducts(data || []);
 };
 return (
     <div style={{ padding: 20, paddingBottom: 160 }}>
