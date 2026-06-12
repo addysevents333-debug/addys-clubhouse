@@ -5999,7 +5999,7 @@ const savePreferences = async () => {
     onClick={enablePushNotifications}
     disabled={isEnablingPush || pushEnabled}
   >
-    {isEnablingPush
+    {isEnablingPush 
       ? "Enabling..."
       : pushEnabled
       ? "Notifications Enabled"
