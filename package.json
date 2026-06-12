@@ -5,11 +5,13 @@
     "start": "vite --host 0.0.0.0"
   },
   "dependencies": {
-  "@supabase/supabase-js": "latest",
-  "@vitejs/plugin-react": "latest",
-  "vite": "latest",
-  "react": "latest",
-  "react-dom": "latest"
-},
-  "devDependencies": {}
+    "@supabase/supabase-js": "latest",
+    "@vitejs/plugin-react": "latest",
+    "vite": "latest",
+    "react": "latest",
+    "react-dom": "latest"
+  },
+  "devDependencies": {
+    "vite-plugin-pwa": "latest"
+  }
 }
