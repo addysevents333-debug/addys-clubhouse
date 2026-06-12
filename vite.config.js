@@ -13,6 +13,7 @@ export default defineConfig({
       ],
       manifest: false,
       workbox: {
+        importScripts: ["push-handler.js"],
         navigateFallback: "/index.html",
         globPatterns: [
           "**/*.{js,css,html,png,jpg,jpeg,svg,webp,ico}",
