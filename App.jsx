@@ -5364,6 +5364,9 @@ const [lastName, setLastName] = useState(currentMember?.last_name || "");
 const [phone, setPhone] = useState(currentMember?.phone || "");
 const [profileMessage, setProfileMessage] = useState("");
    const [profilePicture, setProfilePicture] = useState(null);
+  const [pushEnabled, setPushEnabled] = useState(false);
+const [pushMessage, setPushMessage] = useState("");
+const [isEnablingPush, setIsEnablingPush] = useState(false);
 const [profilePicturePreview, setProfilePicturePreview] = useState(
   currentMember?.profile_picture_url || ""
 );
