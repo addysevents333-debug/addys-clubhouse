@@ -1424,7 +1424,11 @@ const deleteEvent = async (event) => {
   setAdminProducts(data || []);
 };
    const startEditingProduct = (product) => {
-  const merchandising = product.product_merchandising?.[0];
+ const merchandising = Array.isArray(
+  product.product_merchandising
+)
+  ? product.product_merchandising[0]
+  : product.product_merchandising;
 
   setEditingProductId(product.id);
   setEditingProduct({
@@ -2393,7 +2397,11 @@ return (
 
   <div style={{ display: "grid", gap: 10 }}>
     {adminProducts.map((product) => {
-      const merchandising = product.product_merchandising?.[0];
+      const merchandising = Array.isArray(
+  product.product_merchandising
+)
+  ? product.product_merchandising[0]
+  : product.product_merchandising;
       const status =
         merchandising?.recommendation_status || "neutral";
 
