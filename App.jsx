@@ -5550,6 +5550,78 @@ const savePreferences = async () => {
   localStorage.setItem("addysMember", JSON.stringify(updatedMember));
   setPreferencesMessage("Preferences saved.");
 };
+  const enablePushNotifications = async () => {
+  if (!currentMember?.email) return;
+
+  if (
+    !("serviceWorker" in navigator) ||
+    !("PushManager" in window) ||
+    !("Notification" in window)
+  ) {
+    setPushMessage("Push notifications are not supported on this device.");
+    return;
+  }
+
+  setIsEnablingPush(true);
+  setPushMessage("");
+
+  try {
+    const permission = await Notification.requestPermission();
+
+    if (permission !== "granted") {
+      setPushMessage("Notification permission was not granted.");
+      return;
+    }
+
+    const registration = await navigator.serviceWorker.ready;
+
+    let subscription =
+      await registration.pushManager.getSubscription();
+
+    if (!subscription) {
+      subscription = await registration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey:
+          urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
+      });
+    }
+
+    const subscriptionData = subscription.toJSON();
+
+    const { error } = await supabase
+      .from("push_subscriptions")
+      .upsert(
+        {
+          member_email: currentMember.email,
+          endpoint: subscription.endpoint,
+          p256dh: subscriptionData.keys?.p256dh,
+          auth_key: subscriptionData.keys?.auth,
+          user_agent: navigator.userAgent,
+          active: true,
+          updated_at: new Date().toISOString(),
+        },
+        {
+          onConflict: "endpoint",
+        }
+      );
+
+    if (error) {
+      setPushMessage(
+        "Notifications could not be saved: " + error.message
+      );
+      return;
+    }
+
+    setPushEnabled(true);
+    setPushMessage("Push notifications enabled.");
+  } catch (error) {
+    setPushMessage(
+      "Notifications could not be enabled: " + error.message
+    );
+  } finally {
+    setIsEnablingPush(false);
+  }
+};
   return (
     <div style={{ padding: 20, paddingBottom: 92 }}>
       <BrandLogo compact />
