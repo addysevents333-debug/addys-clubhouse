@@ -5988,6 +5988,30 @@ const savePreferences = async () => {
     </div>
   ) : null}
 </Card>
+     <Card style={{ marginTop: 14 }}>
+  <h3 style={{ margin: "0 0 6px" }}>Push Notifications</h3>
+
+  <p style={{ margin: "0 0 12px", color: "#666", fontSize: 14 }}>
+    Receive important Clubhouse announcements, offers, and event updates.
+  </p>
+
+  <AppButton
+    onClick={enablePushNotifications}
+    disabled={isEnablingPush || pushEnabled}
+  >
+    {isEnablingPush
+      ? "Enabling..."
+      : pushEnabled
+      ? "Notifications Enabled"
+      : "Enable Notifications"}
+  </AppButton>
+
+  {pushMessage ? (
+    <div style={{ marginTop: 10, color: "#666", fontSize: 13 }}>
+      {pushMessage}
+    </div>
+  ) : null}
+</Card> 
       <div style={{ marginTop: 14 }}>
         <AppButton onClick={onLogout}>Logout</AppButton>
       </div>
