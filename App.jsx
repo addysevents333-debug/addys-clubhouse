@@ -6535,7 +6535,6 @@ const handleActivateAccount = async () => {
     Forgot Password?
   </button>
 ) : null}
-</button>
         </Card>
       </div>
     </div>
