@@ -5367,6 +5367,10 @@ const [profileMessage, setProfileMessage] = useState("");
   const [pushEnabled, setPushEnabled] = useState(false);
 const [pushMessage, setPushMessage] = useState("");
 const [isEnablingPush, setIsEnablingPush] = useState(false);
+  const [newPassword, setNewPassword] = useState("");
+const [confirmNewPassword, setConfirmNewPassword] = useState("");
+const [passwordMessage, setPasswordMessage] = useState("");
+const [isSavingPassword, setIsSavingPassword] = useState(false);
 const [profilePicturePreview, setProfilePicturePreview] = useState(
   currentMember?.profile_picture_url || ""
 );
