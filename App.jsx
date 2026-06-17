@@ -5626,6 +5626,41 @@ const savePreferences = async () => {
     setIsEnablingPush(false);
   }
 };
+  const changePassword = async () => {
+  setPasswordMessage("");
+
+  if (!newPassword || !confirmNewPassword) {
+    setPasswordMessage("Please enter and confirm your new password.");
+    return;
+  }
+
+  if (newPassword !== confirmNewPassword) {
+    setPasswordMessage("Passwords do not match.");
+    return;
+  }
+
+  if (newPassword.length < 8) {
+    setPasswordMessage("Password must be at least 8 characters.");
+    return;
+  }
+
+  setIsSavingPassword(true);
+
+  const { error } = await supabase.auth.updateUser({
+    password: newPassword,
+  });
+
+  setIsSavingPassword(false);
+
+  if (error) {
+    setPasswordMessage("Password update failed: " + error.message);
+    return;
+  }
+
+  setNewPassword("");
+  setConfirmNewPassword("");
+  setPasswordMessage("Password updated successfully.");
+};
   return (
     <div style={{ padding: 20, paddingBottom: 92 }}>
       <BrandLogo compact />
