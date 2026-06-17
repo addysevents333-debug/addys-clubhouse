@@ -6338,72 +6338,150 @@ const handleActivateAccount = async () => {
             }}
           />
 
-          <label
-            style={{
-              display: "block",
-              fontSize: 13,
-              fontWeight: 900,
-              marginBottom: 6,
-            }}
-          >
-            Temporary Password
-          </label>
+        <label
+  style={{
+    display: "block",
+    fontSize: 13,
+    fontWeight: 900,
+    marginBottom: 6,
+  }}
+>
+  Password
+</label>
 
-          <input
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-            placeholder="Enter temporary password"
-            type="password"
-            style={{
-              width: "100%",
-              borderRadius: 16,
-              border: "1px solid #ddd6cf",
-              padding: 13,
-              boxSizing: "border-box",
-              fontSize: 15,
-              marginBottom: 14,
-              outlineColor: burgundy,
-            }}
-          />
+<input
+  value={password}
+  onChange={(event) => setPassword(event.target.value)}
+  placeholder={
+    authMode === "login"
+      ? "Enter password"
+      : "Choose a password"
+  }
+  type="password"
+  style={{
+    width: "100%",
+    borderRadius: 16,
+    border: "1px solid #ddd6cf",
+    padding: 13,
+    boxSizing: "border-box",
+    fontSize: 15,
+    marginBottom: 14,
+    outlineColor: burgundy,
+  }}
+/>
 
-          {showMessage ? (
-            <div
-              style={{
-                background: "#fff1f1",
-                color: "#8a1f1f",
-                borderRadius: 16,
-                padding: 12,
-                fontSize: 14,
-                lineHeight: 1.45,
-                marginBottom: 14,
-              }}
-            >
-              This email is not currently approved for member access, or the password is incorrect.
-            </div>
-          ) : null}
+{authMode === "activate" ? (
+  <>
+    <label
+      style={{
+        display: "block",
+        fontSize: 13,
+        fontWeight: 900,
+        marginBottom: 6,
+      }}
+    >
+      Confirm Password
+    </label>
 
-          <AppButton onClick={handleLogin}>
-            Sign In
-          </AppButton>
-          <button
-  onClick={async () => {
-    if (!email.trim()) {
-      alert("Please enter your email first.");
-      return;
-    }
-
-    const { error } = await supabase.auth.resetPasswordForEmail(
-      email.trim().toLowerCase(),
-      {
-        redirectTo: "https://addys-clubhouse.vercel.app",
+    <input
+      value={confirmPassword}
+      onChange={(event) =>
+        setConfirmPassword(event.target.value)
       }
-    );
+      placeholder="Confirm password"
+      type="password"
+      style={{
+        width: "100%",
+        borderRadius: 16,
+        border: "1px solid #ddd6cf",
+        padding: 13,
+        boxSizing: "border-box",
+        fontSize: 15,
+        marginBottom: 14,
+        outlineColor: burgundy,
+      }}
+    />
 
-    if (error) {
-      alert(error.message);
-    } else {
-      alert("Password reset email sent.");
-    }
+    <label
+      style={{
+        display: "block",
+        fontSize: 13,
+        fontWeight: 900,
+        marginBottom: 6,
+      }}
+    >
+      Activation Code
+    </label>
+
+    <input
+      value={activationCode}
+      onChange={(event) =>
+        setActivationCode(event.target.value)
+      }
+      placeholder="Enter activation code"
+      style={{
+        width: "100%",
+        borderRadius: 16,
+        border: "1px solid #ddd6cf",
+        padding: 13,
+        boxSizing: "border-box",
+        fontSize: 15,
+        marginBottom: 14,
+        outlineColor: burgundy,
+        textTransform: "uppercase",
+      }}
+    />
+  </>
+) : null}
+
+{showMessage ? (
+  <div
+    style={{
+      background: "#fff1f1",
+      color: "#8a1f1f",
+      borderRadius: 16,
+      padding: 12,
+      fontSize: 14,
+      lineHeight: 1.45,
+      marginBottom: 14,
+    }}
+  >
+    This email is not currently approved for member access, or the password is incorrect.
+  </div>
+) : null}
+
+{authMessage ? (
+  <div
+    style={{
+      background: "#fffaf0",
+      color: "#555",
+      borderRadius: 16,
+      padding: 12,
+      fontSize: 14,
+      lineHeight: 1.45,
+      marginBottom: 14,
+    }}
+  >
+    {authMessage}
+  </div>
+) : null}
+
+<AppButton
+  onClick={
+    authMode === "login"
+      ? handleLogin
+      : handleActivateAccount
+  }
+>
+  {authMode === "login" ? "Sign In" : "Activate Account"}
+</AppButton>
+
+<button
+  type="button"
+  onClick={() => {
+    setAuthMode(authMode === "login" ? "activate" : "login");
+    setShowMessage(false);
+    setAuthMessage("");
   }}
   style={{
     marginTop: 12,
@@ -6411,12 +6489,52 @@ const handleActivateAccount = async () => {
     border: 0,
     background: "transparent",
     color: burgundy,
-    fontWeight: 700,
+    fontWeight: 800,
     cursor: "pointer",
     fontSize: 14,
   }}
 >
-  Forgot Password?
+  {authMode === "login"
+    ? "Activate your account"
+    : "Back to sign in"}
+</button>
+
+{authMode === "login" ? (
+  <button
+    type="button"
+    onClick={async () => {
+      if (!email.trim()) {
+        alert("Please enter your email first.");
+        return;
+      }
+
+      const { error } = await supabase.auth.resetPasswordForEmail(
+        email.trim().toLowerCase(),
+        {
+          redirectTo: "https://addys-clubhouse.vercel.app",
+        }
+      );
+
+      if (error) {
+        alert(error.message);
+      } else {
+        alert("Password reset email sent.");
+      }
+    }}
+    style={{
+      marginTop: 12,
+      width: "100%",
+      border: 0,
+      background: "transparent",
+      color: burgundy,
+      fontWeight: 700,
+      cursor: "pointer",
+      fontSize: 14,
+    }}
+  >
+    Forgot Password?
+  </button>
+) : null}
 </button>
         </Card>
       </div>
