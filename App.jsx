@@ -6147,6 +6147,10 @@ const tabs = [
 function LoginScreen({ onLogin }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [authMode, setAuthMode] = useState("login");
+const [activationCode, setActivationCode] = useState("");
+const [confirmPassword, setConfirmPassword] = useState("");
+const [authMessage, setAuthMessage] = useState("");
   const [showMessage, setShowMessage] = useState(false);
 
   const handleLogin = async () => {
