@@ -6050,9 +6050,61 @@ const savePreferences = async () => {
       {pushMessage}
     </div>
   ) : null}
-</Card> 
-      <div style={{ marginTop: 14 }}>
-        <AppButton onClick={onLogout}>Logout</AppButton>
+       
+</Card>
+
+<Card style={{ marginTop: 14 }}>
+  <h3 style={{ margin: "0 0 6px" }}>Change Password</h3>
+
+  <p style={{ margin: "0 0 12px", color: "#666", fontSize: 14 }}>
+    Choose a new password for your Clubhouse login.
+  </p>
+
+  <input
+    type="password"
+    value={newPassword}
+    onChange={(event) => setNewPassword(event.target.value)}
+    placeholder="New password"
+    style={{
+      width: "100%",
+      borderRadius: 14,
+      border: "1px solid #ddd6cf",
+      padding: 12,
+      boxSizing: "border-box",
+      fontSize: 15,
+      marginBottom: 10,
+    }}
+  />
+
+  <input
+    type="password"
+    value={confirmNewPassword}
+    onChange={(event) => setConfirmNewPassword(event.target.value)}
+    placeholder="Confirm new password"
+    style={{
+      width: "100%",
+      borderRadius: 14,
+      border: "1px solid #ddd6cf",
+      padding: 12,
+      boxSizing: "border-box",
+      fontSize: 15,
+      marginBottom: 12,
+    }}
+  />
+
+  <AppButton onClick={changePassword} disabled={isSavingPassword}>
+    {isSavingPassword ? "Saving..." : "Update Password"}
+  </AppButton>
+
+  {passwordMessage ? (
+    <div style={{ marginTop: 10, color: "#666", fontSize: 13 }}>
+      {passwordMessage}
+    </div>
+  ) : null}
+</Card>
+
+<div style={{ marginTop: 14 }}>
+  <AppButton onClick={onLogout}>Logout</AppButton>
       </div>
     </div>
   );
