@@ -6190,7 +6190,71 @@ const [authMessage, setAuthMessage] = useState("");
 
         onLogin(memberData);
   };
+const handleActivateAccount = async () => {
+  const normalizedEmail = email.trim().toLowerCase();
+  const cleanCode = activationCode.trim().toUpperCase();
 
+  setAuthMessage("");
+
+  if (!normalizedEmail || !cleanCode || !password || !confirmPassword) {
+    setAuthMessage("Please enter your email, activation code, and password.");
+    return;
+  }
+
+  if (password !== confirmPassword) {
+    setAuthMessage("Passwords do not match.");
+    return;
+  }
+
+  if (password.length < 8) {
+    setAuthMessage("Password must be at least 8 characters.");
+    return;
+  }
+
+  const { data: memberData, error: memberError } = await supabase
+    .from("members")
+    .select("email, status, activation_code, activation_used")
+    .eq("email", normalizedEmail)
+    .single();
+
+  if (
+    memberError ||
+    !memberData ||
+    memberData.status !== "active" ||
+    memberData.activation_used ||
+    memberData.activation_code !== cleanCode
+  ) {
+    setAuthMessage(
+      "We could not verify that email and activation code."
+    );
+    return;
+  }
+
+  const { error: signUpError } = await supabase.auth.signUp({
+    email: normalizedEmail,
+    password,
+  });
+
+  if (signUpError) {
+    setAuthMessage("Account activation failed: " + signUpError.message);
+    return;
+  }
+
+  await supabase
+    .from("members")
+    .update({
+      activation_used: true,
+      activated_at: new Date().toISOString(),
+    })
+    .eq("email", normalizedEmail);
+
+  setAuthMessage(
+    "Account activated. You can now log in with your new password."
+  );
+  setAuthMode("login");
+  setActivationCode("");
+  setConfirmPassword("");
+};
   return (
     <div
       style={{
