@@ -3904,7 +3904,18 @@ feedMemberProfiles={feedMemberProfiles}
     </div>
   );
 }
-     
+   <a
+  href="https://link-to.app/AddysWineLiquor"
+  target="_blank"
+  rel="noreferrer"
+  style={{ textDecoration: "none" }}
+>
+  <ToolCard
+    icon="🛒"
+    title="Shop Addy’s"
+    subtitle="Download the store app"
+  />
+</a>  
 function SectionHeader({ title, action, onAction }) {
   return (
     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
