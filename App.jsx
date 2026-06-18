@@ -6190,7 +6190,7 @@ const [authMessage, setAuthMessage] = useState("");
     const { data: memberData, error: memberError } = await supabase
       .from("members")
      .select(
-  "email, role, first_name, last_name, membership_type, status, username"
+"email, role, first_name, last_name, membership_type, membership_year, status, username, phone, profile_picture_url, favorite_wines, favorite_spirits, preferred_price_range, taste_notes"
 )
       .eq("email", normalizedEmail)
       .single();
