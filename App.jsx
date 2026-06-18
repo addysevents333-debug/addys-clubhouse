@@ -7420,7 +7420,7 @@ setUnreadNotifications={setUnreadNotifications}
 }
   if (activeTab === "profile") {
   screen = (
-  <ProfileScreen
+  <
   currentMember={currentMember}
   setCurrentMember={setCurrentMember}
   onLogout={() => {
@@ -7438,7 +7438,31 @@ setUnreadNotifications={setUnreadNotifications}
   setCurrentMember(null);
   setIsLoggedIn(false);
 };
+const checkPushSubscription = async () => {
+  if (!currentMember?.email) return;
 
+  if (
+    !("serviceWorker" in navigator) ||
+    !("PushManager" in window)
+  ) {
+    return;
+  }
+
+  const registration = await navigator.serviceWorker.ready;
+  const subscription = await registration.pushManager.getSubscription();
+
+  if (!subscription) return;
+
+  const { data } = await supabase
+    .from("push_subscriptions")
+    .select("id")
+    .eq("endpoint", subscription.endpoint)
+    .eq("member_email", currentMember.email)
+    .eq("active", true)
+    .maybeSingle();
+
+  setPushEnabled(Boolean(data));
+};
   return (
     <div style={{ minHeight: "100vh", background: "#e9e5df", fontFamily: "Arial, sans-serif", color: "#111" }}>
       <div style={{ maxWidth: 430, minHeight: "100vh", margin: "0 auto", background: cream, position: "relative", boxShadow: "0 0 35px rgba(0,0,0,.18)" }}>
