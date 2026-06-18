@@ -5705,6 +5705,11 @@ const savePreferences = async () => {
     .maybeSingle();
 
   setPushEnabled(Boolean(data));
+    };
+
+useEffect(() => {
+  checkPushSubscription();
+}, [currentMember?.email]);
   return (
     <div style={{ padding: 20, paddingBottom: 92 }}>
       <BrandLogo compact />
