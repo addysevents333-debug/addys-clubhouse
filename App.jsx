@@ -5681,6 +5681,30 @@ const savePreferences = async () => {
   setConfirmNewPassword("");
   setPasswordMessage("Password updated successfully.");
 };
+  const checkPushSubscription = async () => {
+  if (!currentMember?.email) return;
+
+  if (
+    !("serviceWorker" in navigator) ||
+    !("PushManager" in window)
+  ) {
+    return;
+  }
+
+  const registration = await navigator.serviceWorker.ready;
+  const subscription = await registration.pushManager.getSubscription();
+
+  if (!subscription) return;
+
+  const { data } = await supabase
+    .from("push_subscriptions")
+    .select("id")
+    .eq("endpoint", subscription.endpoint)
+    .eq("member_email", currentMember.email)
+    .eq("active", true)
+    .maybeSingle();
+
+  setPushEnabled(Boolean(data));
   return (
     <div style={{ padding: 20, paddingBottom: 92 }}>
       <BrandLogo compact />
@@ -7437,31 +7461,6 @@ setUnreadNotifications={setUnreadNotifications}
   localStorage.removeItem("addysMember");
   setCurrentMember(null);
   setIsLoggedIn(false);
-};
-const checkPushSubscription = async () => {
-  if (!currentMember?.email) return;
-
-  if (
-    !("serviceWorker" in navigator) ||
-    !("PushManager" in window)
-  ) {
-    return;
-  }
-
-  const registration = await navigator.serviceWorker.ready;
-  const subscription = await registration.pushManager.getSubscription();
-
-  if (!subscription) return;
-
-  const { data } = await supabase
-    .from("push_subscriptions")
-    .select("id")
-    .eq("endpoint", subscription.endpoint)
-    .eq("member_email", currentMember.email)
-    .eq("active", true)
-    .maybeSingle();
-
-  setPushEnabled(Boolean(data));
 };
   return (
     <div style={{ minHeight: "100vh", background: "#e9e5df", fontFamily: "Arial, sans-serif", color: "#111" }}>
