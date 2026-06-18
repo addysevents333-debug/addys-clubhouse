@@ -4139,7 +4139,16 @@ function OffersScreen({ setFullscreenImage, currentMember }) {
       <p style={{ margin: "0 0 18px", color: "#666" }}>
         Rare bottles, early access, and club-only opportunities.
       </p>
-
+<a
+  href="https://link-to.app/AddysWineLiquor"
+  target="_blank"
+  rel="noreferrer"
+  style={{ textDecoration: "none" }}
+>
+  <div style={{ marginBottom: 16 }}>
+    <AppButton>Shop in the Addy’s App</AppButton>
+  </div>
+</a>
       <div style={{ display: "grid", gap: 12 }}>
         {liveOffers.map((offer) => {
           const likeCount = offerLikes.filter(
