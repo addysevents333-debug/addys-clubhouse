@@ -7443,18 +7443,18 @@ setUnreadNotifications={setUnreadNotifications}
   );
 }
   if (activeTab === "profile") {
-  screen = (
-  <
-  currentMember={currentMember}
-  setCurrentMember={setCurrentMember}
-  onLogout={() => {
-    localStorage.removeItem("addysMember");
-    setCurrentMember(null);
-    setIsLoggedIn(false);
-    setActiveTab("home");
-  }}
-/>
-  );
+screen = (
+  <ProfileScreen
+    currentMember={currentMember}
+    setCurrentMember={setCurrentMember}
+    onLogout={() => {
+      localStorage.removeItem("addysMember");
+      setCurrentMember(null);
+      setIsLoggedIn(false);
+      setActiveTab("home");
+    }}
+  />
+);
 }
   if (activeTab === "admin" && isAdmin) screen = <AdminScreen currentMember={currentMember} />;
   const handleLogout = () => {
