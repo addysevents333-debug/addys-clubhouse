@@ -762,6 +762,7 @@ const [noteContent, setNoteContent] = useState("");
   const [notificationTitle, setNotificationTitle] = useState("");
 const [notificationMessage, setNotificationMessage] = useState("");
 const [notificationCategory, setNotificationCategory] = useState("Announcement");
+  const [notificationTargetGroup, setNotificationTargetGroup] = useState("all");
  const [adminNotifications, setAdminNotifications] = useState([]);
   const [adminOffers, setAdminOffers] = useState([]);
 const [noteAuthor, setNoteAuthor] = useState("Tyler’s Notes");
