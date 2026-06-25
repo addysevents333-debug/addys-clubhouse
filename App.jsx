@@ -859,7 +859,7 @@ const [editingEvent, setEditingEvent] = useState(null);
 
   if (!error) {
     setNotificationMessage("Notification deleted.");
-    loadNotifications();
+    loadAdminNotifications();
   } else {
     setNotificationMessage("Error deleting notification.");
   }
@@ -997,7 +997,7 @@ if (pushError) {
     setNotificationTitle("");
     setNotificationMessage("");
     setNotificationCategory("Announcement");
-    loadNotifications();
+    loadAdminNotifications();
   } else {
     console.log(error);
     alert("Error creating notification.");
@@ -1008,7 +1008,18 @@ const createNote = async () => {
     setNoteMessage("Please add a note title and content.");
     return;
   }
+const loadAdminNotifications = async () => {
+  const { data, error } = await supabase
+    .from("notifications")
+    .select("*")
+    .order("created_at", { ascending: false });
 
+  if (!error && data) {
+    setAdminNotifications(data);
+  } else {
+    console.log("Error loading admin notifications:", error);
+  }
+};
   const noteData = {
     title: noteTitle,
     content: noteContent,
@@ -1188,7 +1199,7 @@ const { data, error } = await supabase
   loadAdminEvents();
   loadAdminEventRsvps();
   loadAdminProducts(); 
-
+  loadAdminNotifications();
    
   const channel = supabase
     .channel("admin-messages-realtime")
