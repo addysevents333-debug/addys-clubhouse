@@ -1456,6 +1456,36 @@ const deleteEvent = async (event) => {
   await loadAdminEvents();
   await loadAdminEventRsvps();
 };
+  const sendEventReminder = async (event) => {
+  const confirmed = window.confirm(
+    `Send a push reminder to everyone who RSVP'd for "${event.title}"?`
+  );
+  if (!confirmed) return;
+
+  const eventDate = new Date(event.event_at).toLocaleString([], {
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  });
+
+  const { data, error } = await supabase.functions.invoke("send-push", {
+    body: {
+      title: `Reminder: ${event.title}`,
+      message: `${event.title} is coming up ${eventDate}.`,
+      category: "Event Reminder",
+      targetGroup: "all",
+      eventId: event.id,
+    },
+  });
+
+  if (error) {
+    alert("Event reminder failed: " + error.message);
+    return;
+  }
+
+  alert(`Event reminder sent to ${data?.sent || 0} device(s).`);
+};
    const loadAdminProducts = async () => {
   const { data, error } = await supabase
     .from("products")
