@@ -975,18 +975,28 @@ const deleteOffer = async (id) => {
     ]);
 
   if (!error) {
-    await supabase.functions.invoke("send-push", {
-      body: {
-        title: pushTitle,
-        message: pushMessage,
-        category: pushCategory,
-      },
-    });
+    const { data: pushData, error: pushError } =
+  await supabase.functions.invoke("send-push", {
+    body: {
+      title: pushTitle,
+      message: pushMessage,
+      category: pushCategory,
+    },
+  });
+
+console.log("Push result:", pushData, pushError);
+
+if (pushError) {
+  alert("Notification saved, but push failed: " + pushError.message);
+} else {
+  alert(
+    `Notification created. Push sent to ${pushData?.sent || 0} device(s).`
+  );
+}
 
     setNotificationTitle("");
     setNotificationMessage("");
     setNotificationCategory("Announcement");
-    alert("Notification created and push sent.");
     loadNotifications();
   } else {
     console.log(error);
