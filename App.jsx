@@ -1484,12 +1484,8 @@ const deleteEvent = async (event) => {
     return;
   }
 
-  alert(
-  `Sent: ${data?.sent || 0}
-Failed: ${data?.failed || 0}
-Event ID: ${data?.eventId || "none"}
-Allowed emails: ${data?.allowedEmailsCount}
-Subscriptions: ${data?.subscriptionCount}`
+ alert(
+  `Event reminder sent to ${data?.allowedEmailsCount || 0} RSVP member(s) across ${data?.sent || 0} device(s).`
 );
 };
    const loadAdminProducts = async () => {
