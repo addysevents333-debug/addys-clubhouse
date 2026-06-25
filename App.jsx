@@ -1736,7 +1736,23 @@ return (
     <option>Class</option>
     <option>RSVP</option>
   </select>
-
+<select
+  value={notificationTargetGroup}
+  onChange={(event) => setNotificationTargetGroup(event.target.value)}
+  style={{
+    width: "100%",
+    borderRadius: 16,
+    border: "1px solid #ddd6cf",
+    padding: 13,
+    boxSizing: "border-box",
+    fontSize: 15,
+    marginBottom: 12,
+  }}
+>
+  <option value="all">All Members</option>
+  <option value="wine">Wine Club</option>
+  <option value="spirits">Spirits Club</option>
+</select>
   <AppButton onClick={createNotification}>
     Create Notification
   </AppButton>
