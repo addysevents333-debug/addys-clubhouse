@@ -2072,7 +2072,21 @@ return (
   >
     Edit Event
   </button>
-
+<button
+  type="button"
+  onClick={() => sendEventReminder(event)}
+  style={{
+    border: "1px solid #8a1740",
+    borderRadius: 10,
+    padding: "8px 10px",
+    background: "white",
+    color: "#8a1740",
+    fontWeight: 800,
+    cursor: "pointer",
+  }}
+>
+  Send RSVP Reminder
+</button>
   <button
     type="button"
     onClick={() => deleteEvent(event)}
