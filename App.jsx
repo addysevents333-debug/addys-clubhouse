@@ -964,25 +964,27 @@ const deleteOffer = async (id) => {
   const pushTitle = notificationTitle;
   const pushMessage = notificationMessage;
   const pushCategory = notificationCategory;
-
+const pushTargetGroup = notificationTargetGroup;
   const { error } = await supabase
     .from("notifications")
     .insert([
       {
-        title: pushTitle,
-        message: pushMessage,
-        category: pushCategory,
-      },
+  title: pushTitle,
+  message: pushMessage,
+  category: pushCategory,
+  target_group: pushTargetGroup,
+}
     ]);
 
   if (!error) {
     const { data: pushData, error: pushError } =
   await supabase.functions.invoke("send-push", {
     body: {
-      title: pushTitle,
-      message: pushMessage,
-      category: pushCategory,
-    },
+  title: pushTitle,
+  message: pushMessage,
+  category: pushCategory,
+  targetGroup: pushTargetGroup,
+},
   });
 
 console.log("Push result:", pushData, pushError);
@@ -998,6 +1000,7 @@ if (pushError) {
     setNotificationTitle("");
     setNotificationMessage("");
     setNotificationCategory("Announcement");
+    setNotificationTargetGroup("all");
     loadAdminNotifications();
   } else {
     console.log(error);
