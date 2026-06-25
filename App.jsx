@@ -975,6 +975,7 @@ const deleteOffer = async (id) => {
     ]);
 
   if (!error) {
+    alert("About to call send-push");
     const { data: pushData, error: pushError } =
   await supabase.functions.invoke("send-push", {
     body: {
@@ -983,7 +984,7 @@ const deleteOffer = async (id) => {
       category: pushCategory,
     },
   });
-
+alert("Finished calling send-push");
 console.log("Push result:", pushData, pushError);
 
 if (pushError) {
