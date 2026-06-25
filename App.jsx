@@ -1484,7 +1484,13 @@ const deleteEvent = async (event) => {
     return;
   }
 
-  alert(`Event reminder sent to ${data?.sent || 0} device(s).`);
+  alert(
+  `Sent: ${data?.sent || 0}
+Failed: ${data?.failed || 0}
+Event ID: ${data?.eventId || "none"}
+Allowed emails: ${data?.allowedEmailsCount}
+Subscriptions: ${data?.subscriptionCount}`
+);
 };
    const loadAdminProducts = async () => {
   const { data, error } = await supabase
