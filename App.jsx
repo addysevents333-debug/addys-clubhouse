@@ -954,31 +954,43 @@ const deleteOffer = async (id) => {
     console.log(error);
   }
 };
-  const createNotification = async () => {
+ const createNotification = async () => {
   if (!notificationTitle.trim() || !notificationMessage.trim()) {
-    setNotificationMessage("Please add a notification title and message.");
+    alert("Please add a notification title and message.");
     return;
   }
+
+  const pushTitle = notificationTitle;
+  const pushMessage = notificationMessage;
+  const pushCategory = notificationCategory;
 
   const { error } = await supabase
     .from("notifications")
     .insert([
       {
-        title: notificationTitle,
-        message: notificationMessage,
-        category: notificationCategory,
+        title: pushTitle,
+        message: pushMessage,
+        category: pushCategory,
       },
     ]);
 
   if (!error) {
+    await supabase.functions.invoke("send-push", {
+      body: {
+        title: pushTitle,
+        message: pushMessage,
+        category: pushCategory,
+      },
+    });
+
     setNotificationTitle("");
     setNotificationMessage("");
     setNotificationCategory("Announcement");
-    setNotificationMessage("Notification created.");
+    alert("Notification created and push sent.");
     loadNotifications();
   } else {
     console.log(error);
-    setNotificationMessage("Error creating notification.");
+    alert("Error creating notification.");
   }
 };
 const createNote = async () => {
