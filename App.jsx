@@ -11,7 +11,7 @@ const urlBase64ToUint8Array = (base64String) => {
     .replace(/_/g, "/");
 
   const rawData = window.atob(base64);
-
+ 
   return Uint8Array.from(
     [...rawData].map((character) => character.charCodeAt(0))
   );
