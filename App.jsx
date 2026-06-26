@@ -1065,7 +1065,9 @@ if (noteFiles.length > 0 && uploadedFiles.length === 0) {
   const noteData = {
     title: noteTitle,
     content: noteContent,
-    file_urls: uploadedFiles,
+   file_urls: editingNoteId
+  ? [...(notes.find((note) => note.id === editingNoteId)?.file_urls || []), ...uploadedFiles]
+  : uploadedFiles,
     author:
       noteAuthorGroup === "tyler"
         ? "Tyler's Notes"
