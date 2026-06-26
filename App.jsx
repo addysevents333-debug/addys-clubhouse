@@ -756,6 +756,7 @@ const [adminPosts, setAdminPosts] = useState([]);
   const [noteTitle, setNoteTitle] = useState("");
 const [noteContent, setNoteContent] = useState("");
   const [noteAuthorGroup, setNoteAuthorGroup] = useState("tyler");
+  const [noteFiles, setNoteFiles] = useState([]);
    const [editingNoteId, setEditingNoteId] = useState(null);
   const [offerImage, setOfferImage] = useState(null);
   const [postImage, setPostImage] = useState(null);
