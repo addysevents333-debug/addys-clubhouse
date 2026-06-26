@@ -757,6 +757,7 @@ const [adminPosts, setAdminPosts] = useState([]);
 const [noteContent, setNoteContent] = useState("");
   const [noteAuthorGroup, setNoteAuthorGroup] = useState("tyler");
   const [noteFiles, setNoteFiles] = useState([]);
+  const [removedNoteFileUrls, setRemovedNoteFileUrls] = useState([]);
    const [editingNoteId, setEditingNoteId] = useState(null);
   const [offerImage, setOfferImage] = useState(null);
   const [postImage, setPostImage] = useState(null);
@@ -1048,6 +1049,7 @@ const startEditingNote = (note) => {
   setNoteContent(note.content || "");
   setNoteAuthorGroup(note.author_group || "tyler");
   setNoteFiles([]);
+  setRemovedNoteFileUrls([]);
   setNoteMessage("Editing note. Make changes, then save.");
   setActiveAdminSection("notes-create");
 };
@@ -1062,11 +1064,23 @@ const createNote = async () => {
 if (noteFiles.length > 0 && uploadedFiles.length === 0) {
   return;
 }
+  const existingNoteFiles = editingNoteId
+  ? notes.find((note) => note.id === editingNoteId)?.file_urls || []
+  : [];
+
+const keptExistingFiles = existingNoteFiles.filter(
+  (file) => !removedNoteFileUrls.includes(file.url)
+);
   const noteData = {
     title: noteTitle,
     content: noteContent,
    file_urls: editingNoteId
-  ? [...(notes.find((note) => note.id === editingNoteId)?.file_urls || []), ...uploadedFiles]
+  ? [
+      ...(
+        notes.find((note) => note.id === editingNoteId)?.file_urls || []
+      ).filter((file) => !removedNoteFileUrls.includes(file.url)),
+      ...uploadedFiles,
+    ]
   : uploadedFiles,
     author:
       noteAuthorGroup === "tyler"
@@ -2849,7 +2863,65 @@ return (
     {noteFiles.length} file(s) selected
   </div>
 ) : null}
- 
+ {editingNoteId ? (() => {
+  const existingFiles =
+    notes.find((note) => note.id === editingNoteId)?.file_urls || [];
+
+  const visibleFiles = existingFiles.filter(
+    (file) => !removedNoteFileUrls.includes(file.url)
+  );
+
+  return visibleFiles.length > 0 ? (
+    <div style={{ marginBottom: 12 }}>
+      <div style={{ fontWeight: 900, color: burgundy, marginBottom: 8 }}>
+        Current Attached Files
+      </div>
+
+      <div style={{ display: "grid", gap: 8 }}>
+        {visibleFiles.map((file) => (
+          <div
+            key={file.url}
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              gap: 8,
+              alignItems: "center",
+              background: "#faf7f3",
+              border: "1px solid #ddd",
+              borderRadius: 12,
+              padding: 10,
+            }}
+          >
+            <a href={file.url} target="_blank" rel="noreferrer">
+              {file.name || "Attached file"}
+            </a>
+
+            <button
+              type="button"
+              onClick={() =>
+                setRemovedNoteFileUrls([
+                  ...removedNoteFileUrls,
+                  file.url,
+                ])
+              }
+              style={{
+                border: 0,
+                borderRadius: 10,
+                padding: "7px 9px",
+                background: "#8a1f1f",
+                color: "white",
+                fontWeight: 800,
+                cursor: "pointer",
+              }}
+            >
+              Remove
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
+  ) : null;
+})() : null}
 <select
   value={noteAuthorGroup}
   onChange={(e) => setNoteAuthorGroup(e.target.value)}
