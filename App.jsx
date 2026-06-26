@@ -5165,7 +5165,43 @@ if (journalPhoto) {
                    <p style={{ margin: 0, color: "#666", fontSize: 14, lineHeight: 1.45 }}>
   {note.content}
 </p>
+{note.file_urls && note.file_urls.length > 0 ? (
+  <div style={{ marginTop: 12 }}>
+    <div
+      style={{
+        fontSize: 13,
+        fontWeight: 900,
+        color: burgundy,
+        marginBottom: 8,
+      }}
+    >
+      Attached Tech Sheets & Files
+    </div>
 
+    <div style={{ display: "grid", gap: 8 }}>
+      {note.file_urls.map((file, index) => (
+        <a
+          key={`${file.url}-${index}`}
+          href={file.url}
+          target="_blank"
+          rel="noreferrer"
+          style={{
+            display: "block",
+            padding: "10px 12px",
+            borderRadius: 12,
+            background: "#faf7f3",
+            color: burgundy,
+            fontWeight: 800,
+            textDecoration: "none",
+            border: "1px solid #eadfd6",
+          }}
+        >
+          📎 {file.name || `File ${index + 1}`}
+        </a>
+      ))}
+    </div>
+  </div>
+) : null}
 <div style={{ marginTop: 12 }}>
   <button
     onClick={() => toggleNoteLike(note.id)}
