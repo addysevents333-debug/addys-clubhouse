@@ -1040,13 +1040,14 @@ if (pushError) {
 
   return uploadedFiles;
 };
-  const startEditingNote = (note) => {
+const startEditingNote = (note) => {
   setEditingNoteId(note.id);
   setNoteTitle(note.title || "");
   setNoteContent(note.content || "");
   setNoteAuthorGroup(note.author_group || "tyler");
   setNoteFiles([]);
   setNoteMessage("Editing note. Make changes, then save.");
+  setActiveAdminSection("notes-create");
 };
 const createNote = async () => {
   if (!noteTitle.trim() || !noteContent.trim()) {
