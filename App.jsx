@@ -1057,9 +1057,15 @@ const loadAdminNotifications = async () => {
     console.log("Error loading admin notifications:", error);
   }
 };
+  const uploadedFiles = await uploadNoteFiles();
+
+if (noteFiles.length > 0 && uploadedFiles.length === 0) {
+  return;
+}
   const noteData = {
     title: noteTitle,
     content: noteContent,
+    file_urls: uploadedFiles,
     author:
       noteAuthorGroup === "tyler"
         ? "Tyler's Notes"
@@ -1094,6 +1100,7 @@ console.log("NOTE SAVE RESULT:", { editingNoteId, noteData, data, error });
   if (!error) {
     setNoteTitle("");
     setNoteContent("");
+    setNoteFiles([]);
     setNoteAuthorGroup("tyler");
     setEditingNoteId(null);
     if (!editingNoteId) {
