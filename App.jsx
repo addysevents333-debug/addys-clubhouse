@@ -1051,31 +1051,12 @@ const startEditingNote = (note) => {
   setNoteMessage("Editing note. Make changes, then save.");
   setActiveAdminSection("notes-create");
 };
-  setEditingNoteId(note.id);
-  setNoteTitle(note.title || "");
-  setNoteContent(note.content || "");
-  setNoteAuthorGroup(note.author_group || "tyler");
-  setNoteFiles([]);
-  setNoteMessage("Editing note. Make changes, then save.");
-  setActiveAdminSection("notes-create");
-};
 const createNote = async () => {
   if (!noteTitle.trim() || !noteContent.trim()) {
     setNoteMessage("Please add a note title and content.");
     return;
   }
-const loadAdminNotifications = async () => {
-  const { data, error } = await supabase
-    .from("notifications")
-    .select("*")
-    .order("created_at", { ascending: false });
 
-  if (!error && data) {
-    setAdminNotifications(data);
-  } else {
-    console.log("Error loading admin notifications:", error);
-  }
-};
   const uploadedFiles = await uploadNoteFiles();
 
 if (noteFiles.length > 0 && uploadedFiles.length === 0) {
