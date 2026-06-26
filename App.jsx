@@ -1040,6 +1040,14 @@ if (pushError) {
 
   return uploadedFiles;
 };
+  const startEditingNote = (note) => {
+  setEditingNoteId(note.id);
+  setNoteTitle(note.title || "");
+  setNoteContent(note.content || "");
+  setNoteAuthorGroup(note.author_group || "tyler");
+  setNoteFiles([]);
+  setNoteMessage("Editing note. Make changes, then save.");
+};
 const createNote = async () => {
   if (!noteTitle.trim() || !noteContent.trim()) {
     setNoteMessage("Please add a note title and content.");
@@ -2873,8 +2881,8 @@ return (
   <option value="ryan">Ryan's Notes</option>
   <option value="mike_derek">Mike & Derek Notes</option>
 </select>
- <AppButton onClick={createNote}>
-  {editingNoteId ? "Update Note" : "Create Note"}
+<AppButton onClick={createNote}>
+  {editingNoteId ? "Save Note Changes" : "Create Note"}
 </AppButton>
         {noteMessage ? (
   <div
@@ -2937,7 +2945,7 @@ return (
 <div style={{ display: "flex", gap: 8, marginTop: 12 }}>
 
   <button
-    onClick={() => startEditNote(note)}
+    onClick={() => startEditingNote(note)}
     style={{
       border: 0,
       borderRadius: 12,
