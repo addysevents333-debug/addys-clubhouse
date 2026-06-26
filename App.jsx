@@ -1008,6 +1008,38 @@ if (pushError) {
     alert("Error creating notification.");
   }
 };
+  const uploadNoteFiles = async () => {
+  if (!noteFiles || noteFiles.length === 0) {
+    return [];
+  }
+
+  const uploadedFiles = [];
+
+  for (const file of noteFiles) {
+    const fileName = `${Date.now()}-${file.name}`;
+
+    const { error } = await supabase.storage
+      .from("note-files")
+      .upload(fileName, file);
+
+    if (error) {
+      setNoteMessage("File upload failed: " + error.message);
+      return [];
+    }
+
+    const { data } = supabase.storage
+      .from("note-files")
+      .getPublicUrl(fileName);
+
+    uploadedFiles.push({
+      name: file.name,
+      url: data.publicUrl,
+      type: file.type,
+    });
+  }
+
+  return uploadedFiles;
+};
 const createNote = async () => {
   if (!noteTitle.trim() || !noteContent.trim()) {
     setNoteMessage("Please add a note title and content.");
