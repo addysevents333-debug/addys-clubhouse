@@ -1041,6 +1041,16 @@ if (pushError) {
   return uploadedFiles;
 };
 const startEditingNote = (note) => {
+  console.log("EDIT NOTE CLICKED", note);
+
+  setEditingNoteId(note.id);
+  setNoteTitle(note.title || "");
+  setNoteContent(note.content || "");
+  setNoteAuthorGroup(note.author_group || "tyler");
+  setNoteFiles([]);
+  setNoteMessage("Editing note. Make changes, then save.");
+  setActiveAdminSection("notes-create");
+};
   setEditingNoteId(note.id);
   setNoteTitle(note.title || "");
   setNoteContent(note.content || "");
