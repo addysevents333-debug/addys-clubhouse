@@ -2830,7 +2830,32 @@ return (
       marginBottom: 12,
     }}
   />
+<label
+  style={{
+    display: "block",
+    marginBottom: 12,
+    cursor: "pointer",
+    fontWeight: 800,
+    color: burgundy,
+  }}
+>
+  Attach Tech Sheets / Files
+  <input
+    type="file"
+    multiple
+    accept=".pdf,image/*"
+    style={{ display: "none" }}
+    onChange={(event) =>
+      setNoteFiles(Array.from(event.target.files || []))
+    }
+  />
+</label>
 
+{noteFiles.length > 0 ? (
+  <div style={{ marginBottom: 12, color: "#666", fontSize: 13 }}>
+    {noteFiles.length} file(s) selected
+  </div>
+) : null}
  
 <select
   value={noteAuthorGroup}
