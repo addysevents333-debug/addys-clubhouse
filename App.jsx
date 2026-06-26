@@ -1092,25 +1092,23 @@ if (editingNoteId) {
   result = await supabase
     .from("notes")
     .update(noteData)
-    .eq("id", editingNoteId)
-    .select();
+    .eq("id", editingNoteId);
 } else {
   result = await supabase
     .from("notes")
-    .insert([noteData])
-    .select();
+    .insert([noteData]);
 }
 
-const { data, error } = result;
+const { error } = result;
 
-console.log("NOTE SAVE RESULT:", { editingNoteId, noteData, data, error });
+console.log("NOTE SAVE RESULT:", { editingNoteId, noteData, error });
 
   if (!error) {
     setNoteTitle("");
     setNoteContent("");
     setNoteFiles([]);
     setNoteAuthorGroup("tyler");
-    setEditingNoteId(null);
+   setEditingNoteId(null);
     if (!editingNoteId) {
   await supabase.from("notifications").insert([
     {
@@ -1141,14 +1139,7 @@ console.log("NOTE SAVE RESULT:", { editingNoteId, noteData, data, error });
     setNoteMessage(error.message || "Error deleting note.");
   }
 };
-   const startEditNote = (note) => {
-  setEditingNoteId(note.id);
-  setNoteTitle(note.title || "");
-  setNoteContent(note.content || "");
-  setNoteAuthorGroup(note.author_group || "tyler");
-  setNoteMessage("");
-};
-
+  
 const loadMembers = async () => {
   const { data, error } = await supabase
     .from("members")
