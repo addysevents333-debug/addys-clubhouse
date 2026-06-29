@@ -752,6 +752,7 @@ const [members, setMembers] = useState([]);
   const [memberSearch, setMemberSearch] = useState("");
   const [adminMessages, setAdminMessages] = useState([]);
   const [adminReply, setAdminReply] = useState("");
+  const [unreadAdminDmCount, setUnreadAdminDmCount] = useState(0);
 const [adminPosts, setAdminPosts] = useState([]);
   const [noteTitle, setNoteTitle] = useState("");
 const [noteContent, setNoteContent] = useState("");
@@ -1216,6 +1217,21 @@ const { data, error } = await supabase
 
   if (!error && data) {
     setAdminMessages(data);
+  }
+};
+  const loadUnreadAdminDmCount = async () => {
+  if (!currentMember?.email) return;
+
+  const { count, error } = await supabase
+    .from("messages")
+    .select("id", { count: "exact", head: true })
+    .eq("staff_email", currentMember.email)
+    .neq("sender_email", currentMember.email)
+    .or("admin_read.is.null,admin_read.eq.false")
+    .or("archived.is.null,archived.eq.false");
+
+  if (!error) {
+    setUnreadAdminDmCount(count || 0);
   }
 };
    const loadAdminEventRsvps = async () => {
