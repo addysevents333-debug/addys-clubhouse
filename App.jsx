@@ -7604,6 +7604,7 @@ const [fullscreenImage, setFullscreenImage] = useState(null);
 const [hasNewOffers, setHasNewOffers] = useState(false);
 const [unreadNotes, setUnreadNotes] = useState(0);
 const [unreadOffers, setUnreadOffers] = useState(0);
+  const [unreadMemberDmCount, setUnreadMemberDmCount] = useState(0);
 const [notifications, setNotifications] = useState([]);
    const [unreadNotifications, setUnreadNotifications] = useState(0);
   const [notificationsRead, setNotificationsRead] = useState(
