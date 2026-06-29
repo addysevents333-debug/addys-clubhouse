@@ -1261,6 +1261,7 @@ const { data, error } = await supabase
   loadMembers();
   loadAdminPosts();
   loadAdminMessages();
+  loadUnreadAdminDmCount();
   loadNotes();
   loadAdminOffers();
   loadAdminEvents();
@@ -1277,9 +1278,10 @@ const { data, error } = await supabase
         schema: "public",
         table: "messages",
       },
-      () => {
-        loadAdminMessages();
-      }
+     () => {
+  loadAdminMessages();
+  loadUnreadAdminDmCount();
+}
     )
     .subscribe((status) => {
   if (status === "SUBSCRIBED") {
