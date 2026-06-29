@@ -3154,7 +3154,7 @@ return (
        
       <AdminSection
   id="messages"
-  title="Admin DM Inbox"
+ title={`Admin DM Inbox${unreadAdminDmCount ? ` (${unreadAdminDmCount})` : ""}`}
   activeSection={activeAdminSection}
   setActiveSection={setActiveAdminSection}
 >
@@ -3182,12 +3182,13 @@ onClick={async () => {
 });
 await supabase
   .from("messages")
-  .update({ is_read: true })
+  .update({ admin_read: true })
+  .eq("staff_email", currentMember?.email)
   .eq("member_email", msg.member_email)
-  .eq("staff_email", msg.staff_email)
-  .eq("sender_email", msg.member_email);
+  .neq("sender_email", currentMember?.email);
 
-  loadAdminMessages();
+loadAdminMessages();
+loadUnreadAdminDmCount();
 }}
 
   style={{
