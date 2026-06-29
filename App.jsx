@@ -7878,7 +7878,29 @@ screen = (
       }}
     />
   ) : null}
+   {tab.id === "messages" && unreadMemberDmCount > 0 ? (
+  <span
+    style={{
+      position: "absolute",
+      top: 2,
+      right: 12,
+      background: "red",
+      color: "white",
+      borderRadius: 999,
+      minWidth: 16,
+      height: 16,
+      padding: "0 4px",
+      fontSize: 10,
+      fontWeight: 900,
+      display: "grid",
+      placeItems: "center",
+    }}
+  >
+    {unreadMemberDmCount}
+  </span>
+) : null}                   
 </div>
+                   
                     <div style={{ fontSize: 11 }}>{tab.label}</div>
                   </button>
                 );
