@@ -4475,7 +4475,7 @@ function OffersScreen({ setFullscreenImage, currentMember }) {
     </div>
   );
 }
-function MessagesScreen({ currentMember }) {
+function MessagesScreen({ currentMember, onMessagesRead }) {
   const [selectedStaff, setSelectedStaff] = useState(staffContacts[0]);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
@@ -4491,7 +4491,7 @@ function MessagesScreen({ currentMember }) {
  
   useEffect(() => {
   loadMessages();
-
+markMemberMessagesRead();
   const channel = supabase
     .channel("messages-realtime")
     .on(
@@ -4501,9 +4501,10 @@ function MessagesScreen({ currentMember }) {
         schema: "public",
         table: "messages",
       },
-      () => {
-        loadMessages();
-      }
+     () => {
+  loadMessages();
+  onMessagesRead?.();
+}
     )
     .subscribe();
 
@@ -4521,6 +4522,18 @@ const loadMessages = async () => {
   if (!error && data) {
     setMessages(data);
   }
+};
+
+  const markMemberMessagesRead = async () => {
+  if (!currentMember?.email) return;
+
+  await supabase
+    .from("messages")
+    .update({ member_read: true })
+    .eq("member_email", currentMember.email)
+    .neq("sender_email", currentMember.email);
+
+  await onMessagesRead?.();
 };
 const sendMessage = async () => {
   if (!newMessage.trim() && attachedPhotos.length === 0) return;
@@ -7614,6 +7627,7 @@ const [showNotifications, setShowNotifications] = useState(false);
 useEffect(() => {
   if (currentMember?.email) {
     loadNotifications();
+    loadUnreadMemberDmCount();
     checkNewContentBadges();
   }
 }, [currentMember]);
@@ -7735,8 +7749,13 @@ setUnreadNotifications={setUnreadNotifications}
   setFullscreenImage={setFullscreenImage}
   currentMember={currentMember}
 />
-  if (activeTab === "messages") {
-  screen = <MessagesScreen currentMember={currentMember} />;
+ if (activeTab === "messages") {
+  screen = (
+    <MessagesScreen
+      currentMember={currentMember}
+      onMessagesRead={loadUnreadMemberDmCount}
+    />
+  );
 }
    if (activeTab === "community") {
   screen = (
