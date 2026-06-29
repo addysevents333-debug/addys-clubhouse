@@ -7640,6 +7640,21 @@ const loadNotifications = async () => {
     }
   }
 };
+  const loadUnreadMemberDmCount = async () => {
+  if (!currentMember?.email) return;
+
+  const { count, error } = await supabase
+    .from("messages")
+    .select("id", { count: "exact", head: true })
+    .eq("member_email", currentMember.email)
+    .neq("sender_email", currentMember.email)
+    .or("member_read.is.null,member_read.eq.false")
+    .or("archived.is.null,archived.eq.false");
+
+  if (!error) {
+    setUnreadMemberDmCount(count || 0);
+  }
+};
    const checkNewContentBadges = async () => {
   if (!currentMember?.email) return;
 
