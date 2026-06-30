@@ -1018,7 +1018,15 @@ if (pushError) {
   const uploadedFiles = [];
 
   for (const file of noteFiles) {
-    const fileName = `${Date.now()}-${file.name}`;
+    const safeName = file.name
+  .normalize("NFD")
+  .replace(/[\u0300-\u036f]/g, "")
+  .replace(/[^a-zA-Z0-9._-]/g, "-")
+  .replace(/-+/g, "-")
+  .replace(/^-|-$/g, "")
+  .toLowerCase();
+
+const fileName = `${Date.now()}-${safeName || "file"}`;
 
     const { error } = await supabase.storage
       .from("note-files")
