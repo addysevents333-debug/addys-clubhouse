@@ -6546,7 +6546,10 @@ const [authMessage, setAuthMessage] = useState("");
   };
 const handleActivateAccount = async () => {
   const normalizedEmail = email.trim().toLowerCase();
-  const cleanCode = activationCode.trim().toUpperCase();
+  const cleanCode = activationCode
+    .trim()
+    .toUpperCase()
+    .replace(/[^A-Z0-9]/g, "");
 
   setAuthMessage("");
 
@@ -6565,18 +6568,26 @@ const handleActivateAccount = async () => {
     return;
   }
 
-  const { data: memberData, error: memberError } = await supabase
+  const { data: members, error: memberError } = await supabase
     .from("members")
-    .select("email, status, activation_code, activation_used")
-    .eq("email", normalizedEmail)
-    .single();
+    .select("email, status, activation_code, activation_used");
+
+  const memberData = (members || []).find(
+    (member) =>
+      String(member.email || "").trim().toLowerCase() === normalizedEmail
+  );
+
+  const storedCode = String(memberData?.activation_code || "")
+    .trim()
+    .toUpperCase()
+    .replace(/[^A-Z0-9]/g, "");
 
   if (
     memberError ||
     !memberData ||
     memberData.status !== "active" ||
     memberData.activation_used ||
-    memberData.activation_code !== cleanCode
+    storedCode !== cleanCode
   ) {
     setAuthMessage(
       "We could not verify that email and activation code."
@@ -6600,7 +6611,15 @@ const handleActivateAccount = async () => {
       activation_used: true,
       activated_at: new Date().toISOString(),
     })
-    .eq("email", normalizedEmail);
+    .eq("email", memberData.email);
+
+  await supabase
+    .from("member_activation_invites")
+    .update({
+      activation_used: true,
+      activated_at: new Date().toISOString(),
+    })
+    .eq("email", memberData.email);
 
   setAuthMessage(
     "Account activated. You can now log in with your new password."
