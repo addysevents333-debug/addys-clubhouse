@@ -735,7 +735,7 @@ function AdminSection({
     </Card>
   );
 }
-function AdminScreen({ currentMember }) {
+function AdminScreen({ currentMember, onAdminMessagesRead }) {
   const [author, setAuthor] = useState("Tyler");
   const [role, setRole] = useState("Club Director");
   const [badge, setBadge] = useState("Announcement");
@@ -3195,7 +3195,7 @@ await supabase
   .neq("sender_email", currentMember?.email);
 
 loadAdminMessages();
-loadUnreadAdminDmCount();
+onAdminMessagesRead?.();
 }}
 
   style={{
@@ -7824,7 +7824,14 @@ screen = (
   />
 );
 }
-  if (activeTab === "admin" && isAdmin) screen = <AdminScreen currentMember={currentMember} />;
+ if (activeTab === "admin" && isAdmin) {
+  screen = (
+    <AdminScreen
+      currentMember={currentMember}
+      onAdminMessagesRead={loadUnreadAdminDmCount}
+    />
+  );
+}
   const handleLogout = () => {
   localStorage.removeItem("addysMember");
   setCurrentMember(null);
