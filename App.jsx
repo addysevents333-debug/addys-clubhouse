@@ -4497,9 +4497,10 @@ function MessagesScreen({ currentMember, onMessagesRead }) {
   };
 
  
-  useEffect(() => {
+useEffect(() => {
   loadMessages();
-markMemberMessagesRead();
+  markMemberMessagesRead();
+
   const channel = supabase
     .channel("messages-realtime")
     .on(
@@ -4509,11 +4510,10 @@ markMemberMessagesRead();
         schema: "public",
         table: "messages",
       },
-     () => {
- () => {
-  loadMessages();
-  markMemberMessagesRead();
-}
+      () => {
+        loadMessages();
+        markMemberMessagesRead();
+      }
     )
     .subscribe();
 
