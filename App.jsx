@@ -7926,7 +7926,20 @@ screen = (
   >
     {unreadMemberDmCount}
   </span>
-) : null}                   
+) : null}           
+     {tab.id === "admin" && unreadAdminDmCount > 0 ? (
+  <span
+    style={{
+      position: "absolute",
+      top: -4,
+      right: -6,
+      width: 8,
+      height: 8,
+      borderRadius: "50%",
+      background: "#d50000",
+    }}
+  />
+) : null}                 
 </div>
                    
                     <div style={{ fontSize: 11 }}>{tab.label}</div>
