@@ -4510,8 +4510,9 @@ markMemberMessagesRead();
         table: "messages",
       },
      () => {
+ () => {
   loadMessages();
-  onMessagesRead?.();
+  markMemberMessagesRead();
 }
     )
     .subscribe();
@@ -4532,7 +4533,7 @@ const loadMessages = async () => {
   }
 };
 
-  const markMemberMessagesRead = async () => {
+ const markMemberMessagesRead = async () => {
   if (!currentMember?.email) return;
 
   await supabase
