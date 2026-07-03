@@ -3192,7 +3192,7 @@ await supabase
   .update({ admin_read: true })
   .eq("staff_email", currentMember?.email)
   .eq("member_email", msg.member_email)
-  .neq("sender_email", currentMember?.email);
+  .or("admin_read.is.null,admin_read.eq.false");
 
 loadAdminMessages();
 onAdminMessagesRead?.();
