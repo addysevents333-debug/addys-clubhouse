@@ -1227,16 +1227,15 @@ const { data, error } = await supabase
     setAdminMessages(data);
   }
 };
-  const loadUnreadAdminDmCount = async () => {
+ const loadUnreadAdminDmCount = async () => {
   if (!currentMember?.email) return;
 
   const { count, error } = await supabase
     .from("messages")
     .select("id", { count: "exact", head: true })
     .eq("staff_email", currentMember.email)
-    .neq("sender_email", currentMember.email)
-    .or("admin_read.is.null,admin_read.eq.false")
-    .or("archived.is.null,archived.eq.false");
+    .eq("admin_read", false)
+    .neq("sender_email", currentMember.email);
 
   if (!error) {
     setUnreadAdminDmCount(count || 0);
@@ -7646,6 +7645,7 @@ const [hasNewOffers, setHasNewOffers] = useState(false);
 const [unreadNotes, setUnreadNotes] = useState(0);
 const [unreadOffers, setUnreadOffers] = useState(0);
   const [unreadMemberDmCount, setUnreadMemberDmCount] = useState(0);
+  const [unreadAdminDmCount, setUnreadAdminDmCount] = useState(0);
 const [notifications, setNotifications] = useState([]);
    const [unreadNotifications, setUnreadNotifications] = useState(0);
   const [notificationsRead, setNotificationsRead] = useState(
@@ -7657,6 +7657,7 @@ useEffect(() => {
     loadNotifications();
     loadUnreadMemberDmCount();
     checkNewContentBadges();
+    loadUnreadAdminDmCount();
   }
 }, [currentMember]);
 const loadNotifications = async () => {
