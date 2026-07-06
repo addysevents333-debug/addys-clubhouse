@@ -4323,7 +4323,172 @@ const reloadCalendar = async () => {
     </div>
   );
 }
+function CellarSearchScreen({ setActiveTab }) {
+  const [search, setSearch] = useState("");
+  const [products, setProducts] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const [message, setMessage] = useState("");
 
+  useEffect(() => {
+    loadProducts("");
+  }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      loadProducts(search);
+    }, 350);
+
+    return () => clearTimeout(timer);
+  }, [search]);
+
+  const loadProducts = async (searchText) => {
+    const cleanSearch = searchText.trim().replace(/[,]/g, " ");
+
+    setIsSearching(true);
+    setMessage("");
+
+    let query = supabase
+      .from("products")
+      .select(
+        "id, name, brand, category, subcategory, varietal, region, country, vintage, size, price, inventory_quantity, sku, upc, description"
+      )
+      .eq("active", true)
+      .order("name", { ascending: true })
+      .limit(50);
+
+    if (cleanSearch.length >= 2) {
+      query = query.or(
+        `name.ilike.%${cleanSearch}%,brand.ilike.%${cleanSearch}%,category.ilike.%${cleanSearch}%,subcategory.ilike.%${cleanSearch}%,varietal.ilike.%${cleanSearch}%,region.ilike.%${cleanSearch}%,country.ilike.%${cleanSearch}%,sku.ilike.%${cleanSearch}%,upc.ilike.%${cleanSearch}%`
+      );
+    }
+
+    const { data, error } = await query;
+
+    if (error) {
+      console.log(error);
+      setMessage("Products could not be loaded.");
+      setProducts([]);
+    } else {
+      setProducts(data || []);
+    }
+
+    setIsSearching(false);
+  };
+
+  return (
+    <div style={{ padding: 20, paddingBottom: 92 }}>
+      <button
+        type="button"
+        onClick={() => setActiveTab("home")}
+        style={{
+          border: 0,
+          background: "transparent",
+          color: burgundy,
+          fontWeight: 800,
+          cursor: "pointer",
+          padding: 0,
+          marginBottom: 18,
+        }}
+      >
+        Back to Home
+      </button>
+
+      <h1 style={{ margin: "0 0 6px", fontSize: 28 }}>Cellar Search</h1>
+
+      <p style={{ margin: "0 0 18px", color: "#666", lineHeight: 1.5 }}>
+        Search bottles, spirits, regions, styles, or SKUs carried by Addy’s.
+      </p>
+
+      <input
+        value={search}
+        onChange={(event) => setSearch(event.target.value)}
+        placeholder="Search Cabernet, Bourbon, Champagne..."
+        style={{
+          width: "100%",
+          borderRadius: 16,
+          border: "1px solid #ddd6cf",
+          padding: 13,
+          boxSizing: "border-box",
+          fontSize: 15,
+          marginBottom: 14,
+        }}
+      />
+
+      {isSearching ? (
+        <div style={{ color: "#666", marginBottom: 12 }}>Searching...</div>
+      ) : null}
+
+      {message ? (
+        <div style={{ color: "#8a1f1f", marginBottom: 12 }}>{message}</div>
+      ) : null}
+
+      <div style={{ display: "grid", gap: 12 }}>
+        {products.map((product) => (
+          <Card key={product.id}>
+            <div style={{ fontWeight: 900, fontSize: 16 }}>
+              {product.name || "Unnamed Product"}
+            </div>
+
+            <div style={{ marginTop: 4, color: "#666", fontSize: 13 }}>
+              {[product.brand, product.category, product.subcategory]
+                .filter(Boolean)
+                .join(" • ")}
+            </div>
+
+            <div style={{ marginTop: 8, color: "#666", fontSize: 13 }}>
+              {[product.varietal, product.region, product.country]
+                .filter(Boolean)
+                .join(" • ")}
+            </div>
+
+            <div style={{ marginTop: 10, display: "flex", gap: 8, flexWrap: "wrap" }}>
+              {product.size ? (
+                <span style={{ background: blush, color: burgundy, borderRadius: 999, padding: "5px 9px", fontSize: 12, fontWeight: 800 }}>
+                  {product.size}
+                </span>
+              ) : null}
+
+              {product.price !== null && product.price !== undefined ? (
+                <span style={{ background: "#f4f1ed", borderRadius: 999, padding: "5px 9px", fontSize: 12, fontWeight: 800 }}>
+                  ${Number(product.price).toFixed(2)}
+                </span>
+              ) : null}
+
+              <span style={{ background: "#f4f1ed", borderRadius: 999, padding: "5px 9px", fontSize: 12, fontWeight: 800 }}>
+                {Number(product.inventory_quantity || 0) > 0 ? "Available" : "Ask staff"}
+              </span>
+            </div>
+
+            {product.description ? (
+              <p style={{ margin: "10px 0 0", color: "#555", fontSize: 13, lineHeight: 1.45 }}>
+                {product.description}
+              </p>
+            ) : null}
+
+            <a
+              href="https://link-to.app/AddysWineLiquor"
+              target="_blank"
+              rel="noreferrer"
+              style={{
+                display: "block",
+                marginTop: 12,
+                textAlign: "center",
+                background: burgundy,
+                color: "white",
+                borderRadius: 14,
+                padding: "11px 12px",
+                fontWeight: 900,
+                textDecoration: "none",
+              }}
+            >
+              Shop on Addy’s App
+            </a>
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
+}
 function OffersScreen({ setFullscreenImage, currentMember }) {
   const [liveOffers, setLiveOffers] = useState([]);
   const [offerLikes, setOfferLikes] = useState([]);
