@@ -2639,6 +2639,8 @@ return (
     }}
   />
 ) : null}
+
+          
           <div style={{ fontWeight: 900 }}>{product.name}</div>
 
           <div style={{ color: "#666", fontSize: 13, marginTop: 4 }}>
@@ -4430,7 +4432,7 @@ function CellarSearchScreen({ setActiveTab }) {
     let query = supabase
       .from("products")
       .select(
-        "id, name, brand, category, subcategory, varietal, region, country, vintage, size, price, inventory_quantity, sku, upc, description"
+        "id, name, brand, category, subcategory, varietal, region, country, vintage, size, price, inventory_quantity, sku, upc, description, image_url"
       )
       .eq("active", true)
       .order("name", { ascending: true })
@@ -4508,7 +4510,24 @@ function CellarSearchScreen({ setActiveTab }) {
             <div style={{ fontWeight: 900, fontSize: 16 }}>
               {product.name || "Unnamed Product"}
             </div>
+{product.image_url ? (
+  <img
+    src={product.image_url}
+    alt={product.name}
+    style={{
+      width: "100%",
+      maxHeight: 160,
+      objectFit: "contain",
+      borderRadius: 14,
+      background: "#f4f1ed",
+      marginBottom: 10,
+    }}
+  />
+) : null}
 
+<div style={{ fontWeight: 900 }}>
+  {product.name}
+</div>
             <div style={{ marginTop: 4, color: "#666", fontSize: 13 }}>
               {[product.brand, product.category, product.subcategory]
                 .filter(Boolean)
