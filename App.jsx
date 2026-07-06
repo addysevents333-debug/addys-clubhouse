@@ -4578,7 +4578,7 @@ function CellarSearchScreen({ setActiveTab }) {
               Shop on Addy’s App
             </a>
           </Card>
-        ))};
+        ));}
       </div>
     </div>
   );
