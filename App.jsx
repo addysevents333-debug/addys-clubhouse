@@ -7796,6 +7796,9 @@ setUnreadNotifications={setUnreadNotifications}
   currentMember={currentMember}
 />
   );
+  if (activeTab === "cellar") {
+  screen = <CellarSearchScreen setActiveTab={setActiveTab} />;
+}
   if (activeTab === "notes") screen = <NotesScreen
   currentMember={currentMember}
   setFullscreenImage={setFullscreenImage}
