@@ -1622,7 +1622,30 @@ const deleteEvent = async (event) => {
     );
     return;
   }
+let productImageUrl = editingProduct.image_url || null;
 
+if (editingProductImage) {
+  const cleanFileName = editingProductImage.name
+    .replace(/[^a-zA-Z0-9.-]/g, "-")
+    .toLowerCase();
+
+  const fileName = `${Date.now()}-${cleanFileName}`;
+
+  const { error: uploadError } = await supabase.storage
+    .from("product-images")
+    .upload(fileName, editingProductImage);
+
+  if (uploadError) {
+    setProductMessage("Product image upload failed: " + uploadError.message);
+    return;
+  }
+
+  const { data } = supabase.storage
+    .from("product-images")
+    .getPublicUrl(fileName);
+
+  productImageUrl = data.publicUrl;
+}
  const { data: updatedProducts, error: productError } = await supabase
   .from("products")
   .update({
