@@ -4525,9 +4525,7 @@ function CellarSearchScreen({ setActiveTab }) {
   />
 ) : null}
 
-<div style={{ fontWeight: 900 }}>
-  {product.name}
-</div>
+
             <div style={{ marginTop: 4, color: "#666", fontSize: 13 }}>
               {[product.brand, product.category, product.subcategory]
                 .filter(Boolean)
