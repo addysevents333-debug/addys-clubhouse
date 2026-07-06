@@ -4121,7 +4121,14 @@ feedMemberProfiles={feedMemberProfiles}
     </div>
   ) : null}
 </div>
-
+<div 
+  onClick={() => setActiveTab("cellar")} style={{ cursor: "pointer" }}>
+  <ToolCard
+    icon="🔎"
+    title="Cellar Search"
+    subtitle="Search bottles & spirits"
+  />
+</div>
   <div
   onClick={() => setActiveTab("profile")}
   style={{ cursor: "pointer", height: "100%" }}
