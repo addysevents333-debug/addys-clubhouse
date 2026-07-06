@@ -788,6 +788,7 @@ const [eventRsvpOpen, setEventRsvpOpen] = useState(true);
 const [productMessage, setProductMessage] = useState("");
    const [editingProductId, setEditingProductId] = useState(null);
 const [editingProduct, setEditingProduct] = useState(null);
+  const [editingProductImage, setEditingProductImage] = useState(null);
 const [eventMessage, setEventMessage] = useState("");
    const [activeAdminSection, setActiveAdminSection] =
   useState("messages");
