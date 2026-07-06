@@ -1654,6 +1654,7 @@ if (editingProductImage) {
     price,
     inventory_quantity: inventory,
     active: editingProduct.active,
+    image_url: productImageUrl,
     updated_at: new Date().toISOString(),
   })
   .eq("id", editingProductId)
