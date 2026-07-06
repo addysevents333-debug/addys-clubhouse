@@ -2625,6 +2625,20 @@ return (
             background: "#faf7f3",
           }}
         >
+          {product.image_url ? (
+  <img
+    src={product.image_url}
+    alt={product.name}
+    style={{
+      width: "100%",
+      maxHeight: 140,
+      objectFit: "contain",
+      borderRadius: 12,
+      background: "#f4f1ed",
+      marginBottom: 10,
+    }}
+  />
+) : null}
           <div style={{ fontWeight: 900 }}>{product.name}</div>
 
           <div style={{ color: "#666", fontSize: 13, marginTop: 4 }}>
