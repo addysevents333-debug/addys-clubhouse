@@ -4504,7 +4504,12 @@ function CellarSearchScreen({ setActiveTab }) {
         <div style={{ color: "#8a1f1f", marginBottom: 12 }}>{message}</div>
       ) : null}
 
-    
+      <div style={{ display: "grid", gap: 12 }}>
+        {products.map((product) => (
+          <Card key={product.id}>
+            <div style={{ fontWeight: 900, fontSize: 16 }}>
+              {product.name || "Unnamed Product"}
+            </div>
 {product.image_url ? (
   <img
     src={product.image_url}
@@ -4578,7 +4583,7 @@ function CellarSearchScreen({ setActiveTab }) {
               Shop on Addy’s App
             </a>
           </Card>
-        ));}
+        ))}
       </div>
     </div>
   );
