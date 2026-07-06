@@ -1700,6 +1700,7 @@ if (!updatedProducts?.length) {
 
   setEditingProductId(null);
   setEditingProduct(null);
+  setEditingProductImage(null);
   setProductMessage("Product updated successfully.");
   await loadAdminProducts();
 };
