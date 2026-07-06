@@ -2786,7 +2786,47 @@ return (
       />{" "}
       Product active
     </label>
+<label
+  style={{
+    display: "block",
+    marginTop: 10,
+    marginBottom: 8,
+    fontWeight: 800,
+    color: burgundy,
+  }}
+>
+  Product Image
+</label>
 
+<input
+  type="file"
+  accept="image/*"
+  onChange={(event) =>
+    setEditingProductImage(event.target.files?.[0] || null)
+  }
+  style={{ marginBottom: 10 }}
+/>
+
+{editingProduct.image_url ? (
+  <img
+    src={editingProduct.image_url}
+    alt={editingProduct.name}
+    style={{
+      width: "100%",
+      maxHeight: 180,
+      objectFit: "contain",
+      borderRadius: 12,
+      background: "#f4f1ed",
+      marginBottom: 10,
+    }}
+  />
+) : null}
+
+{editingProductImage ? (
+  <div style={{ color: "#666", fontSize: 13, marginBottom: 10 }}>
+    New image selected: {editingProductImage.name}
+  </div>
+) : null}
     <textarea
       value={editingProduct.internal_reason}
       onChange={(event) =>
