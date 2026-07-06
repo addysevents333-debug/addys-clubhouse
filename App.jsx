@@ -1227,15 +1227,16 @@ const { data, error } = await supabase
     setAdminMessages(data);
   }
 };
- const loadUnreadAdminDmCount = async () => {
+const loadUnreadAdminDmCount = async () => {
   if (!currentMember?.email) return;
 
   const { count, error } = await supabase
     .from("messages")
     .select("id", { count: "exact", head: true })
     .eq("staff_email", currentMember.email)
-    .eq("admin_read", false)
-    .neq("sender_email", currentMember.email);
+    .neq("sender_email", currentMember.email)
+    .or("admin_read.is.null,admin_read.eq.false")
+    .or("archived.is.null,archived.eq.false");
 
   if (!error) {
     setUnreadAdminDmCount(count || 0);
