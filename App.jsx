@@ -1571,7 +1571,7 @@ const deleteEvent = async (event) => {
       product_merchandising (*)
     `)
     .order("name", { ascending: true });
-.limit(5000);
+
   if (error) {
     setProductMessage("Products could not be loaded: " + error.message);
     return;
