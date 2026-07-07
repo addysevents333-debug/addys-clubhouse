@@ -2621,7 +2621,22 @@ return (
     </div>
   ) : null}
 
-  <div style={{ display: "grid", gap: 10 }}>
+ <input
+  value={productSearch}
+  onChange={(event) => setProductSearch(event.target.value)}
+  placeholder="Search products by name, brand, category, SKU, or UPC..."
+  style={{
+    width: "100%",
+    borderRadius: 14,
+    border: "1px solid #ddd6cf",
+    padding: 12,
+    boxSizing: "border-box",
+    fontSize: 14,
+    marginBottom: 12,
+  }}
+/>
+
+<div style={{ display: "grid", gap: 10 }}>
   {filteredAdminProducts.map((product) => {
       const merchandising = Array.isArray(
   product.product_merchandising
