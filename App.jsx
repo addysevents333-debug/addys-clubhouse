@@ -789,6 +789,7 @@ const [productMessage, setProductMessage] = useState("");
    const [editingProductId, setEditingProductId] = useState(null);
 const [editingProduct, setEditingProduct] = useState(null);
   const [editingProductImage, setEditingProductImage] = useState(null);
+  const [productSearch, setProductSearch] = useState("");
 const [eventMessage, setEventMessage] = useState("");
    const [activeAdminSection, setActiveAdminSection] =
   useState("messages");
@@ -1570,7 +1571,7 @@ const deleteEvent = async (event) => {
       product_merchandising (*)
     `)
     .order("name", { ascending: true });
-
+.limit(5000);
   if (error) {
     setProductMessage("Products could not be loaded: " + error.message);
     return;
@@ -1704,6 +1705,20 @@ if (!updatedProducts?.length) {
   setProductMessage("Product updated successfully.");
   await loadAdminProducts();
 };
+const filteredAdminProducts = adminProducts.filter((product) => {
+  const search = productSearch.toLowerCase();
+
+  const matches = (value) =>
+    String(value || "").toLowerCase().includes(search);
+
+  return (
+    matches(product.name) ||
+    matches(product.brand) ||
+    matches(product.category) ||
+    matches(product.sku) ||
+    matches(product.upc)
+  );
+});
 return (
     <div style={{ padding: 20, paddingBottom: 160 }}>
       <BrandLogo compact />
@@ -2606,7 +2621,7 @@ return (
   ) : null}
 
   <div style={{ display: "grid", gap: 10 }}>
-    {adminProducts.map((product) => {
+  {filteredAdminProducts.map((product) => {
       const merchandising = Array.isArray(
   product.product_merchandising
 )
