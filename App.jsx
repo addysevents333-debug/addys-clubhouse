@@ -8326,24 +8326,6 @@ screen = (
     />
   </div>
 ) : null}
-     <div
-  style={{
-    position: "fixed",
-    bottom: 56, // sits just above the navigation bar
-    left: "50%",
-    transform: "translateX(-50%)",
-    width: "100%",
-    maxWidth: 430,
-    textAlign: "center",
-    fontSize: 10,
-    color: "#888",
-    opacity: 0.8,
-    pointerEvents: "none",
-    zIndex: 10,
-  }}
->
-  © Addy's Wine & Spirits. All rights reserved.
-</div> 
     </div>
   );
 }
