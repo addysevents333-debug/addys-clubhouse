@@ -3333,7 +3333,7 @@ border:
     message.member_email === msg.member_email &&
     message.staff_email === msg.staff_email &&
     message.sender_email === msg.member_email &&
-    !message.is_read
+    !message.admin_read
 ) && (
     <div
       style={{
