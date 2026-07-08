@@ -6804,43 +6804,57 @@ const [confirmPassword, setConfirmPassword] = useState("");
 const [authMessage, setAuthMessage] = useState("");
   const [showMessage, setShowMessage] = useState(false);
 
-  const handleLogin = async () => {
-    const normalizedEmail = email.trim().toLowerCase();
+ const handleLogin = async () => {
+  const normalizedEmail = email.trim().toLowerCase();
 
-    const { data: authData, error: authError } =
-      await supabase.auth.signInWithPassword({
-        email: normalizedEmail,
-        password,
-      });
+  setShowMessage(false);
+  setAuthMessage("");
 
-    if (authError || !authData.user) {
-      setShowMessage(true);
-      return;
-    }
+  const { data: authData, error: authError } =
+    await supabase.auth.signInWithPassword({
+      email: normalizedEmail,
+      password,
+    });
 
-    const { data: memberData, error: memberError } = await supabase
-      .from("members")
-     .select(
-"email, role, first_name, last_name, membership_type, membership_year, status, username, phone, profile_picture_url, favorite_wines, favorite_spirits, preferred_price_range, taste_notes"
-)
-      .eq("email", normalizedEmail)
-      .single();
+  if (authError || !authData.user) {
+    console.log("AUTH LOGIN FAILED:", authError);
+    setAuthMessage("Login failed at password/auth step: " + (authError?.message || "No user returned."));
+    return;
+  }
 
-    if (memberError || !memberData || memberData.status !== "active") {
-      console.log("Member lookup failed:", memberError, memberData);
-      setShowMessage(true);
-      return;
-    }
+  console.log("AUTH LOGIN SUCCESS:", authData.user.email);
 
-    console.log("Logged in member:", memberData);
+  const { data: memberData, error: memberError } = await supabase
+    .from("members")
+    .select(
+      "email, role, first_name, last_name, membership_type, membership_year, status, username, phone, profile_picture_url, favorite_wines, favorite_spirits, preferred_price_range, taste_notes"
+    )
+    .eq("email", normalizedEmail)
+    .single();
 
-    localStorage.setItem(
-      "addysMember",
-      JSON.stringify(memberData)
-    );
+  if (memberError) {
+    console.log("MEMBER LOOKUP ERROR:", memberError);
+    setAuthMessage("Login worked, but member lookup failed: " + memberError.message);
+    return;
+  }
 
-        onLogin(memberData);
-  };
+  if (!memberData) {
+    console.log("NO MEMBER FOUND FOR:", normalizedEmail);
+    setAuthMessage("Login worked, but no member record was found for this email.");
+    return;
+  }
+
+  if (memberData.status !== "active") {
+    console.log("MEMBER NOT ACTIVE:", memberData);
+    setAuthMessage("Login worked, but this member status is: " + memberData.status);
+    return;
+  }
+
+  console.log("Logged in member:", memberData);
+
+  localStorage.setItem("addysMember", JSON.stringify(memberData));
+  onLogin(memberData);
+};
 const handleActivateAccount = async () => {
   const normalizedEmail = email.trim().toLowerCase();
   const cleanCode = activationCode
