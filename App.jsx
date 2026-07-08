@@ -3372,10 +3372,8 @@ border:
 >
  {adminMessages
   .filter(
-    (msg) =>
-      msg.sender_email === selectedConversation.sender_email ||
-      msg.recipient_email === selectedConversation.sender_email
-  )
+  (msg) => msg.member_email === selectedConversation.member_email
+)
   .sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
   .map((msg) => {
       const fromStaff = msg.sender_email === "addysevents333@gmail.com";
