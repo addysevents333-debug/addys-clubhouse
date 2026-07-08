@@ -13,12 +13,18 @@ export default defineConfig({
       ],
       manifest: false,
       workbox: {
-        importScripts: ["push-handler.js"],
-        navigateFallback: "/index.html",
-        globPatterns: [
-          "**/*.{js,css,html,png,jpg,jpeg,svg,webp,ico}",
-        ],
-      },
+  importScripts: ["push-handler.js"],
+
+  navigateFallback: "/index.html",
+
+  cleanupOutdatedCaches: true,
+  clientsClaim: true,
+  skipWaiting: true,
+
+  globPatterns: [
+    "**/*.{js,css,html,png,jpg,jpeg,svg,webp,ico}",
+  ],
+},
     }),
   ],
 });
