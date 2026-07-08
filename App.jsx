@@ -7227,7 +7227,7 @@ const handleActivateAccount = async () => {
     bottom: 8,
     right: 10,
     fontSize: 11,
-    color: "#ffffff",
+    color: "#f5f5f5",
     opacity: 1,
     zIndex: 9999,
   }}
