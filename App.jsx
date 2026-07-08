@@ -3314,7 +3314,7 @@ onAdminMessagesRead?.();
           padding: 12,
           cursor: "pointer",
 border:
-  selectedConversation?.sender_email === msg.sender_email
+  selectedConversation?.member_email === msg.member_email
     ? `2px solid ${burgundy}`
     : "1px solid #ddd",
           borderRadius: 14,
