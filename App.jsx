@@ -7211,6 +7211,19 @@ const handleActivateAccount = async () => {
 ) : null}
         </Card>
       </div>
+      <div
+  style={{
+    position: "fixed",
+    bottom: 8,
+    right: 10,
+    fontSize: 11,
+    color: "#999",
+    opacity: 0.75,
+    zIndex: 9999,
+  }}
+>
+  Beta Version 1.3
+</div>
     </div>
   );
 }
