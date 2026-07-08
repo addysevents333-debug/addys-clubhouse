@@ -7221,21 +7221,21 @@ const handleActivateAccount = async () => {
 ) : null}
         </Card>
       </div>
-      <div
+   <div
   style={{
     position: "fixed",
     bottom: 8,
     right: 10,
     fontSize: 11,
-    color: "#f5f5f5",
+    color: "#ffffff",
     opacity: 1,
     zIndex: 9999,
+    textAlign: "right",
   }}
 >
-  Beta Version 1.3
+  <div>Beta Version 1.3</div>
+  <div>© 2026 Addy's Wine & Spirits</div>
 </div>
- <div>© 2026 Addy's Wine & Spirits</div>
-    </div>
   );
 }
 function CommunityBoardScreen({
