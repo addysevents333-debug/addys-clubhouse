@@ -6969,7 +6969,7 @@ const handleActivateAccount = async () => {
               fontSize: 28,
             }}
           >
-            Welcome to Addy’s Clubhouse 🍍🍍🍍
+            Welcome to Addy’s Clubhouse
           </h1>
 
           <p
