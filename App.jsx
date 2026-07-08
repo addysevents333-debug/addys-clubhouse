@@ -7234,6 +7234,7 @@ const handleActivateAccount = async () => {
 >
   Beta Version 1.3
 </div>
+ <div>© 2026 Addy's Wine & Spirits</div>
     </div>
   );
 }
