@@ -3684,10 +3684,34 @@ const togglePostLike = async () => {
 
         <div style={{ flex: 1 }}>
           <div style={{ display: "flex", justifyContent: "space-between", gap: 8, alignItems: "center" }}>
-            <div>
-              <div style={{ fontWeight: 900, fontSize: 15 }}>{post.author}</div>
-              <div style={{ color: "#777", fontSize: 12 }}>{post.role}</div>
-            </div>
+           <div>
+  <div
+    style={{
+      fontWeight: 900,
+      fontSize: 15,
+      display: "flex",
+      alignItems: "center",
+      gap: 6,
+      flexWrap: "wrap",
+    }}
+  >
+    <span>{post.author}</span>
+
+    <span
+      style={{
+        color: "#999",
+        fontWeight: 500,
+        fontSize: 12,
+      }}
+    >
+      • {formatPostTime(post.created_at)}
+    </span>
+  </div>
+
+  <div style={{ color: "#777", fontSize: 12 }}>
+    {post.role}
+  </div>
+</div>
 
             <div
               style={{
