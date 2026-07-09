@@ -22,7 +22,45 @@ const darkBurgundy = "#4a0d20";
 const cream = "#faf7f3";
 const blush = "#f3e5ea";
 const gold = "#c8a96a";
-const logoUrl = AddysLogo; 
+const logoUrl = AddysLogo;
+
+function formatPostTime(dateString) {
+  if (!dateString) return "";
+
+  const now = new Date();
+  const date = new Date(dateString);
+
+  const diffMs = now - date;
+  const diffMinutes = Math.floor(diffMs / 60000);
+  const diffHours = Math.floor(diffMinutes / 60);
+  const diffDays = Math.floor(diffHours / 24);
+
+  if (diffMinutes < 1) return "Just now";
+  if (diffMinutes < 60) return `${diffMinutes} minute${diffMinutes !== 1 ? "s" : ""} ago`;
+  if (diffHours < 24) return `${diffHours} hour${diffHours !== 1 ? "s" : ""} ago`;
+
+  if (diffDays === 1) {
+    return `Yesterday at ${date.toLocaleTimeString([], {
+      hour: "numeric",
+      minute: "2-digit",
+    })}`;
+  }
+
+  if (diffDays < 7) {
+    return `${date.toLocaleDateString([], {
+      weekday: "long",
+    })} at ${date.toLocaleTimeString([], {
+      hour: "numeric",
+      minute: "2-digit",
+    })}`;
+  }
+
+  return date.toLocaleDateString([], {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+}
 const events = [
 
    {
