@@ -7941,9 +7941,21 @@ onClick={() => {
     size={32}
   />
 
+ <div>
   <div style={{ fontWeight: 800, fontSize: 13 }}>
     {comment.member_name}
   </div>
+
+  <div
+    style={{
+      fontSize: 11,
+      color: "#777",
+      marginTop: 2,
+    }}
+  >
+    {formatPostTime(comment.created_at)}
+  </div>
+</div>
 </div>
 
   {comment.member_email === currentMember?.email ? (
