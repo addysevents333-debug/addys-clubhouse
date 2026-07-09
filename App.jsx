@@ -6373,22 +6373,45 @@ useEffect(() => {
           </div>
         </div>
 
-        <div
-          style={{
-            background: "white",
-            color: "#111",
-            borderRadius: 18,
-            padding: 18,
-            textAlign: "center",
-            marginTop: 18,
-          }}
-        >
-          <div style={{ fontSize: 48 }}>▦</div>
-          <strong>Scan at checkout</strong>
-          <p style={{ margin: "6px 0 0", fontSize: 13, color: "#666" }}>
-            Digital member card placeholder
-          </p>
-        </div>
+<div
+  style={{
+    background: "white",
+    color: "#111",
+    borderRadius: 18,
+    padding: 18,
+    textAlign: "center",
+    marginTop: 18,
+  }}
+>
+  <Barcode
+    value={currentMember?.barcode || "000000000000"}
+    format="CODE128"
+    width={1.6}
+    height={55}
+    displayValue={true}
+    fontSize={16}
+    margin={0}
+  />
+
+  <strong
+    style={{
+      display: "block",
+      marginTop: 12,
+    }}
+  >
+    Scan at Checkout
+  </strong>
+
+  <p
+    style={{
+      margin: "6px 0 0",
+      fontSize: 13,
+      color: "#666",
+    }}
+  >
+    Present this barcode to receive your member discounts.
+  </p>
+</div>
       </Card>
 
       <Card style={{ marginTop: 14 }}>
