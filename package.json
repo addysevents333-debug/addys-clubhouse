@@ -7,9 +7,10 @@
   "dependencies": {
     "@supabase/supabase-js": "latest",
     "@vitejs/plugin-react": "latest",
-    "vite": "latest",
     "react": "latest",
-    "react-dom": "latest"
+    "react-barcode": "^1.6.1",
+    "react-dom": "latest",
+    "vite": "latest"
   },
   "devDependencies": {
     "vite-plugin-pwa": "latest"
