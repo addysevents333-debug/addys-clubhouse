@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import AddysLogo from "./src/Addys-Logo.png";
 const SUPABASE_URL = "https://ztqtfftgtwgxrtoqqggx.supabase.co";
 const SUPABASE_KEY = "sb_publishable_V3P46SsSqP3cj8-hensd9w_OYqIvuhC";
-import { createClient } from "@supabase/supabase-js";
+import { createClient } from "@supabase/supabase-js"; import Barcode from "react-barcode";
 const VAPID_PUBLIC_KEY = "BB7tySWOaD2ddXGDPd6KJZDGUu8MWFF0fGK4Jc1wMO51A3vT_byU8HE1G1YHhWHCqVd4j2Ake5tJVEoPGugQHJ0";
 const urlBase64ToUint8Array = (base64String) => {
   const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
