@@ -6874,6 +6874,7 @@ const [authMessage, setAuthMessage] = useState("");
   }
 
   console.log("Logged in member:", memberData);
+console.log("Barcode:", memberData.barcode_value);
 
   localStorage.setItem("addysMember", JSON.stringify(memberData));
   onLogin(memberData);
