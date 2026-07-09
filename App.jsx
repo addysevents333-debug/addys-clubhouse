@@ -7779,10 +7779,9 @@ onClick={() => {
     </button>
   ) : null}
 </div>
-
-            <div style={{ color: "#888", fontSize: 12, marginTop: 3 }}>
-              {new Date(post.created_at).toLocaleString()}
-            </div>
+<div style={{ color: "#888", fontSize: 12, marginTop: 3 }}>
+  {formatPostTime(post.created_at)}
+</div>
 
          {String(editingPostId) === String(post.id) ? (
   <div style={{ marginTop: 12 }}>
