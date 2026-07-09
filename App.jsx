@@ -3720,8 +3720,9 @@ const togglePostLike = async () => {
     }}
   />
 ) : null}
-          <div style={{ color: "#999", fontSize: 12, marginTop: 4 }}>{post.time}</div>
-
+          <div style={{ color: "#999", fontSize: 12, marginTop: 4 }}>
+  {formatPostTime(post.created_at)}
+</div>
           <p style={{ margin: "12px 0", lineHeight: 1.55, color: "#444", fontSize: 14 }}>
             {post.content}
           </p>
@@ -3805,9 +3806,15 @@ const togglePostLike = async () => {
     size={32}
   />
 
+  <div>
   <div style={{ fontWeight: 900, color: burgundy }}>
     {comment.member_name || "Member"}
   </div>
+
+  <div style={{ fontSize: 11, color: "#777", marginTop: 2 }}>
+    {formatPostTime(comment.created_at)}
+  </div>
+</div>
 </div>
 
   <button
