@@ -3744,9 +3744,7 @@ const togglePostLike = async () => {
     }}
   />
 ) : null}
-          <div style={{ color: "#999", fontSize: 12, marginTop: 4 }}>
-  {formatPostTime(post.created_at)}
-</div>
+         
           <p style={{ margin: "12px 0", lineHeight: 1.55, color: "#444", fontSize: 14 }}>
             {post.content}
           </p>
