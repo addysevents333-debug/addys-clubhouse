@@ -6384,7 +6384,7 @@ useEffect(() => {
   }}
 >
   <Barcode
-    value={currentMember?.barcode || "000000000000"}
+   value={currentMember?.barcode_value || "000000000000"}
     format="CODE128"
     width={1.6}
     height={55}
