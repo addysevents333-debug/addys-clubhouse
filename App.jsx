@@ -8195,6 +8195,123 @@ const loadNotifications = async () => {
 };
 const isAdmin =
   currentMember?.role?.trim().toLowerCase() === "admin";
+  if (isPasswordRecovery) {
+  return (
+    <div
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: 20,
+      }}
+    >
+      <Card>
+        <h2 style={{ marginTop: 0, textAlign: "center" }}>
+          Create New Password
+        </h2>
+
+        <p style={{ textAlign: "center", color: "#666" }}>
+          Enter your new Addy's Clubhouse password.
+        </p>
+
+        <input
+          type="password"
+          value={newPassword}
+          onChange={(e) => setNewPassword(e.target.value)}
+          placeholder="New password"
+          autoComplete="new-password"
+          style={{
+            width: "100%",
+            boxSizing: "border-box",
+            padding: 12,
+            marginTop: 12,
+            borderRadius: 8,
+            border: "1px solid #ccc",
+            fontSize: 16,
+          }}
+        />
+
+        <input
+          type="password"
+          value={confirmNewPassword}
+          onChange={(e) => setConfirmNewPassword(e.target.value)}
+          placeholder="Confirm new password"
+          autoComplete="new-password"
+          style={{
+            width: "100%",
+            boxSizing: "border-box",
+            padding: 12,
+            marginTop: 12,
+            borderRadius: 8,
+            border: "1px solid #ccc",
+            fontSize: 16,
+          }}
+        />
+
+        <button
+          type="button"
+          disabled={passwordResetLoading}
+          onClick={async () => {
+            if (newPassword.length < 8) {
+              alert("Your password must be at least 8 characters.");
+              return;
+            }
+
+            if (newPassword !== confirmNewPassword) {
+              alert("The passwords do not match.");
+              return;
+            }
+
+            setPasswordResetLoading(true);
+
+            const { error } = await supabase.auth.updateUser({
+              password: newPassword,
+            });
+
+            setPasswordResetLoading(false);
+
+            if (error) {
+              alert(error.message);
+              return;
+            }
+
+            alert("Your password has been updated successfully.");
+
+            setNewPassword("");
+            setConfirmNewPassword("");
+            setIsPasswordRecovery(false);
+
+            await supabase.auth.signOut();
+
+            window.history.replaceState(
+              {},
+              document.title,
+              window.location.pathname
+            );
+
+            window.location.reload();
+          }}
+          style={{
+            marginTop: 16,
+            width: "100%",
+            border: 0,
+            borderRadius: 8,
+            padding: 13,
+            background: burgundy,
+            color: "#fff",
+            fontWeight: 800,
+            cursor: passwordResetLoading ? "default" : "pointer",
+            fontSize: 15,
+            opacity: passwordResetLoading ? 0.7 : 1,
+          }}
+        >
+          {passwordResetLoading ? "Updating Password..." : "Update Password"}
+        </button>
+      </Card>
+    </div>
+  );
+}
   if (!isLoggedIn) {
     return (
       <LoginScreen
