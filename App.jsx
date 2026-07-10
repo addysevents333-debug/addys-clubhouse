@@ -7286,7 +7286,7 @@ const handleActivateAccount = async () => {
       const { error } = await supabase.auth.resetPasswordForEmail(
         email.trim().toLowerCase(),
         {
-          redirectTo: "https://addys-clubhouse.vercel.app",
+redirectTo: "https://clubhouse.addyswine.com",
         }
       );
 
@@ -8080,6 +8080,23 @@ const [notifications, setNotifications] = useState([]);
   localStorage.getItem("notificationsRead") === "true"
 );
 const [showNotifications, setShowNotifications] = useState(false);
+  const [isPasswordRecovery, setIsPasswordRecovery] = useState(false);
+const [newPassword, setNewPassword] = useState("");
+const [confirmNewPassword, setConfirmNewPassword] = useState("");
+const [passwordResetLoading, setPasswordResetLoading] = useState(false);
+  useEffect(() => {
+  const {
+    data: { subscription },
+  } = supabase.auth.onAuthStateChange((event) => {
+    if (event === "PASSWORD_RECOVERY") {
+      setIsPasswordRecovery(true);
+    }
+  });
+
+  return () => {
+    subscription.unsubscribe();
+  };
+}, []);
 useEffect(() => {
   if (currentMember?.email) {
     loadNotifications();
