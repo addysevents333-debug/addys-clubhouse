@@ -3395,7 +3395,16 @@ border:
       >
      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
   <span>
-    Conversation with {msg.sender_name || msg.sender_email}
+   Conversation with{" "}
+{(() => {
+  const member = members.find(
+    (item) => item.email === msg.member_email
+  );
+
+  return member
+    ? `${member.first_name || ""} ${member.last_name || ""}`.trim()
+    : msg.member_email;
+})()}
   </span>
 
   {adminMessages.some(
