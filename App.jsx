@@ -3394,18 +3394,24 @@ border:
         }}
       >
      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-  <span>
-   Conversation with{" "}
-{(() => {
-  const member = members.find(
-    (item) => item.email === msg.member_email
-  );
+ <span
+  style={{
+    fontWeight: 800,
+    fontSize: 16,
+    color: "#111",
+  }}
+>
+  Conversation with{" "}
+  {(() => {
+    const member = members.find(
+      (item) => item.email === msg.member_email
+    );
 
-  return member
-    ? `${member.first_name || ""} ${member.last_name || ""}`.trim()
-    : msg.member_email;
-})()}
-  </span>
+    return member
+      ? `${member.first_name || ""} ${member.last_name || ""}`.trim()
+      : msg.member_email;
+  })()}
+</span>
 
   {adminMessages.some(
   (message) =>
