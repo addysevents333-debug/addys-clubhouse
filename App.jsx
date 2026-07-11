@@ -3306,7 +3306,24 @@ return (
 </div>
         <button
   type="button"
-  onClick={() => {}}
+ onClick={() => {
+  const memberName =
+    `${member.first_name || ""} ${member.last_name || ""}`.trim() ||
+    member.email;
+
+  setSelectedConversation({
+    member_email: member.email,
+    staff_email: currentMember?.email,
+    sender_email: member.email,
+    recipient_email: currentMember?.email,
+    sender_name: memberName,
+  });
+
+  setSelectedMemberEmail(member.email);
+  setAdminReply("");
+  setAdminReplyPhoto(null);
+  setActiveAdminSection("messages");
+}}
   style={{
     width: "100%",
     border: 0,
