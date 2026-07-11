@@ -3304,6 +3304,23 @@ return (
     Inactive
   </button>
 </div>
+        <button
+  type="button"
+  onClick={() => {}}
+  style={{
+    width: "100%",
+    border: 0,
+    borderRadius: 12,
+    padding: "10px 12px",
+    marginTop: 10,
+    background: burgundy,
+    color: "white",
+    fontWeight: 800,
+    cursor: "pointer",
+  }}
+>
+  Message Member
+</button>
       </div>
     ))}
   </div>
