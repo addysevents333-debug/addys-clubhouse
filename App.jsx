@@ -5042,16 +5042,26 @@ const sendMessage = async () => {
 
       imageUrl = data.publicUrl;
     }
+const {
+  data: { user },
+  error: authUserError,
+} = await supabase.auth.getUser();
 
+if (authUserError || !user?.email) {
+  alert("Your login session could not be verified. Please log out and back in.");
+  return;
+}
+
+const authenticatedSenderEmail = user.email.toLowerCase();
     const { data: sentMessage, error } = await supabase
   .from("messages")
   .insert([
     {
-      sender_email: currentMember?.email,
+      sender_email: authenticatedSenderEmail,
       sender_name:
         `${currentMember?.first_name || ""} ${
           currentMember?.last_name || ""
-        }`.trim() || currentMember?.email,
+       }.trim() || authenticatedSenderEmail,
       recipient_email: selectedStaff.email,
       member_email: currentMember?.email,
       staff_email: selectedStaff.email,
