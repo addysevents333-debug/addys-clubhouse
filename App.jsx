@@ -1378,7 +1378,10 @@ const sendAdminReply = async () => {
   ) {
     return;
   }
-
+const replyRecipientEmail =
+  selectedConversation.member_email === currentMember?.email
+    ? selectedConversation.staff_email
+    : selectedConversation.member_email;
   let imageUrl = "";
 
   if (adminReplyPhoto) {
@@ -1408,12 +1411,12 @@ const sendAdminReply = async () => {
     .from("messages")
     .insert([
       {
-        sender_email: selectedConversation.staff_email,
+        sender_email: currentMember?.email,
         sender_name:
   `${currentMember?.first_name || ""} ${
     currentMember?.last_name || ""
   }`.trim() || "Addy's Staff",
-        recipient_email: selectedConversation.member_email,
+        recipient_email: replyRecipientEmail,
         member_email: selectedConversation.member_email,
         staff_email: selectedConversation.staff_email,
         message: adminReply.trim(),
