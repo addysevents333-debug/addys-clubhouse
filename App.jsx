@@ -1421,30 +1421,12 @@ const sendAdminReply = async () => {
       },
     ]);
 
-  if (!error) {
-  const staffName =
-    `${currentMember?.first_name || ""} ${
-      currentMember?.last_name || ""
-    }`.trim() || "Addy's Staff";
-
+if (!error) {
   setAdminReply("");
   setAdminReplyPhoto(null);
   await loadAdminMessages();
 
-  supabase.functions
-    .invoke("send-push", {
-      body: {
-        title: "Addy's Clubhouse",
-        message: `${staffName} sent you a new message.`,
-        category: "Direct Message",
-        memberEmail: selectedConversation.member_email,
-      },
-    })
-    .then(({ error: pushError }) => {
-      if (pushError) {
-        console.error("DM push failed:", pushError);
-      }
-    });
+ 
 } else {
   alert("Reply failed: " + error.message);
 }
