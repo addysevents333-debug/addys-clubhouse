@@ -896,17 +896,37 @@ const [editingEvent, setEditingEvent] = useState(null);
   }
 };
  const deleteNotification = async (id) => {
-  const { error } = await supabase
+  const confirmed = window.confirm(
+    "Are you sure you want to delete this notification?"
+  );
+
+  if (!confirmed) return;
+
+  const { data, error } = await supabase
     .from("notifications")
     .delete()
-    .eq("id", id);
+    .eq("id", id)
+    .select();
 
-  if (!error) {
-    setNotificationMessage("Notification deleted.");
-    loadAdminNotifications();
-  } else {
-    setNotificationMessage("Error deleting notification.");
+  console.log("DELETE NOTIFICATION RESULT:", {
+    id,
+    data,
+    error,
+  });
+
+  if (error) {
+    alert("Error deleting notification: " + error.message);
+    return;
   }
+
+  if (!data || data.length === 0) {
+    alert(
+      "The notification was not deleted. Supabase may be blocking deletes with its security policy."
+    );
+    return;
+  }
+
+  await loadAdminNotifications();
 };
 const deletePost = async (id) => {
   const { error } = await supabase
