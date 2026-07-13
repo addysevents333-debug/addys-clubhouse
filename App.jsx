@@ -1409,7 +1409,10 @@ const sendAdminReply = async () => {
     .insert([
       {
         sender_email: selectedConversation.staff_email,
-        sender_name: "Addy's Staff",
+        sender_name:
+  `${currentMember?.first_name || ""} ${
+    currentMember?.last_name || ""
+  }`.trim() || "Addy's Staff",
         recipient_email: selectedConversation.member_email,
         member_email: selectedConversation.member_email,
         staff_email: selectedConversation.staff_email,
@@ -1419,13 +1422,24 @@ const sendAdminReply = async () => {
     ]);
 
   if (!error) {
-    setAdminReply("");
-    setAdminReplyPhoto(null);
-    await loadAdminMessages();
-  } else {
-    alert("Reply failed: " + error.message);
-  }
-};
+  const staffName =
+    `${currentMember?.first_name || ""} ${
+      currentMember?.last_name || ""
+    }`.trim() || "Addy's Staff";
+
+  await supabase.functions.invoke("send-push", {
+    body: {
+      title: "Addy's Clubhouse",
+      message: `${staffName} sent you a new message.`,
+      category: "Direct Message",
+      memberEmail: selectedConversation.member_email,
+    },
+  });
+
+  setAdminReply("");
+  setAdminReplyPhoto(null);
+  await loadAdminMessages();
+} else {
 const archiveConversation = async () => {
   if (!selectedConversation) return;
 
