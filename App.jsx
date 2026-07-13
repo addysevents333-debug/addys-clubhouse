@@ -4937,6 +4937,7 @@ function MessagesScreen({ currentMember, onMessagesRead }) {
   const [selectedStaff, setSelectedStaff] = useState(staffContacts[0]);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
+  const [isSendingMessage, setIsSendingMessage] = useState(false);
   const [attachedPhotos, setAttachedPhotos] = useState([]);
   const [newMessage, setNewMessage] = useState("");
 
@@ -4995,53 +4996,68 @@ const loadMessages = async () => {
   await onMessagesRead?.();
 };
 const sendMessage = async () => {
-  if (!newMessage.trim() && attachedPhotos.length === 0) return;
+  if (
+    isSendingMessage ||
+    (!newMessage.trim() && attachedPhotos.length === 0)
+  ) {
+    return;
+  }
 
-  let imageUrl = "";
+  setIsSendingMessage(true);
 
-  if (attachedPhotos.length > 0) {
-    const file = attachedPhotos[0];
-    const filePath = `${Date.now()}-${file.name}`;
+  try {
+    let imageUrl = "";
 
-    const { error: uploadError } = await supabase.storage
-      .from("message-photos")
-      .upload(filePath, file);
+    if (attachedPhotos.length > 0) {
+      const file = attachedPhotos[0];
+      const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, "-");
+      const filePath = `${Date.now()}-${safeName}`;
 
-    if (uploadError) {
-      alert("Photo upload failed: " + uploadError.message);
+      const { error: uploadError } = await supabase.storage
+        .from("message-photos")
+        .upload(filePath, file);
+
+      if (uploadError) {
+        alert("Photo upload failed: " + uploadError.message);
+        return;
+      }
+
+      const { data } = supabase.storage
+        .from("message-photos")
+        .getPublicUrl(filePath);
+
+      imageUrl = data.publicUrl;
+    }
+
+    const { error } = await supabase
+      .from("messages")
+      .insert([
+        {
+          sender_email: currentMember?.email,
+          sender_name:
+            `${currentMember?.first_name || ""} ${
+              currentMember?.last_name || ""
+            }`.trim() || currentMember?.email,
+          recipient_email: selectedStaff.email,
+          member_email: currentMember?.email,
+          staff_email: selectedStaff.email,
+          message: newMessage.trim(),
+          image_url: imageUrl || null,
+        },
+      ]);
+
+    if (error) {
+      alert("Message failed: " + error.message);
       return;
     }
 
-    const { data } = supabase.storage
-      .from("message-photos")
-      .getPublicUrl(filePath);
-
-    imageUrl = data.publicUrl;
-  }
-
-  const { error } = await supabase
-  .from("messages")
-  .insert([
-    {
-      sender_email: currentMember?.email,
-      sender_name: `${currentMember?.first_name} ${currentMember?.last_name}`,
-      recipient_email: selectedStaff.email,
-      member_email: currentMember?.email,
-      staff_email: selectedStaff.email,
-      message: newMessage,
-      image_url: imageUrl,
-    },
-  ]);
-
-  if (!error) {
     setNewMessage("");
     setAttachedPhotos([]);
-    loadMessages();
-  } else {
-    alert("Message failed: " + error.message);
+    await loadMessages();
+  } finally {
+    setIsSendingMessage(false);
   }
 };
- 
   return (
     <div style={{ padding: 20, paddingBottom: 92 }}>
       <BrandLogo compact />
@@ -5277,7 +5293,8 @@ onChange={(event) => setNewMessage(event.target.value)}
 
         <div style={{ marginTop: 12 }}>
           <button
-            onClick={sendMessage}
+  onClick={sendMessage}
+  disabled={isSendingMessage}
             style={{
               width: "100%",
               border: 0,
@@ -5289,7 +5306,7 @@ onChange={(event) => setNewMessage(event.target.value)}
               cursor: "pointer",
             }}
           >
-            Send Message
+            {isSendingMessage ? "Sending..." : "Send Message"}
           </button>
         </div>
       </Card>
