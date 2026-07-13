@@ -1424,7 +1424,9 @@ const sendAdminReply = async () => {
 if (!error) {
   setAdminReply("");
   setAdminReplyPhoto(null);
-  await loadAdminMessages();
+  void loadAdminMessages().catch((loadError) => {
+  console.error("Admin message refresh failed:", loadError);
+});
 
  
 } else {
@@ -5054,7 +5056,9 @@ if (sentMessage) {
   });
 }
 
-await loadMessages();
+void loadMessages().catch((loadError) => {
+  console.error("Message refresh failed:", loadError);
+});
   } finally {
     setIsSendingMessage(false);
   }
