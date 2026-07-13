@@ -4393,21 +4393,21 @@ feedMemberProfiles={feedMemberProfiles}
   />
 </div>
   <div
-  onClick={() => setActiveTab("profile")}
+  onClick={() => setActiveTab("notes")}
   style={{ cursor: "pointer", height: "100%" }}
 >
     <ToolCard icon="📚" title="Club Notes" subtitle="Jim, Tyler & Spirits Team" />
   </div>
 
   <div
-  onClick={() => setActiveTab("profile")}
+  onClick={() => setActiveTab("offers")}
   style={{ cursor: "pointer", height: "100%" }}
 >
     <ToolCard icon="🎁" title="Offers" subtitle="Club exclusives" />
   </div>
 
   <div
-  onClick={() => setActiveTab("profile")}
+  onClick={() => setActiveTab("messages")}
   style={{ cursor: "pointer", height: "100%" }}
 >
     <ToolCard icon="💬" title="Staff DMs" subtitle="Message Tyler, Ryan & team" />
@@ -8184,6 +8184,22 @@ const [passwordResetLoading, setPasswordResetLoading] = useState(false);
     subscription.unsubscribe();
   };
 }, []);
+useEffect(() => {
+  const params = new URLSearchParams(window.location.search);
+  const openTarget = params.get("open");
+
+  if (openTarget === "messages" && currentMember) {
+    setActiveTab("messages");
+
+    window.history.replaceState(
+      {},
+      document.title,
+      window.location.pathname
+    );
+  }
+}, [currentMember]);
+
+  
 useEffect(() => {
   if (currentMember?.email) {
     loadNotifications();
