@@ -1382,6 +1382,10 @@ const replyRecipientEmail =
   selectedConversation.member_email === currentMember?.email
     ? selectedConversation.staff_email
     : selectedConversation.member_email;
+  const replyRecipientName =
+  selectedConversation.member_email === currentMember?.email
+    ? selectedConversation.staff_name || selectedConversation.staff_email
+    : selectedConversation.member_name || selectedConversation.member_email;
   let imageUrl = "";
 
   if (adminReplyPhoto) {
@@ -3474,7 +3478,23 @@ border:
       {selectedConversation ? (
   <Card style={{ marginTop: 16 }}>
     <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>
-      Reply to {selectedConversation.sender_name || selectedConversation.sender_email}
+    Reply to {
+  selectedConversation.member_email === currentMember?.email
+    ? staffContacts.find(
+        (staff) => staff.email === selectedConversation.staff_email
+      )?.name || selectedConversation.staff_email
+    : members.find(
+        (member) => member.email === selectedConversation.member_email
+      )
+      ? `${members.find(
+          (member) => member.email === selectedConversation.member_email
+        )?.first_name || ""} ${
+          members.find(
+            (member) => member.email === selectedConversation.member_email
+          )?.last_name || ""
+        }`.trim()
+      : selectedConversation.member_email
+}
     </h2>
 <div
   style={{
@@ -3489,11 +3509,13 @@ border:
 >
  {adminMessages
   .filter(
-  (msg) => msg.member_email === selectedConversation.member_email
+  (msg) =>
+    msg.member_email === selectedConversation.member_email &&
+    msg.staff_email === selectedConversation.staff_email
 )
   .sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
   .map((msg) => {
-      const fromStaff = msg.sender_email === "addysevents333@gmail.com";
+     const fromStaff = msg.sender_email === currentMember?.email;
 
       return (
         <div
