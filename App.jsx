@@ -1378,14 +1378,7 @@ const sendAdminReply = async () => {
   ) {
     return;
   }
-const replyRecipientEmail =
-  selectedConversation.member_email === currentMember?.email
-    ? selectedConversation.staff_email
-    : selectedConversation.member_email;
-  const replyRecipientName =
-  selectedConversation.member_email === currentMember?.email
-    ? selectedConversation.staff_name || selectedConversation.staff_email
-    : selectedConversation.member_name || selectedConversation.member_email;
+
   let imageUrl = "";
 
   if (adminReplyPhoto) {
@@ -1415,12 +1408,12 @@ const replyRecipientEmail =
     .from("messages")
     .insert([
       {
-        sender_email: currentMember?.email,
+        sender_email: selectedConversation.staff_email,
         sender_name:
   `${currentMember?.first_name || ""} ${
     currentMember?.last_name || ""
   }`.trim() || "Addy's Staff",
-        recipient_email: replyRecipientEmail,
+        recipient_email: selectedConversation.member_email,
         member_email: selectedConversation.member_email,
         staff_email: selectedConversation.staff_email,
         message: adminReply.trim(),
@@ -1428,17 +1421,28 @@ const replyRecipientEmail =
       },
     ]);
 
-if (!error) {
+  if (!error) {
+  const staffName =
+    `${currentMember?.first_name || ""} ${
+      currentMember?.last_name || ""
+    }`.trim() || "Addy's Staff";
+
+  await supabase.functions.invoke("send-push", {
+    body: {
+      title: "Addy's Clubhouse",
+      message: `${staffName} sent you a new message.`,
+      category: "Direct Message",
+      memberEmail: selectedConversation.member_email,
+    },
+  });
+
   setAdminReply("");
   setAdminReplyPhoto(null);
-  void loadAdminMessages().catch((loadError) => {
-  console.error("Admin message refresh failed:", loadError);
-});
-
- 
-} else {
-  alert("Reply failed: " + error.message);
-}
+  await loadAdminMessages();
+} 
+  else {
+    alert("Reply failed: " + error.message);
+  }
 };
 const archiveConversation = async () => {
   if (!selectedConversation) return;
@@ -3478,23 +3482,7 @@ border:
       {selectedConversation ? (
   <Card style={{ marginTop: 16 }}>
     <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>
-    Reply to {
-  selectedConversation.member_email === currentMember?.email
-    ? staffContacts.find(
-        (staff) => staff.email === selectedConversation.staff_email
-      )?.name || selectedConversation.staff_email
-    : members.find(
-        (member) => member.email === selectedConversation.member_email
-      )
-      ? `${members.find(
-          (member) => member.email === selectedConversation.member_email
-        )?.first_name || ""} ${
-          members.find(
-            (member) => member.email === selectedConversation.member_email
-          )?.last_name || ""
-        }`.trim()
-      : selectedConversation.member_email
-}
+      Reply to {selectedConversation.sender_name || selectedConversation.sender_email}
     </h2>
 <div
   style={{
@@ -3509,13 +3497,11 @@ border:
 >
  {adminMessages
   .filter(
-  (msg) =>
-    msg.member_email === selectedConversation.member_email &&
-    msg.staff_email === selectedConversation.staff_email
+  (msg) => msg.member_email === selectedConversation.member_email
 )
   .sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
   .map((msg) => {
-     const fromStaff = msg.sender_email === currentMember?.email;
+      const fromStaff = msg.sender_email === "addysevents333@gmail.com";
 
       return (
         <div
@@ -4407,21 +4393,21 @@ feedMemberProfiles={feedMemberProfiles}
   />
 </div>
   <div
-  onClick={() => setActiveTab("notes")}
+  onClick={() => setActiveTab("profile")}
   style={{ cursor: "pointer", height: "100%" }}
 >
     <ToolCard icon="📚" title="Club Notes" subtitle="Jim, Tyler & Spirits Team" />
   </div>
 
   <div
-  onClick={() => setActiveTab("offers")}
+  onClick={() => setActiveTab("profile")}
   style={{ cursor: "pointer", height: "100%" }}
 >
     <ToolCard icon="🎁" title="Offers" subtitle="Club exclusives" />
   </div>
 
   <div
-  onClick={() => setActiveTab("messages")}
+  onClick={() => setActiveTab("profile")}
   style={{ cursor: "pointer", height: "100%" }}
 >
     <ToolCard icon="💬" title="Staff DMs" subtitle="Message Tyler, Ryan & team" />
@@ -4951,7 +4937,6 @@ function MessagesScreen({ currentMember, onMessagesRead }) {
   const [selectedStaff, setSelectedStaff] = useState(staffContacts[0]);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
-  const [isSendingMessage, setIsSendingMessage] = useState(false);
   const [attachedPhotos, setAttachedPhotos] = useState([]);
   const [newMessage, setNewMessage] = useState("");
 
@@ -5010,94 +4995,53 @@ const loadMessages = async () => {
   await onMessagesRead?.();
 };
 const sendMessage = async () => {
-  if (
-    isSendingMessage ||
-    (!newMessage.trim() && attachedPhotos.length === 0)
-  ) {
-    return;
-  }
+  if (!newMessage.trim() && attachedPhotos.length === 0) return;
 
-  setIsSendingMessage(true);
+  let imageUrl = "";
 
-  try {
-    let imageUrl = "";
+  if (attachedPhotos.length > 0) {
+    const file = attachedPhotos[0];
+    const filePath = `${Date.now()}-${file.name}`;
 
-    if (attachedPhotos.length > 0) {
-      const file = attachedPhotos[0];
-      const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, "-");
-      const filePath = `${Date.now()}-${safeName}`;
+    const { error: uploadError } = await supabase.storage
+      .from("message-photos")
+      .upload(filePath, file);
 
-      const { error: uploadError } = await supabase.storage
-        .from("message-photos")
-        .upload(filePath, file);
-
-      if (uploadError) {
-        alert("Photo upload failed: " + uploadError.message);
-        return;
-      }
-
-      const { data } = supabase.storage
-        .from("message-photos")
-        .getPublicUrl(filePath);
-
-      imageUrl = data.publicUrl;
-    }
-const {
-  data: { user },
-  error: authUserError,
-} = await supabase.auth.getUser();
-
-if (authUserError || !user?.email) {
-  alert("Your login session could not be verified. Please log out and back in.");
-  return;
-}
-
-const authenticatedSenderEmail = user.email.toLowerCase();
-    const { data: sentMessage, error } = await supabase
-  .from("messages")
-  .insert([
-    {
-      sender_email: authenticatedSenderEmail,
-      sender_name:
-        `${currentMember?.first_name || ""} ${
-          currentMember?.last_name || ""
-       }`.trim() || authenticatedSenderEmail,
-      recipient_email: selectedStaff.email,
-      member_email: currentMember?.email,
-      staff_email: selectedStaff.email,
-      message: newMessage.trim(),
-      image_url: imageUrl || null,
-    },
-  ])
-  .select()
-  .single();
-    if (error) {
-      alert("Message failed: " + error.message);
+    if (uploadError) {
+      alert("Photo upload failed: " + uploadError.message);
       return;
     }
 
+    const { data } = supabase.storage
+      .from("message-photos")
+      .getPublicUrl(filePath);
+
+    imageUrl = data.publicUrl;
+  }
+
+  const { error } = await supabase
+  .from("messages")
+  .insert([
+    {
+      sender_email: currentMember?.email,
+      sender_name: `${currentMember?.first_name} ${currentMember?.last_name}`,
+      recipient_email: selectedStaff.email,
+      member_email: currentMember?.email,
+      staff_email: selectedStaff.email,
+      message: newMessage,
+      image_url: imageUrl,
+    },
+  ]);
+
+  if (!error) {
     setNewMessage("");
-setAttachedPhotos([]);
-
-if (sentMessage) {
-  setMessages((currentMessages) => {
-    const alreadyExists = currentMessages.some(
-      (message) => message.id === sentMessage.id
-    );
-
-    return alreadyExists
-      ? currentMessages
-      : [...currentMessages, sentMessage];
-  });
-}
-
-void loadMessages().catch((loadError) => {
-  console.error("Message refresh failed:", loadError);
-});
-  } finally {
-    setIsSendingMessage(false);
+    setAttachedPhotos([]);
+    loadMessages();
+  } else {
+    alert("Message failed: " + error.message);
   }
 };
+ 
   return (
     <div style={{ padding: 20, paddingBottom: 92 }}>
       <BrandLogo compact />
@@ -5333,21 +5277,19 @@ onChange={(event) => setNewMessage(event.target.value)}
 
         <div style={{ marginTop: 12 }}>
           <button
-  onClick={sendMessage}
-  disabled={isSendingMessage}
-           style={{
-  width: "100%",
-  border: 0,
-  borderRadius: 14,
-  padding: "12px 14px",
-  background: burgundy,
-  color: "white",
-  fontWeight: 900,
-  opacity: isSendingMessage ? 0.65 : 1,
-  cursor: isSendingMessage ? "default" : "pointer",
-}}
+            onClick={sendMessage}
+            style={{
+              width: "100%",
+              border: 0,
+              borderRadius: 14,
+              padding: "12px 14px",
+              background: burgundy,
+              color: "white",
+              fontWeight: 900,
+              cursor: "pointer",
+            }}
           >
-            {isSendingMessage ? "Sending..." : "Send Message"}
+            Send Message
           </button>
         </div>
       </Card>
@@ -8242,22 +8184,6 @@ const [passwordResetLoading, setPasswordResetLoading] = useState(false);
     subscription.unsubscribe();
   };
 }, []);
-useEffect(() => {
-  const params = new URLSearchParams(window.location.search);
-  const openTarget = params.get("open");
-
-  if (openTarget === "messages" && currentMember) {
-    setActiveTab("messages");
-
-    window.history.replaceState(
-      {},
-      document.title,
-      window.location.pathname
-    );
-  }
-}, [currentMember]);
-
-  
 useEffect(() => {
   if (currentMember?.email) {
     loadNotifications();
