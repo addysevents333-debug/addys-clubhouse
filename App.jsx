@@ -1439,7 +1439,11 @@ const sendAdminReply = async () => {
   setAdminReply("");
   setAdminReplyPhoto(null);
   await loadAdminMessages();
-} else {
+} 
+  else {
+    alert("Reply failed: " + error.message);
+  }
+};
 const archiveConversation = async () => {
   if (!selectedConversation) return;
 
