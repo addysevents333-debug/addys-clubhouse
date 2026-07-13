@@ -1427,22 +1427,27 @@ const sendAdminReply = async () => {
       currentMember?.last_name || ""
     }`.trim() || "Addy's Staff";
 
-  await supabase.functions.invoke("send-push", {
-    body: {
-      title: "Addy's Clubhouse",
-      message: `${staffName} sent you a new message.`,
-      category: "Direct Message",
-      memberEmail: selectedConversation.member_email,
-    },
-  });
-
   setAdminReply("");
   setAdminReplyPhoto(null);
   await loadAdminMessages();
-} 
-  else {
-    alert("Reply failed: " + error.message);
-  }
+
+  supabase.functions
+    .invoke("send-push", {
+      body: {
+        title: "Addy's Clubhouse",
+        message: `${staffName} sent you a new message.`,
+        category: "Direct Message",
+        memberEmail: selectedConversation.member_email,
+      },
+    })
+    .then(({ error: pushError }) => {
+      if (pushError) {
+        console.error("DM push failed:", pushError);
+      }
+    });
+} else {
+  alert("Reply failed: " + error.message);
+}
 };
 const archiveConversation = async () => {
   if (!selectedConversation) return;
