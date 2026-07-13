@@ -5295,16 +5295,17 @@ onChange={(event) => setNewMessage(event.target.value)}
           <button
   onClick={sendMessage}
   disabled={isSendingMessage}
-            style={{
-              width: "100%",
-              border: 0,
-              borderRadius: 14,
-              padding: "12px 14px",
-              background: burgundy,
-              color: "white",
-              fontWeight: 900,
-              cursor: "pointer",
-            }}
+           style={{
+  width: "100%",
+  border: 0,
+  borderRadius: 14,
+  padding: "12px 14px",
+  background: burgundy,
+  color: "white",
+  fontWeight: 900,
+  opacity: isSendingMessage ? 0.65 : 1,
+  cursor: isSendingMessage ? "default" : "pointer",
+}}
           >
             {isSendingMessage ? "Sending..." : "Send Message"}
           </button>
