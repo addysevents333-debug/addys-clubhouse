@@ -5034,31 +5034,45 @@ const sendMessage = async () => {
       imageUrl = data.publicUrl;
     }
 
-    const { error } = await supabase
-      .from("messages")
-      .insert([
-        {
-          sender_email: currentMember?.email,
-          sender_name:
-            `${currentMember?.first_name || ""} ${
-              currentMember?.last_name || ""
-            }`.trim() || currentMember?.email,
-          recipient_email: selectedStaff.email,
-          member_email: currentMember?.email,
-          staff_email: selectedStaff.email,
-          message: newMessage.trim(),
-          image_url: imageUrl || null,
-        },
-      ]);
-
+    const { data: sentMessage, error } = await supabase
+  .from("messages")
+  .insert([
+    {
+      sender_email: currentMember?.email,
+      sender_name:
+        `${currentMember?.first_name || ""} ${
+          currentMember?.last_name || ""
+        }`.trim() || currentMember?.email,
+      recipient_email: selectedStaff.email,
+      member_email: currentMember?.email,
+      staff_email: selectedStaff.email,
+      message: newMessage.trim(),
+      image_url: imageUrl || null,
+    },
+  ])
+  .select()
+  .single();
     if (error) {
       alert("Message failed: " + error.message);
       return;
     }
 
     setNewMessage("");
-    setAttachedPhotos([]);
-    await loadMessages();
+setAttachedPhotos([]);
+
+if (sentMessage) {
+  setMessages((currentMessages) => {
+    const alreadyExists = currentMessages.some(
+      (message) => message.id === sentMessage.id
+    );
+
+    return alreadyExists
+      ? currentMessages
+      : [...currentMessages, sentMessage];
+  });
+}
+
+await loadMessages();
   } finally {
     setIsSendingMessage(false);
   }
