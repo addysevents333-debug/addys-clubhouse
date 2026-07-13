@@ -5061,7 +5061,7 @@ const authenticatedSenderEmail = user.email.toLowerCase();
       sender_name:
         `${currentMember?.first_name || ""} ${
           currentMember?.last_name || ""
-       }.trim() || authenticatedSenderEmail,
+       }`.trim() || authenticatedSenderEmail,
       recipient_email: selectedStaff.email,
       member_email: currentMember?.email,
       staff_email: selectedStaff.email,
