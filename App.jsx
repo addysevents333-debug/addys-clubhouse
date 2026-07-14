@@ -3482,7 +3482,19 @@ border:
       {selectedConversation ? (
   <Card style={{ marginTop: 16 }}>
     <h2 style={{ margin: "0 0 12px", fontSize: 22 }}>
-      Reply to {selectedConversation.sender_name || selectedConversation.sender_email}
+      Reply to {
+  (() => {
+    const member = members.find(
+      (item) =>
+        item.email?.toLowerCase() ===
+        selectedConversation.member_email?.toLowerCase()
+    );
+
+    return member
+      ? `${member.first_name || ""} ${member.last_name || ""}`.trim()
+      : selectedConversation.member_email;
+  })()
+}
     </h2>
 <div
   style={{
