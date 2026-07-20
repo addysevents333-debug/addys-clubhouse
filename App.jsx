@@ -829,6 +829,7 @@ const [editingProduct, setEditingProduct] = useState(null);
   const [editingProductImage, setEditingProductImage] = useState(null);
   const [productSearch, setProductSearch] = useState("");
 const [eventMessage, setEventMessage] = useState("");
+  const [openManageEventId, setOpenManageEventId] = useState(null);
    const [activeAdminSection, setActiveAdminSection] =
   useState("messages");
    useEffect(() => {
