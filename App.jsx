@@ -5813,6 +5813,23 @@ if (journalPhoto) {
                   <div style={{ flex: 1 }}>
                     <div style={{ color: burgundy, fontSize: 12, fontWeight: 900, textTransform: "uppercase" }}>{note.author}</div>
                     <div style={{ color: "#777", fontSize: 13, marginTop: 2 }}>Club Note</div>
+                    {note.created_at ? (
+  <div
+    style={{
+      color: "#888",
+      fontSize: 12,
+      marginTop: 3,
+      fontStyle: "italic",
+    }}
+  >
+    Posted{" "}
+    {new Date(note.created_at).toLocaleDateString("en-US", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    })}
+  </div>
+) : null}
                     <h3 style={{ margin: "8px 0 4px", fontSize: 17 }}>{note.title}</h3>
                    <p style={{ margin: 0, color: "#666", fontSize: 14, lineHeight: 1.45 }}>
   {note.content}
