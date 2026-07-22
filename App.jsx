@@ -5594,6 +5594,15 @@ const searchJournalProducts = async (searchText) => {
   }
 };
   useEffect(() => {
+  const timer = setTimeout(() => {
+    if (!selectedJournalProduct) {
+      searchJournalProducts(journalProductSearch);
+    }
+  }, 350);
+
+  return () => clearTimeout(timer);
+}, [journalProductSearch, selectedJournalProduct]);
+  useEffect(() => {
     loadNotes();
     loadJournalEntries();
      loadNoteLikes();
