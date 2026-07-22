@@ -5983,19 +5983,155 @@ if (journalPhoto) {
           {showJournalForm ? (
   <Card style={{ marginTop: 14 }}>
     <h2 style={{ margin: "0 0 12px", fontSize: 20 }}>Add Bottle</h2>
-   <input
-  value={journalProductName}
-  onChange={(e) => setJournalProductName(e.target.value)}
-  placeholder="Bottle / Product Name"
-  style={{
-    width: "100%",
-    padding: 12,
-    borderRadius: 12,
-    border: "1px solid #ddd",
-    marginBottom: 10,
-     boxSizing: "border-box",
-  }}
-/>
+ <div style={{ marginBottom: 10, position: "relative" }}>
+  <input
+    value={journalProductSearch}
+    onChange={(e) => {
+      setJournalProductSearch(e.target.value);
+      setSelectedJournalProduct(null);
+      setJournalProductName(e.target.value);
+    }}
+    placeholder="Search Addy's products..."
+    style={{
+      width: "100%",
+      padding: 12,
+      borderRadius: 12,
+      border: "1px solid #ddd",
+      boxSizing: "border-box",
+    }}
+  />
+
+  {isSearchingJournalProducts ? (
+    <div
+      style={{
+        marginTop: 6,
+        color: "#666",
+        fontSize: 13,
+      }}
+    >
+      Searching products...
+    </div>
+  ) : null}
+
+  {journalProductResults.length > 0 ? (
+    <div
+      style={{
+        marginTop: 6,
+        border: "1px solid #ddd",
+        borderRadius: 12,
+        background: "white",
+        maxHeight: 280,
+        overflowY: "auto",
+        boxShadow: "0 10px 24px rgba(0,0,0,.08)",
+      }}
+    >
+      {journalProductResults.map((product) => (
+        <button
+          key={product.id}
+          type="button"
+          onClick={() => selectJournalProduct(product)}
+          style={{
+            width: "100%",
+            border: 0,
+            borderBottom: "1px solid #eee",
+            background: "white",
+            padding: 12,
+            textAlign: "left",
+            cursor: "pointer",
+            display: "flex",
+            gap: 10,
+            alignItems: "center",
+          }}
+        >
+          {product.image_url ? (
+            <img
+              src={product.image_url}
+              alt={product.name}
+              style={{
+                width: 44,
+                height: 58,
+                objectFit: "contain",
+                borderRadius: 8,
+                background: "#f4f1ed",
+                flexShrink: 0,
+              }}
+            />
+          ) : (
+            <div
+              style={{
+                width: 44,
+                height: 58,
+                borderRadius: 8,
+                background: "#f4f1ed",
+                display: "grid",
+                placeItems: "center",
+                flexShrink: 0,
+              }}
+            >
+              🍷
+            </div>
+          )}
+
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div
+              style={{
+                fontWeight: 900,
+                color: "#222",
+              }}
+            >
+              {product.name || "Unnamed Product"}
+            </div>
+
+            <div
+              style={{
+                color: "#666",
+                fontSize: 12,
+                marginTop: 3,
+              }}
+            >
+              {[product.brand, product.vintage]
+                .filter(Boolean)
+                .join(" • ")}
+            </div>
+
+            <div
+              style={{
+                color: "#777",
+                fontSize: 12,
+                marginTop: 3,
+              }}
+            >
+              {[
+                product.subcategory || product.category,
+                product.varietal,
+                product.region,
+                product.country,
+              ]
+                .filter(Boolean)
+                .join(" • ")}
+            </div>
+          </div>
+        </button>
+      ))}
+    </div>
+  ) : null}
+
+  {selectedJournalProduct ? (
+    <div
+      style={{
+        marginTop: 8,
+        padding: 10,
+        borderRadius: 12,
+        background: "#fffaf0",
+        border: `1px solid ${gold}`,
+        color: "#555",
+        fontSize: 13,
+      }}
+    >
+      Selected from Addy's master product list
+    </div>
+  ) : null}
+</div>
 
 <input
   value={journalProducer}
