@@ -5705,7 +5705,7 @@ if (journalPhoto) {
     favorite: journalFavorite,
     buy_again: journalBuyAgain,
     tasted_on: journalTastedOn || null,
-    is_custom: true,
+   is_custom: !selectedJournalProduct,
     product_id: selectedJournalProduct?.id || null,
   };
 
@@ -5730,6 +5730,8 @@ if (journalPhoto) {
     setJournalFavorite(false);
     setJournalBuyAgain(false);
     setJournalTastedOn("");
+    setJournalPhoto(null);
+    setJournalPhotoUrl("");
     setJournalMessage(editingJournalId ? "Bottle updated." : "Bottle saved to your journal.");
     setEditingJournalId(null);
     setShowJournalForm(false);
