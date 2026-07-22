@@ -5761,6 +5761,16 @@ if (journalPhoto) {
   setShowJournalForm(true);
 
   setJournalProductName(entry.product_name || "");
+    setSelectedJournalProduct(
+  entry.product_id
+    ? {
+        id: entry.product_id,
+        name: entry.product_name,
+      }
+    : null
+);
+
+setJournalProductSearch(entry.product_name || "");
   setJournalProducer(entry.producer || "");
   setJournalVintage(entry.vintage || "");
   setJournalRegion(entry.region || "");
