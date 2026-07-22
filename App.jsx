@@ -6387,7 +6387,83 @@ setJournalProductSearch(entry.product_name || "");
       </div>
 
       <h3 style={{ margin: "6px 0 4px" }}>{entry.product_name}</h3>
+{entry.product_id ? (() => {
+  const average = clubhouseAverages.find(
+    (item) => String(item.product_id) === String(entry.product_id)
+  );
 
+  if (!average) return null;
+
+  return (
+    <div
+      style={{
+        margin: "8px 0 10px",
+        padding: 10,
+        borderRadius: 12,
+        background: "#fffaf0",
+        border: `1px solid ${gold}`,
+      }}
+    >
+      <div
+        style={{
+          fontSize: 12,
+          fontWeight: 900,
+          color: burgundy,
+          textTransform: "uppercase",
+          marginBottom: 6,
+        }}
+      >
+        Clubhouse Average
+      </div>
+
+      <div
+        style={{
+          display: "flex",
+          gap: 14,
+          flexWrap: "wrap",
+          alignItems: "center",
+          fontSize: 13,
+          color: "#444",
+        }}
+      >
+        {average.average_stars !== null ? (
+          <div>
+            <strong>★ {Number(average.average_stars).toFixed(1)} / 5</strong>
+            <div style={{ color: "#777", fontSize: 12, marginTop: 2 }}>
+              {average.star_rating_count} star{" "}
+              {Number(average.star_rating_count) === 1 ? "rating" : "ratings"}
+            </div>
+          </div>
+        ) : null}
+
+        {average.average_score !== null ? (
+          <div>
+            <strong>{Number(average.average_score).toFixed(1)} / 100</strong>
+            <div style={{ color: "#777", fontSize: 12, marginTop: 2 }}>
+              {average.score_rating_count} score{" "}
+              {Number(average.score_rating_count) === 1 ? "rating" : "ratings"}
+            </div>
+          </div>
+        ) : null}
+      </div>
+
+      <div
+        style={{
+          marginTop: 8,
+          color: "#666",
+          fontSize: 12,
+          display: "flex",
+          gap: 12,
+          flexWrap: "wrap",
+        }}
+      >
+        <span>{average.member_count} members</span>
+        <span>❤️ {average.favorite_count} favorites</span>
+        <span>🔁 {average.buy_again_count} buy again</span>
+      </div>
+    </div>
+  );
+})() : null}
       <p style={{ margin: "0 0 8px", color: "#666" }}>
         {[entry.producer, entry.vintage, entry.region].filter(Boolean).join(" • ")}
       </p>
