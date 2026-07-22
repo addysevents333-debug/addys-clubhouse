@@ -5733,6 +5733,9 @@ if (journalPhoto) {
     setJournalMessage(editingJournalId ? "Bottle updated." : "Bottle saved to your journal.");
     setEditingJournalId(null);
     setShowJournalForm(false);
+    setSelectedJournalProduct(null);
+    setJournalProductSearch("");
+    setJournalProductResults([]);
     loadJournalEntries();
   } else {
     console.log(error);
