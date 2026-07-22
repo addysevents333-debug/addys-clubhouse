@@ -5519,6 +5519,11 @@ const [editingJournalId, setEditingJournalId] = useState(null);
   const [journalEntries, setJournalEntries] = useState([]);
   const [showJournalForm, setShowJournalForm] = useState(false);
   const [journalProductName, setJournalProductName] = useState("");
+  const [journalProductSearch, setJournalProductSearch] = useState("");
+const [journalProductResults, setJournalProductResults] = useState([]);
+const [selectedJournalProduct, setSelectedJournalProduct] = useState(null);
+const [isSearchingJournalProducts, setIsSearchingJournalProducts] =
+  useState(false);
   const [journalProducer, setJournalProducer] = useState("");
   const [journalVintage, setJournalVintage] = useState("");
   const [journalRegion, setJournalRegion] = useState("");
