@@ -5706,6 +5706,7 @@ if (journalPhoto) {
     buy_again: journalBuyAgain,
     tasted_on: journalTastedOn || null,
     is_custom: true,
+    product_id: selectedJournalProduct?.id || null,
   };
 
   const { error } = editingJournalId
