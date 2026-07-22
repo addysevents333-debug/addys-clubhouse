@@ -5603,11 +5603,12 @@ const searchJournalProducts = async (searchText) => {
 
   return () => clearTimeout(timer);
 }, [journalProductSearch, selectedJournalProduct]);
-  useEffect(() => {
-    loadNotes();
-    loadJournalEntries();
-     loadNoteLikes();
-  }, []);
+ useEffect(() => {
+  loadNotes();
+  loadJournalEntries();
+  loadNoteLikes();
+  loadClubhouseAverages();
+}, []);
 
   const loadNotes = async () => {
   const { data: notesData, error } = await supabase
