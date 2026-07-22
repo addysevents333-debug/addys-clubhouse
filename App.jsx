@@ -5537,7 +5537,62 @@ const [isSearchingJournalProducts, setIsSearchingJournalProducts] =
   const [journalMessage, setJournalMessage] = useState("");
   const [journalPhoto, setJournalPhoto] = useState(null);
 const [journalPhotoUrl, setJournalPhotoUrl] = useState("");
+const searchJournalProducts = async (searchText) => {
+  const cleanSearch = searchText.trim().replace(/[,]/g, " ");
 
+  if (cleanSearch.length < 2) {
+    setJournalProductResults([]);
+    setIsSearchingJournalProducts(false);
+    return;
+  }
+
+  setIsSearchingJournalProducts(true);
+
+  let query = supabase
+    .from("products")
+    .select(
+      "id, name, brand, category, subcategory, varietal, region, country, vintage, image_url"
+    )
+    .eq("active", true)
+    .order("name", { ascending: true })
+    .limit(20);
+
+  query = query.or(
+    `name.ilike.%${cleanSearch}%,brand.ilike.%${cleanSearch}%,category.ilike.%${cleanSearch}%,subcategory.ilike.%${cleanSearch}%,varietal.ilike.%${cleanSearch}%,region.ilike.%${cleanSearch}%,country.ilike.%${cleanSearch}%`
+  );
+
+  const { data, error } = await query;
+
+  if (error) {
+    console.log("Journal product search error:", error);
+    setJournalProductResults([]);
+  } else {
+    setJournalProductResults(data || []);
+  }
+
+  setIsSearchingJournalProducts(false);
+};
+  const selectJournalProduct = (product) => {
+  setSelectedJournalProduct(product);
+  setJournalProductName(product.name || "");
+  setJournalProducer(product.brand || "");
+  setJournalVintage(product.vintage || "");
+
+  setJournalRegion(
+    [product.region, product.country].filter(Boolean).join(", ")
+  );
+
+  setJournalCategory(
+    product.subcategory || product.category || "Other"
+  );
+
+  setJournalProductSearch(product.name || "");
+  setJournalProductResults([]);
+
+  if (product.image_url) {
+    setJournalPhotoUrl(product.image_url);
+  }
+};
   useEffect(() => {
     loadNotes();
     loadJournalEntries();
