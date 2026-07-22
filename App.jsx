@@ -5752,7 +5752,9 @@ if (journalPhoto) {
     setSelectedJournalProduct(null);
     setJournalProductSearch("");
     setJournalProductResults([]);
-    loadJournalEntries();
+   loadJournalEntries();
+loadClubhouseAverages();
+    
   } else {
     console.log(error);
     setJournalMessage(error.message || "Error saving bottle.");
@@ -5764,10 +5766,11 @@ if (journalPhoto) {
     .delete()
     .eq("id", id);
 
-  if (!error) {
-    setJournalMessage("Journal entry deleted.");
-    loadJournalEntries();
-  } else {
+ if (!error) {
+  setJournalMessage("Journal entry deleted.");
+  loadJournalEntries();
+  loadClubhouseAverages();
+} else {
     console.log(error);
     setJournalMessage(error.message || "Error deleting journal entry.");
   }
