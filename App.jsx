@@ -5535,6 +5535,7 @@ const [isSearchingJournalProducts, setIsSearchingJournalProducts] =
   const [journalBuyAgain, setJournalBuyAgain] = useState(false);
   const [journalTastedOn, setJournalTastedOn] = useState("");
   const [journalMessage, setJournalMessage] = useState("");
+  const [clubhouseAverages, setClubhouseAverages] = useState([]);
   const [journalPhoto, setJournalPhoto] = useState(null);
 const [journalPhotoUrl, setJournalPhotoUrl] = useState("");
 const searchJournalProducts = async (searchText) => {
@@ -5659,6 +5660,18 @@ const searchJournalProducts = async (searchText) => {
       setJournalEntries(data);
     }
   };
+  const loadClubhouseAverages = async () => {
+  const { data, error } = await supabase
+    .from("clubhouse_product_averages")
+    .select("*");
+
+  if (error) {
+    console.log("Clubhouse averages error:", error);
+    setClubhouseAverages([]);
+  } else {
+    setClubhouseAverages(data || []);
+  }
+};
   const loadNoteLikes = async () => {
   const { data, error } = await supabase
     .from("note_likes")
