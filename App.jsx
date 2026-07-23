@@ -6074,8 +6074,8 @@ setJournalProductSearch(entry.product_name || "");
             ))}
           </div>
         </>
-      ) : (
-        <>
+    ) : notesView === "personal" ? (
+<>
           <Card style={{ marginBottom: 14, background: "#fffaf0", border: `1px solid ${gold}` }}>
             <h2 style={{ margin: "0 0 6px", fontSize: 20 }}>My Tasting Journal</h2>
             <p style={{ margin: 0, color: "#666", lineHeight: 1.45 }}>
