@@ -5840,36 +5840,62 @@ setJournalProductSearch(entry.product_name || "");
         </p>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 14 }}>
-        <button
-          onClick={() => setNotesView("expert")}
-          style={{
-            border: 0,
-            borderRadius: 14,
-            padding: "11px 10px",
-            background: notesView === "expert" ? burgundy : "white",
-            color: notesView === "expert" ? "white" : burgundy,
-            fontWeight: 900,
-            cursor: "pointer",
-          }}
-        >
-          Expert Notes
-        </button>
-        <button
-          onClick={() => setNotesView("personal")}
-          style={{
-            border: 0,
-            borderRadius: 14,
-            padding: "11px 10px",
-            background: notesView === "personal" ? burgundy : "white",
-            color: notesView === "personal" ? "white" : burgundy,
-            fontWeight: 900,
-            cursor: "pointer",
-          }}
-        >
-          My Notes
-        </button>
-      </div>
+     <div
+  style={{
+    display: "grid",
+    gridTemplateColumns: "repeat(3, 1fr)",
+    gap: 8,
+    marginBottom: 14,
+  }}
+>
+  <button
+    onClick={() => setNotesView("expert")}
+    style={{
+      border: 0,
+      borderRadius: 14,
+      padding: "11px 8px",
+      background: notesView === "expert" ? burgundy : "white",
+      color: notesView === "expert" ? "white" : burgundy,
+      fontWeight: 900,
+      cursor: "pointer",
+      fontSize: 12,
+    }}
+  >
+    Expert Notes
+  </button>
+
+  <button
+    onClick={() => setNotesView("personal")}
+    style={{
+      border: 0,
+      borderRadius: 14,
+      padding: "11px 8px",
+      background: notesView === "personal" ? burgundy : "white",
+      color: notesView === "personal" ? "white" : burgundy,
+      fontWeight: 900,
+      cursor: "pointer",
+      fontSize: 12,
+    }}
+  >
+    My Notes
+  </button>
+
+  <button
+    onClick={() => setNotesView("tech")}
+    style={{
+      border: 0,
+      borderRadius: 14,
+      padding: "11px 8px",
+      background: notesView === "tech" ? burgundy : "white",
+      color: notesView === "tech" ? "white" : burgundy,
+      fontWeight: 900,
+      cursor: "pointer",
+      fontSize: 12,
+    }}
+  >
+    Tech Sheets
+  </button>
+</div>
 
       {notesView === "expert" ? (
         <>
