@@ -828,6 +828,12 @@ const [productMessage, setProductMessage] = useState("");
 const [editingProduct, setEditingProduct] = useState(null);
   const [editingProductImage, setEditingProductImage] = useState(null);
   const [productSearch, setProductSearch] = useState("");
+  const [techSheetProductSearch, setTechSheetProductSearch] = useState("");
+const [techSheetProductResults, setTechSheetProductResults] = useState([]);
+const [selectedTechSheetProduct, setSelectedTechSheetProduct] = useState(null);
+const [techSheetFile, setTechSheetFile] = useState(null);
+const [techSheetUploadMessage, setTechSheetUploadMessage] = useState("");
+const [isUploadingTechSheet, setIsUploadingTechSheet] = useState(false);
 const [eventMessage, setEventMessage] = useState("");
   const [openManageEventId, setOpenManageEventId] = useState(null);
    const [activeAdminSection, setActiveAdminSection] =
@@ -1362,6 +1368,36 @@ const loadUnreadAdminDmCount = async () => {
     supabase.removeChannel(channel);
   };
 }, []);
+const searchTechSheetProducts = async (searchText) => {
+  const cleanSearch = searchText.trim().replace(/[,]/g, " ");
+
+  if (cleanSearch.length < 2) {
+    setTechSheetProductResults([]);
+    return;
+  }
+
+  let query = supabase
+    .from("products")
+    .select(
+      "id, name, brand, vintage, region, country, tech_sheet_url"
+    )
+    .eq("active", true)
+    .order("name", { ascending: true })
+    .limit(20);
+
+  query = query.or(
+    `name.ilike.%${cleanSearch}%,brand.ilike.%${cleanSearch}%,region.ilike.%${cleanSearch}%,country.ilike.%${cleanSearch}%`
+  );
+
+  const { data, error } = await query;
+
+  if (error) {
+    console.log("Tech sheet product search error:", error);
+    setTechSheetProductResults([]);
+  } else {
+    setTechSheetProductResults(data || []);
+  }
+};
   const loadNotes = async () => {
   const { data, error } = await supabase
     .from("notes")
