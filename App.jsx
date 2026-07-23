@@ -5613,7 +5613,40 @@ const searchJournalProducts = async (searchText) => {
   loadNoteLikes();
   loadClubhouseAverages();
 }, []);
+const loadTechSheets = async (searchText = "") => {
+  const cleanSearch = searchText.trim().replace(/[,]/g, " ");
 
+  setIsLoadingTechSheets(true);
+  setTechSheetMessage("");
+
+  let query = supabase
+    .from("products")
+    .select(
+      "id, name, brand, category, subcategory, varietal, region, country, vintage, image_url, tech_sheet_url"
+    )
+    .eq("active", true)
+    .not("tech_sheet_url", "is", null)
+    .order("name", { ascending: true })
+    .limit(100);
+
+  if (cleanSearch.length >= 2) {
+    query = query.or(
+      `name.ilike.%${cleanSearch}%,brand.ilike.%${cleanSearch}%,category.ilike.%${cleanSearch}%,subcategory.ilike.%${cleanSearch}%,varietal.ilike.%${cleanSearch}%,region.ilike.%${cleanSearch}%,country.ilike.%${cleanSearch}%`
+    );
+  }
+
+  const { data, error } = await query;
+
+  if (error) {
+    console.log("Tech sheet load error:", error);
+    setTechSheetProducts([]);
+    setTechSheetMessage("Tech sheets could not be loaded.");
+  } else {
+    setTechSheetProducts(data || []);
+  }
+
+  setIsLoadingTechSheets(false);
+};
   const loadNotes = async () => {
   const { data: notesData, error } = await supabase
     .from("notes")
