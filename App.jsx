@@ -3072,6 +3072,57 @@ return (
     New image selected: {editingProductImage.name}
   </div>
 ) : null}
+    <label
+  style={{
+    display: "block",
+    marginTop: 10,
+    marginBottom: 8,
+    fontWeight: 800,
+    color: burgundy,
+  }}
+>
+  Tech Sheet PDF
+</label>
+
+<input
+  type="file"
+  accept="application/pdf"
+  onChange={(event) =>
+    setEditingProductTechSheet(
+      event.target.files?.[0] || null
+    )
+  }
+  style={{ marginBottom: 10 }}
+/>
+
+{editingProduct.tech_sheet_url ? (
+  <a
+    href={editingProduct.tech_sheet_url}
+    target="_blank"
+    rel="noreferrer"
+    style={{
+      display: "block",
+      marginBottom: 10,
+      color: burgundy,
+      fontWeight: 800,
+      textDecoration: "none",
+    }}
+  >
+    View Current Tech Sheet
+  </a>
+) : null}
+
+{editingProductTechSheet ? (
+  <div
+    style={{
+      color: "#666",
+      fontSize: 13,
+      marginBottom: 10,
+    }}
+  >
+    New PDF selected: {editingProductTechSheet.name}
+  </div>
+) : null}
     <textarea
       value={editingProduct.internal_reason}
       onChange={(event) =>
