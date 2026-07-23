@@ -6589,6 +6589,124 @@ setJournalProductSearch(entry.product_name || "");
   ))
 )}
           </div>
+             </>
+      ) : (
+        <>
+          <Card
+            style={{
+              marginBottom: 14,
+              background: "#fffaf0",
+              border: `1px solid ${gold}`,
+            }}
+          >
+            <h2 style={{ margin: "0 0 6px", fontSize: 20 }}>
+              Tech Sheets
+            </h2>
+
+            <p
+              style={{
+                margin: 0,
+                color: "#666",
+                lineHeight: 1.45,
+              }}
+            >
+              Search and view Addy’s product tech sheets.
+            </p>
+          </Card>
+
+          <input
+            value={techSheetSearch}
+            onChange={(e) => setTechSheetSearch(e.target.value)}
+            placeholder="Search tech sheets..."
+            style={{
+              width: "100%",
+              padding: 12,
+              borderRadius: 12,
+              border: "1px solid #ddd",
+              boxSizing: "border-box",
+              marginBottom: 12,
+            }}
+          />
+
+          {isLoadingTechSheets ? (
+            <div style={{ color: "#666", marginBottom: 12 }}>
+              Loading tech sheets...
+            </div>
+          ) : null}
+
+          {techSheetMessage ? (
+            <div style={{ color: "#8a1f1f", marginBottom: 12 }}>
+              {techSheetMessage}
+            </div>
+          ) : null}
+
+          <div style={{ display: "grid", gap: 12 }}>
+            {techSheetProducts.length > 0 ? (
+              techSheetProducts.map((product) => (
+                <Card key={product.id}>
+                  {product.image_url ? (
+                    <img
+                      src={product.image_url}
+                      alt={product.name}
+                      style={{
+                        width: "100%",
+                        maxHeight: 160,
+                        objectFit: "contain",
+                        borderRadius: 14,
+                        background: "#f4f1ed",
+                        marginBottom: 10,
+                      }}
+                    />
+                  ) : null}
+
+                  <h3 style={{ margin: "0 0 6px" }}>
+                    {product.name || "Unnamed Product"}
+                  </h3>
+
+                  <div
+                    style={{
+                      color: "#666",
+                      fontSize: 13,
+                      marginBottom: 10,
+                    }}
+                  >
+                    {[
+                      product.brand,
+                      product.vintage,
+                      product.region,
+                      product.country,
+                    ]
+                      .filter(Boolean)
+                      .join(" • ")}
+                  </div>
+
+                  <a
+                    href={product.tech_sheet_url}
+                    target="_blank"
+                    rel="noreferrer"
+                    style={{
+                      display: "block",
+                      textAlign: "center",
+                      background: burgundy,
+                      color: "white",
+                      borderRadius: 12,
+                      padding: "10px 12px",
+                      fontWeight: 900,
+                      textDecoration: "none",
+                    }}
+                  >
+                    View Tech Sheet
+                  </a>
+                </Card>
+              ))
+            ) : !isLoadingTechSheets ? (
+              <Card>
+                <p style={{ margin: 0, color: "#666" }}>
+                  No tech sheets found.
+                </p>
+              </Card>
+            ) : null}
+          </div>
         </>
       )}
     </div>
