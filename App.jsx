@@ -5607,7 +5607,16 @@ const searchJournalProducts = async (searchText) => {
 
   return () => clearTimeout(timer);
 }, [journalProductSearch, selectedJournalProduct]);
- useEffect(() => {
+useEffect(() => {
+  if (notesView !== "tech") return;
+
+  const timer = setTimeout(() => {
+    loadTechSheets(techSheetSearch);
+  }, 350);
+
+  return () => clearTimeout(timer);
+}, [notesView, techSheetSearch]);
+  useEffect(() => {
   loadNotes();
   loadJournalEntries();
   loadNoteLikes();
