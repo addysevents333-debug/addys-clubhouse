@@ -1731,7 +1731,10 @@ if (editingProductImage) {
   let techSheetUrl = editingProduct.tech_sheet_url || null;
 
 if (editingProductTechSheet) {
-  if (editingProductTechSheet.type !== "application/pdf") {
+  if (
+  editingProductTechSheet.type !== "application/pdf" &&
+  !editingProductTechSheet.name.toLowerCase().endsWith(".pdf")
+) {
     setProductMessage("Tech sheet must be a PDF.");
     return;
   }
