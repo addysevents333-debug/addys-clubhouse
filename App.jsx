@@ -827,6 +827,7 @@ const [productMessage, setProductMessage] = useState("");
    const [editingProductId, setEditingProductId] = useState(null);
 const [editingProduct, setEditingProduct] = useState(null);
   const [editingProductImage, setEditingProductImage] = useState(null);
+  const [editingProductTechSheet, setEditingProductTechSheet] = useState(null);
   const [productSearch, setProductSearch] = useState("");
   const [eventMessage, setEventMessage] = useState("");
   const [openManageEventId, setOpenManageEventId] = useState(null);
@@ -1672,6 +1673,7 @@ const deleteEvent = async (event) => {
     price: product.price ?? "",
     inventory_quantity: product.inventory_quantity ?? 0,
     active: product.active !== false,
+    tech_sheet_url: product.tech_sheet_url || "",
     recommendation_status:
       merchandising?.recommendation_status || "neutral",
     priority: merchandising?.priority ?? 0,
@@ -1726,6 +1728,39 @@ if (editingProductImage) {
 
   productImageUrl = data.publicUrl;
 }
+  let techSheetUrl = editingProduct.tech_sheet_url || null;
+
+if (editingProductTechSheet) {
+  if (editingProductTechSheet.type !== "application/pdf") {
+    setProductMessage("Tech sheet must be a PDF.");
+    return;
+  }
+
+  const cleanFileName = editingProductTechSheet.name
+    .replace(/[^a-zA-Z0-9.-]/g, "-")
+    .toLowerCase();
+
+  const fileName =
+    `${editingProductId}/${Date.now()}-${cleanFileName}`;
+
+  const { error: techSheetUploadError } = await supabase.storage
+    .from("tech-sheets")
+    .upload(fileName, editingProductTechSheet);
+
+  if (techSheetUploadError) {
+    setProductMessage(
+      "Tech sheet upload failed: " +
+        techSheetUploadError.message
+    );
+    return;
+  }
+
+  const { data } = supabase.storage
+    .from("tech-sheets")
+    .getPublicUrl(fileName);
+
+  techSheetUrl = data.publicUrl;
+}   
  const { data: updatedProducts, error: productError } = await supabase
   .from("products")
   .update({
@@ -1735,6 +1770,7 @@ if (editingProductImage) {
     inventory_quantity: inventory,
     active: editingProduct.active,
     image_url: productImageUrl,
+    tech_sheet_url: techSheetUrl,
     updated_at: new Date().toISOString(),
   })
   .eq("id", editingProductId)
@@ -1781,6 +1817,7 @@ if (!updatedProducts?.length) {
   setEditingProductId(null);
   setEditingProduct(null);
   setEditingProductImage(null);
+  setEditingProductTechSheet(null);
   setProductMessage("Product updated successfully.");
   await loadAdminProducts();
 };
