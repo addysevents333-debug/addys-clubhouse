@@ -5513,6 +5513,10 @@ function BottleNoteCard({ bottle }) {
 
 function NotesScreen({ currentMember, setFullscreenImage }) {
   const [notesView, setNotesView] = useState("expert");
+  const [techSheetSearch, setTechSheetSearch] = useState("");
+const [techSheetProducts, setTechSheetProducts] = useState([]);
+const [isLoadingTechSheets, setIsLoadingTechSheets] = useState(false);
+const [techSheetMessage, setTechSheetMessage] = useState("");
   const [liveNotes, setLiveNotes] = useState([]);
    const [noteLikes, setNoteLikes] = useState([]);
 const [editingJournalId, setEditingJournalId] = useState(null);
