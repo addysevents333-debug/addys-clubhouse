@@ -6441,7 +6441,38 @@ setJournalProductSearch(entry.product_name || "");
       >
         LAST BOTTLE
       </div>
+<div
+  style={{
+    padding: 12,
+    borderRadius: 14,
+    background: "#faf7f3",
+  }}
+>
+  <div
+    style={{
+      color: "#777",
+      fontSize: 12,
+      fontWeight: 800,
+    }}
+  >
+    FAVORITE REGION
+  </div>
 
+  <div
+    style={{
+      marginTop: 5,
+      color: burgundy,
+      fontSize: 16,
+      fontWeight: 900,
+      lineHeight: 1.4,
+    }}
+  >
+    🌎{" "}
+    {journalStats.favoriteRegion
+      ? `${journalStats.favoriteRegion[0]} (${journalStats.favoriteRegion[1]})`
+      : "—"}
+  </div>
+</div>
       <div
         style={{
           marginTop: 5,
