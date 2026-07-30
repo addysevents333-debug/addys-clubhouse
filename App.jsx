@@ -6189,6 +6189,20 @@ setJournalProductSearch(entry.product_name || "");
               Members can rate each wine or spirit, write private notes, favorite bottles, and remember what they want to buy again.
             </p>
           </Card>
+  <input
+  value={journalSearch}
+  onChange={(e) => setJournalSearch(e.target.value)}
+  placeholder="Search your tasting journal..."
+  style={{
+    width: "100%",
+    padding: 12,
+    borderRadius: 12,
+    border: "1px solid #ddd",
+    boxSizing: "border-box",
+    marginBottom: 12,
+    fontSize: 14,
+  }}
+/>
           <AppButton onClick={() => setShowJournalForm(!showJournalForm)}>
   {showJournalForm ? "Cancel" : "+ Add Bottle"}
 </AppButton>
