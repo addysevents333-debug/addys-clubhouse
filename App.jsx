@@ -5861,7 +5861,18 @@ if (journalFilter === "buyAgain" && !entry.buy_again) return false;
   const buyAgain = journalEntries.filter(
     (entry) => entry.buy_again
   ).length;
+const regionCounts = {};
 
+journalEntries.forEach((entry) => {
+  if (!entry.region) return;
+
+  const region = entry.region.trim();
+
+  regionCounts[region] = (regionCounts[region] || 0) + 1;
+});
+
+const favoriteRegion =
+  Object.entries(regionCounts).sort((a, b) => b[1] - a[1])[0] || null;
   const normalizedRatings = journalEntries
     .map((entry) => {
       if (entry.rating_score) {
