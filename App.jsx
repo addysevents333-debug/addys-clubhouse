@@ -5613,6 +5613,7 @@ const [techSheetMessage, setTechSheetMessage] = useState("");
    const [noteLikes, setNoteLikes] = useState([]);
 const [editingJournalId, setEditingJournalId] = useState(null);
   const [journalEntries, setJournalEntries] = useState([]);
+  const [journalSearch, setJournalSearch] = useState("");
   const [showJournalForm, setShowJournalForm] = useState(false);
   const [journalProductName, setJournalProductName] = useState("");
   const [journalProductSearch, setJournalProductSearch] = useState("");
@@ -5799,6 +5800,20 @@ const loadTechSheets = async (searchText = "") => {
       setJournalEntries(data);
     }
   };
+  const filteredJournalEntries = journalEntries.filter((entry) => {
+  const search = journalSearch.toLowerCase();
+
+  const matches = (value) =>
+    String(value || "").toLowerCase().includes(search);
+
+  return (
+    matches(entry.product_name) ||
+    matches(entry.producer) ||
+    matches(entry.region) ||
+    matches(entry.category) ||
+    matches(entry.vintage)
+  );
+});
   const loadClubhouseAverages = async () => {
   const { data, error } = await supabase
     .from("clubhouse_product_averages")
