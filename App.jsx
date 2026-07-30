@@ -5626,6 +5626,7 @@ const [isSearchingJournalProducts, setIsSearchingJournalProducts] =
   const [journalProducer, setJournalProducer] = useState("");
   const [journalVintage, setJournalVintage] = useState("");
   const [journalRegion, setJournalRegion] = useState("");
+  const [journalVarietal, setJournalVarietal] = useState("");
   const [journalCategory, setJournalCategory] = useState("Wine");
   const [journalStars, setJournalStars] = useState(0);
   const [journalScore, setJournalScore] = useState("");
