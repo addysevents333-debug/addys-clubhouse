@@ -5808,13 +5808,13 @@ const loadTechSheets = async (searchText = "") => {
     String(value || "").toLowerCase().includes(search);
 
   return (
-    matches(entry.product_name) ||
-    matches(entry.producer) ||
-    matches(entry.region) ||
-    matches(entry.category) ||
-    matches(entry.vintage)
-    matches(entry.notes)
-  );
+  matches(entry.product_name) ||
+  matches(entry.producer) ||
+  matches(entry.region) ||
+  matches(entry.category) ||
+  matches(entry.vintage) ||
+  matches(entry.notes)
+);
 });
   const loadClubhouseAverages = async () => {
   const { data, error } = await supabase
