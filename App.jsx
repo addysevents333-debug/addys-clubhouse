@@ -6240,6 +6240,63 @@ setJournalProductSearch(entry.product_name || "");
     fontSize: 14,
   }}
 />
+  <div
+  style={{
+    display: "flex",
+    gap: 8,
+    marginBottom: 12,
+  }}
+>
+
+<button
+  onClick={() => setJournalFilter("all")}
+  style={{
+    flex: 1,
+    border: 0,
+    borderRadius: 12,
+    padding: "10px 8px",
+    background: journalFilter === "all" ? burgundy : "#f4f1ed",
+    color: journalFilter === "all" ? "white" : burgundy,
+    fontWeight: 800,
+    cursor: "pointer",
+  }}
+>
+  🍷 All
+</button>
+
+<button
+  onClick={() => setJournalFilter("favorites")}
+  style={{
+    flex: 1,
+    border: 0,
+    borderRadius: 12,
+    padding: "10px 8px",
+    background: journalFilter === "favorites" ? burgundy : "#f4f1ed",
+    color: journalFilter === "favorites" ? "white" : burgundy,
+    fontWeight: 800,
+    cursor: "pointer",
+  }}
+>
+  ❤️ Favorites
+</button>
+
+<button
+  onClick={() => setJournalFilter("buyAgain")}
+  style={{
+    flex: 1,
+    border: 0,
+    borderRadius: 12,
+    padding: "10px 8px",
+    background: journalFilter === "buyAgain" ? burgundy : "#f4f1ed",
+    color: journalFilter === "buyAgain" ? "white" : burgundy,
+    fontWeight: 800,
+    cursor: "pointer",
+  }}
+>
+  🔁 Buy Again
+</button>
+
+</div>
   <select
   value={journalSort}
   onChange={(e) => setJournalSort(e.target.value)}
