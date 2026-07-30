@@ -5886,7 +5886,21 @@ const favoriteRegion =
       return null;
     })
     .filter((rating) => Number.isFinite(rating));
+const varietalCounts = {};
 
+journalEntries.forEach((entry) => {
+  if (!entry.varietal) return;
+
+  const varietal = entry.varietal.trim();
+
+  varietalCounts[varietal] =
+    (varietalCounts[varietal] || 0) + 1;
+});
+
+const favoriteVarietal =
+  Object.entries(varietalCounts).sort(
+    (a, b) => b[1] - a[1]
+  )[0] || null;
   const averageRating =
     normalizedRatings.length > 0
       ? (
