@@ -5944,6 +5944,7 @@ const favoriteVarietal =
   lastBottleName: lastEntry?.product_name || "",
   mostRecentEntry: lastEntry,
   favoriteRegion,
+  favoriteVarietal,
 };
 })();
   const loadClubhouseAverages = async () => {
