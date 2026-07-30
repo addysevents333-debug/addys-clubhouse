@@ -6557,7 +6557,7 @@ setJournalProductSearch(entry.product_name || "");
     </p>
   </Card>
 ) : (
-  journalEntries.map((entry) => (
+  filteredJournalEntries.map((entry) => (
     <Card key={entry.id} style={{ marginTop: 14 }}>
       {entry.photo_url ? (
  <img
