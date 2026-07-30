@@ -6457,19 +6457,7 @@ setJournalProductSearch(entry.product_name || "");
       : "—"}
   </div>
 </div>
-      <div
-        style={{
-          marginTop: 5,
-          color: burgundy,
-          fontSize: 14,
-          fontWeight: 900,
-          lineHeight: 1.35,
-        }}
-      >
-        📅 {journalStats.lastBottleDate || "No bottles yet"}
-      </div>
-    </div>
-  </div>
+     
 
   {journalStats.lastBottleName ? (
     <div
