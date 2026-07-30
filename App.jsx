@@ -5922,13 +5922,14 @@ const favoriteRegion =
     : null;
 
   return {
-    total,
-    favorites,
-    buyAgain,
-    averageRating,
-    lastBottleDate,
-    lastBottleName: lastEntry?.product_name || "",
-  };
+  total,
+  favorites,
+  buyAgain,
+  averageRating,
+  lastBottleDate,
+  lastBottleName,
+  favoriteRegion,
+};
 })();
   const loadClubhouseAverages = async () => {
   const { data, error } = await supabase
