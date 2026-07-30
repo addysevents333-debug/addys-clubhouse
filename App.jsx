@@ -6473,7 +6473,38 @@ setJournalProductSearch(entry.product_name || "");
       : "—"}
   </div>
 </div>
-     
+     <div
+  style={{
+    padding: 12,
+    borderRadius: 14,
+    background: "#faf7f3",
+  }}
+>
+  <div
+    style={{
+      color: "#777",
+      fontSize: 12,
+      fontWeight: 800,
+    }}
+  >
+    FAVORITE VARIETAL
+  </div>
+
+  <div
+    style={{
+      marginTop: 5,
+      color: burgundy,
+      fontSize: 16,
+      fontWeight: 900,
+      lineHeight: 1.4,
+    }}
+  >
+    🍇{" "}
+    {journalStats.favoriteVarietal
+      ? `${journalStats.favoriteVarietal[0]} (${journalStats.favoriteVarietal[1]})`
+      : "—"}
+  </div>
+</div>
 </div>
   {journalStats.mostRecentEntry ? (
   <button
