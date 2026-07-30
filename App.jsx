@@ -5614,6 +5614,7 @@ const [techSheetMessage, setTechSheetMessage] = useState("");
 const [editingJournalId, setEditingJournalId] = useState(null);
   const [journalEntries, setJournalEntries] = useState([]);
   const [journalSearch, setJournalSearch] = useState("");
+  const [journalSort, setJournalSort] = useState("newest");
   const [showJournalForm, setShowJournalForm] = useState(false);
   const [journalProductName, setJournalProductName] = useState("");
   const [journalProductSearch, setJournalProductSearch] = useState("");
