@@ -6826,7 +6826,19 @@ setJournalProductSearch(entry.product_name || "");
      boxSizing: "border-box",
   }}
 />
-
+<input
+  value={journalVarietal}
+  onChange={(e) => setJournalVarietal(e.target.value)}
+  placeholder="Varietal, such as Cabernet Sauvignon"
+  style={{
+    width: "100%",
+    padding: 12,
+    borderRadius: 12,
+    border: "1px solid #ddd",
+    fontSize: 15,
+    boxSizing: "border-box",
+  }}
+/>
 <select
   value={journalCategory}
   onChange={(e) => setJournalCategory(e.target.value)}
