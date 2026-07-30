@@ -5826,7 +5826,74 @@ if (journalFilter === "buyAgain" && !entry.buy_again) return false;
     if (journalSort === "oldest") {
       return new Date(a.created_at) - new Date(b.created_at);
     }
+const journalStats = (() => {
+  const total = journalEntries.length;
 
+  const favorites = journalEntries.filter(
+    (entry) => entry.favorite
+  ).length;
+
+  const buyAgain = journalEntries.filter(
+    (entry) => entry.buy_again
+  ).length;
+
+  const normalizedRatings = journalEntries
+    .map((entry) => {
+      if (entry.rating_score) {
+        return Number(entry.rating_score);
+      }
+
+      if (entry.rating_stars) {
+        return Number(entry.rating_stars) * 20;
+      }
+
+      return null;
+    })
+    .filter((rating) => Number.isFinite(rating));
+
+  const averageRating =
+    normalizedRatings.length > 0
+      ? (
+          normalizedRatings.reduce(
+            (totalRating, rating) => totalRating + rating,
+            0
+          ) / normalizedRatings.length
+        ).toFixed(1)
+      : null;
+
+  const entriesWithDates = journalEntries
+    .map((entry) => ({
+      ...entry,
+      journalDate: entry.tasted_on || entry.created_at,
+    }))
+    .filter((entry) => entry.journalDate)
+    .sort(
+      (a, b) =>
+        new Date(b.journalDate) - new Date(a.journalDate)
+    );
+
+  const lastEntry = entriesWithDates[0] || null;
+
+  const lastBottleDate = lastEntry
+    ? new Date(lastEntry.journalDate).toLocaleDateString(
+        "en-US",
+        {
+          month: "long",
+          day: "numeric",
+          year: "numeric",
+        }
+      )
+    : null;
+
+  return {
+    total,
+    favorites,
+    buyAgain,
+    averageRating,
+    lastBottleDate,
+    lastBottleName: lastEntry?.product_name || "",
+  };
+})();
     if (journalSort === "highest") {
       const aRating = Number(a.rating_score || a.rating_stars || 0);
       const bRating = Number(b.rating_score || b.rating_stars || 0);
