@@ -6425,22 +6425,6 @@ setJournalProductSearch(entry.product_name || "");
       </div>
     </div>
 
-    <div
-      style={{
-        padding: 12,
-        borderRadius: 14,
-        background: "#faf7f3",
-      }}
-    >
-      <div
-        style={{
-          color: "#777",
-          fontSize: 12,
-          fontWeight: 800,
-        }}
-      >
-        LAST BOTTLE
-      </div>
 <div
   style={{
     padding: 12,
