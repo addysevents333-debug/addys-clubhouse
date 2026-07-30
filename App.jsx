@@ -6458,7 +6458,7 @@ setJournalProductSearch(entry.product_name || "");
   </div>
 </div>
      
-
+</div>
   {journalStats.lastBottleName ? (
     <div
       style={{
