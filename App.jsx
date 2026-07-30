@@ -6235,6 +6235,27 @@ setJournalProductSearch(entry.product_name || "");
     fontSize: 14,
   }}
 />
+  <select
+  value={journalSort}
+  onChange={(e) => setJournalSort(e.target.value)}
+  style={{
+    width: "100%",
+    padding: 12,
+    borderRadius: 12,
+    border: "1px solid #ddd",
+    boxSizing: "border-box",
+    marginBottom: 12,
+    fontSize: 14,
+    background: "white",
+  }}
+>
+  <option value="newest">Sort: Newest First</option>
+  <option value="oldest">Sort: Oldest First</option>
+  <option value="highest">Sort: Highest Rated</option>
+  <option value="lowest">Sort: Lowest Rated</option>
+  <option value="favorites">Sort: Favorites First</option>
+  <option value="buyAgain">Sort: Buy Again First</option>
+</select>
           <AppButton onClick={() => setShowJournalForm(!showJournalForm)}>
   {showJournalForm ? "Cancel" : "+ Add Bottle"}
 </AppButton>
