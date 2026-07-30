@@ -5826,7 +5826,32 @@ if (journalFilter === "buyAgain" && !entry.buy_again) return false;
     if (journalSort === "oldest") {
       return new Date(a.created_at) - new Date(b.created_at);
     }
-const journalStats = (() => {
+
+    if (journalSort === "highest") {
+      const aRating = Number(a.rating_score || a.rating_stars || 0);
+      const bRating = Number(b.rating_score || b.rating_stars || 0);
+
+      return bRating - aRating;
+    }
+
+    if (journalSort === "lowest") {
+      const aRating = Number(a.rating_score || a.rating_stars || 0);
+      const bRating = Number(b.rating_score || b.rating_stars || 0);
+
+      return aRating - bRating;
+    }
+
+    if (journalSort === "favorites") {
+      return Number(Boolean(b.favorite)) - Number(Boolean(a.favorite));
+    }
+
+    if (journalSort === "buyAgain") {
+      return Number(Boolean(b.buy_again)) - Number(Boolean(a.buy_again));
+    }
+
+    return new Date(b.created_at) - new Date(a.created_at);
+  });
+  const journalStats = (() => {
   const total = journalEntries.length;
 
   const favorites = journalEntries.filter(
@@ -5894,30 +5919,6 @@ const journalStats = (() => {
     lastBottleName: lastEntry?.product_name || "",
   };
 })();
-    if (journalSort === "highest") {
-      const aRating = Number(a.rating_score || a.rating_stars || 0);
-      const bRating = Number(b.rating_score || b.rating_stars || 0);
-
-      return bRating - aRating;
-    }
-
-    if (journalSort === "lowest") {
-      const aRating = Number(a.rating_score || a.rating_stars || 0);
-      const bRating = Number(b.rating_score || b.rating_stars || 0);
-
-      return aRating - bRating;
-    }
-
-    if (journalSort === "favorites") {
-      return Number(Boolean(b.favorite)) - Number(Boolean(a.favorite));
-    }
-
-    if (journalSort === "buyAgain") {
-      return Number(Boolean(b.buy_again)) - Number(Boolean(a.buy_again));
-    }
-
-    return new Date(b.created_at) - new Date(a.created_at);
-  });
   const loadClubhouseAverages = async () => {
   const { data, error } = await supabase
     .from("clubhouse_product_averages")
