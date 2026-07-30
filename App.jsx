@@ -5801,21 +5801,51 @@ const loadTechSheets = async (searchText = "") => {
       setJournalEntries(data);
     }
   };
-  const filteredJournalEntries = journalEntries.filter((entry) => {
-  const search = journalSearch.toLowerCase();
+ const filteredJournalEntries = journalEntries
+  .filter((entry) => {
+    const search = journalSearch.toLowerCase().trim();
 
-  const matches = (value) =>
-    String(value || "").toLowerCase().includes(search);
+    const matches = (value) =>
+      String(value || "").toLowerCase().includes(search);
 
-  return (
-  matches(entry.product_name) ||
-  matches(entry.producer) ||
-  matches(entry.region) ||
-  matches(entry.category) ||
-  matches(entry.vintage) ||
-  matches(entry.notes)
-);
-});
+    return (
+      matches(entry.product_name) ||
+      matches(entry.producer) ||
+      matches(entry.region) ||
+      matches(entry.category) ||
+      matches(entry.vintage) ||
+      matches(entry.notes)
+    );
+  })
+  .sort((a, b) => {
+    if (journalSort === "oldest") {
+      return new Date(a.created_at) - new Date(b.created_at);
+    }
+
+    if (journalSort === "highest") {
+      const aRating = Number(a.rating_score || a.rating_stars || 0);
+      const bRating = Number(b.rating_score || b.rating_stars || 0);
+
+      return bRating - aRating;
+    }
+
+    if (journalSort === "lowest") {
+      const aRating = Number(a.rating_score || a.rating_stars || 0);
+      const bRating = Number(b.rating_score || b.rating_stars || 0);
+
+      return aRating - bRating;
+    }
+
+    if (journalSort === "favorites") {
+      return Number(Boolean(b.favorite)) - Number(Boolean(a.favorite));
+    }
+
+    if (journalSort === "buyAgain") {
+      return Number(Boolean(b.buy_again)) - Number(Boolean(a.buy_again));
+    }
+
+    return new Date(b.created_at) - new Date(a.created_at);
+  });
   const loadClubhouseAverages = async () => {
   const { data, error } = await supabase
     .from("clubhouse_product_averages")
