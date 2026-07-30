@@ -5812,6 +5812,7 @@ const loadTechSheets = async (searchText = "") => {
     matches(entry.region) ||
     matches(entry.category) ||
     matches(entry.vintage)
+    matches(entry.notes)
   );
 });
   const loadClubhouseAverages = async () => {
