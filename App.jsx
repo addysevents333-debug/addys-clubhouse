@@ -5927,7 +5927,7 @@ const favoriteRegion =
   buyAgain,
   averageRating,
   lastBottleDate,
-  lastBottleName,
+  lastBottleName: lastEntry?.product_name || "",
   favoriteRegion,
 };
 })();
