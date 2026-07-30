@@ -5921,13 +5921,14 @@ const favoriteRegion =
       )
     : null;
 
-  return {
+ return {
   total,
   favorites,
   buyAgain,
   averageRating,
   lastBottleDate,
   lastBottleName: lastEntry?.product_name || "",
+  mostRecentEntry: lastEntry,
   favoriteRegion,
 };
 })();
@@ -6459,19 +6460,32 @@ setJournalProductSearch(entry.product_name || "");
 </div>
      
 </div>
-  {journalStats.lastBottleName ? (
-    <div
-      style={{
-        marginTop: 12,
-        color: "#666",
-        fontSize: 13,
-        lineHeight: 1.4,
-      }}
-    >
-      Most recent:{" "}
-      <strong>{journalStats.lastBottleName}</strong>
-    </div>
-  ) : null}
+  {journalStats.mostRecentEntry ? (
+  <button
+    type="button"
+    onClick={() =>
+      startEditJournalEntry(journalStats.mostRecentEntry)
+    }
+    style={{
+      width: "100%",
+      marginTop: 12,
+      padding: 0,
+      border: "none",
+      background: "transparent",
+      color: "#666",
+      fontSize: 13,
+      lineHeight: 1.4,
+      textAlign: "left",
+      cursor: "pointer",
+    }}
+  >
+    Most recent:{" "}
+    <strong style={{ color: burgundy }}>
+      {journalStats.lastBottleName}
+    </strong>
+    <span style={{ marginLeft: 6 }}>→</span>
+  </button>
+) : null}
 </Card>
   <input
   value={journalSearch}
