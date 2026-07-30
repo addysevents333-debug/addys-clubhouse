@@ -6293,6 +6293,170 @@ setJournalProductSearch(entry.product_name || "");
               Members can rate each wine or spirit, write private notes, favorite bottles, and remember what they want to buy again.
             </p>
           </Card>
+  <Card style={{ marginBottom: 14 }}>
+  <div
+    style={{
+      color: burgundy,
+      fontSize: 13,
+      fontWeight: 900,
+      textTransform: "uppercase",
+      marginBottom: 6,
+    }}
+  >
+    Your Tasting Journey
+  </div>
+
+  <h2
+    style={{
+      margin: "0 0 14px",
+      fontSize: 22,
+    }}
+  >
+    🍷 {journalStats.total}{" "}
+    {journalStats.total === 1
+      ? "Bottle Logged"
+      : "Bottles Logged"}
+  </h2>
+
+  <div
+    style={{
+      display: "grid",
+      gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+      gap: 10,
+    }}
+  >
+    <div
+      style={{
+        padding: 12,
+        borderRadius: 14,
+        background: "#faf7f3",
+      }}
+    >
+      <div
+        style={{
+          color: "#777",
+          fontSize: 12,
+          fontWeight: 800,
+        }}
+      >
+        FAVORITES
+      </div>
+
+      <div
+        style={{
+          marginTop: 5,
+          color: burgundy,
+          fontSize: 20,
+          fontWeight: 900,
+        }}
+      >
+        ❤️ {journalStats.favorites}
+      </div>
+    </div>
+
+    <div
+      style={{
+        padding: 12,
+        borderRadius: 14,
+        background: "#faf7f3",
+      }}
+    >
+      <div
+        style={{
+          color: "#777",
+          fontSize: 12,
+          fontWeight: 800,
+        }}
+      >
+        BUY AGAIN
+      </div>
+
+      <div
+        style={{
+          marginTop: 5,
+          color: burgundy,
+          fontSize: 20,
+          fontWeight: 900,
+        }}
+      >
+        🔁 {journalStats.buyAgain}
+      </div>
+    </div>
+
+    <div
+      style={{
+        padding: 12,
+        borderRadius: 14,
+        background: "#faf7f3",
+      }}
+    >
+      <div
+        style={{
+          color: "#777",
+          fontSize: 12,
+          fontWeight: 800,
+        }}
+      >
+        AVERAGE RATING
+      </div>
+
+      <div
+        style={{
+          marginTop: 5,
+          color: burgundy,
+          fontSize: 20,
+          fontWeight: 900,
+        }}
+      >
+        ⭐ {journalStats.averageRating || "—"}
+      </div>
+    </div>
+
+    <div
+      style={{
+        padding: 12,
+        borderRadius: 14,
+        background: "#faf7f3",
+      }}
+    >
+      <div
+        style={{
+          color: "#777",
+          fontSize: 12,
+          fontWeight: 800,
+        }}
+      >
+        LAST BOTTLE
+      </div>
+
+      <div
+        style={{
+          marginTop: 5,
+          color: burgundy,
+          fontSize: 14,
+          fontWeight: 900,
+          lineHeight: 1.35,
+        }}
+      >
+        📅 {journalStats.lastBottleDate || "No bottles yet"}
+      </div>
+    </div>
+  </div>
+
+  {journalStats.lastBottleName ? (
+    <div
+      style={{
+        marginTop: 12,
+        color: "#666",
+        fontSize: 13,
+        lineHeight: 1.4,
+      }}
+    >
+      Most recent:{" "}
+      <strong>{journalStats.lastBottleName}</strong>
+    </div>
+  ) : null}
+</Card>
   <input
   value={journalSearch}
   onChange={(e) => setJournalSearch(e.target.value)}
