@@ -5615,6 +5615,7 @@ const [editingJournalId, setEditingJournalId] = useState(null);
   const [journalEntries, setJournalEntries] = useState([]);
   const [journalSearch, setJournalSearch] = useState("");
   const [journalSort, setJournalSort] = useState("newest");
+  const [journalFilter, setJournalFilter] = useState("all");
   const [showJournalForm, setShowJournalForm] = useState(false);
   const [journalProductName, setJournalProductName] = useState("");
   const [journalProductSearch, setJournalProductSearch] = useState("");
@@ -5803,6 +5804,10 @@ const loadTechSheets = async (searchText = "") => {
   };
  const filteredJournalEntries = journalEntries
   .filter((entry) => {
+    if (journalFilter === "favorites" && !entry.favorite) return false;
+
+if (journalFilter === "buyAgain" && !entry.buy_again) return false;
+    
     const search = journalSearch.toLowerCase().trim();
 
     const matches = (value) =>
