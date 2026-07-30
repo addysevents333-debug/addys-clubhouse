@@ -5998,6 +5998,7 @@ if (journalPhoto) {
     producer: journalProducer,
     vintage: journalVintage,
     region: journalRegion,
+    varietal: journalVarietal,
     category: journalCategory,
     photo_url: uploadedPhotoUrl,
     rating_stars: journalStars ? Number(journalStars) : null,
@@ -6024,6 +6025,7 @@ if (journalPhoto) {
     setJournalProducer("");
     setJournalVintage("");
     setJournalRegion("");
+    setJournalVarietal("");
     setJournalCategory("Wine");
     setJournalStars(0);
     setJournalScore("");
@@ -6080,6 +6082,7 @@ setJournalProductSearch(entry.product_name || "");
   setJournalProducer(entry.producer || "");
   setJournalVintage(entry.vintage || "");
   setJournalRegion(entry.region || "");
+  setJournalVarietal(entry.varietal || "");
   setJournalCategory(entry.category || "Wine");
   setJournalStars(entry.rating_stars || 0);
   setJournalScore(entry.rating_score || "");
