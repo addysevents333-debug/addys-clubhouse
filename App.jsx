@@ -9331,7 +9331,6 @@ export default function AddysClubhousePrototype() {
   );
 const [fullscreenImage, setFullscreenImage] = useState(null);
  const [activeTab, setActiveTab] = useState("home");
-  const [selectedProduct, setSelectedProduct] = useState(null);
    const [hasNewNotes, setHasNewNotes] = useState(false);
 const [hasNewOffers, setHasNewOffers] = useState(false);
 const [unreadNotes, setUnreadNotes] = useState(0);
