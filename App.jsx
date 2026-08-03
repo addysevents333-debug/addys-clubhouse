@@ -4381,28 +4381,6 @@ const loadHomeEventRsvps = async () => {
           🧪 Addy’s Clubhouse Beta — features and layouts may change as we improve the member experience.
         </div>
 
-        <div
-          style={{
-            marginTop: 22,
-            background: "rgba(255,255,255,.12)",
-            borderRadius: 24,
-            padding: 16,
-          }}
-        >
-          <div style={{ opacity: 0.75, fontSize: 12, fontWeight: 800, textTransform: "uppercase" }}>
-            Addy’s Member Exclusive
-          </div>
-
-          <h2 style={{ margin: "8px 0", fontSize: 22, lineHeight: 1.15 }}>
-            2009 Vintage Champagne Allocation
-          </h2>
-
-          <p style={{ margin: 0, opacity: 0.85, fontSize: 14 }}>
-            Extremely limited bottles available for Wine Club members first.
-          </p>
-        </div>
-      </div>
-
      <div style={{ padding: 20 }}>
   <SectionHeader
     title="Clubhouse Feed"
