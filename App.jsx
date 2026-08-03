@@ -1324,6 +1324,7 @@ const loadUnreadAdminDmCount = async () => {
   loadAdminEventRsvps();
   loadAdminProducts(); 
   loadAdminNotifications();
+  loadInventorySync();
    
   const channel = supabase
     .channel("admin-messages-realtime")
