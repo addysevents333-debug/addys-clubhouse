@@ -184,21 +184,6 @@ const staffContacts = [
   },
 ];
 
-const offers = [
-  {
-    title: "Rare Champagne Allocation",
-    detail: "2009 vintage Champagne available to Wine Club members first. Limited bottles statewide.",
-    price: "$200 / bottle",
-    badge: "Rare Offer",
-  },
-  {
-    title: "Member Early Access",
-    detail: "Club members get first notice on allocated whiskey and cellar releases.",
-    price: "Members Only",
-    badge: "Early Access",
-  },
-];
-
 const expertNotes = [
   {
     author: "Jim’s Notes",
