@@ -2824,7 +2824,63 @@ return (
       {productMessage}
     </div>
   ) : null}
+<Card style={{ marginBottom: 14 }}>
+  <div
+    style={{
+      display: "flex",
+      justifyContent: "space-between",
+      gap: 12,
+      alignItems: "flex-start",
+    }}
+  >
+    <div>
+      <div
+        style={{
+          fontSize: 12,
+          fontWeight: 900,
+          color: "#777",
+          marginBottom: 5,
+        }}
+      >
+        INVENTORY FEED
+      </div>
 
+      <div
+        style={{
+          fontSize: 16,
+          fontWeight: 900,
+          color: burgundy,
+        }}
+      >
+        {inventorySync ? "✓ Feed healthy" : "No sync data yet"}
+      </div>
+    </div>
+  </div>
+
+  {inventorySync ? (
+    <div
+      style={{
+        marginTop: 12,
+        color: "#666",
+        fontSize: 13,
+        lineHeight: 1.6,
+      }}
+    >
+      <div>
+        Last synced:{" "}
+        <strong>
+          {new Date(inventorySync.synced_at).toLocaleString()}
+        </strong>
+      </div>
+
+      <div>
+        {inventorySync.feed_rows || 0} feed products •{" "}
+        {inventorySync.updated_products || 0} updated •{" "}
+        {inventorySync.inserted_products || 0} added
+      </div>
+    </div>
+  ) : null}
+</Card>
  <input
   value={productSearch}
   onChange={(event) => setProductSearch(event.target.value)}
