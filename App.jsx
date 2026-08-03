@@ -4380,6 +4380,7 @@ const loadHomeEventRsvps = async () => {
         >
           🧪 Addy’s Clubhouse Beta — features and layouts may change as we improve the member experience.
         </div>
+        </div>
         <div style={{ padding: "0 20px" }}>
         <SectionHeader title="Clubhouse Tools" />
         <div
@@ -4507,7 +4508,6 @@ const loadHomeEventRsvps = async () => {
   </a>
 </div>
       </div>
-</div>
      <div style={{ padding: 20 }}>
   <SectionHeader
     title="Clubhouse Feed"
