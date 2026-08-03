@@ -4463,21 +4463,21 @@ const loadHomeEventRsvps = async () => {
   />
 </div>
   <div
-  onClick={() => setActiveTab("profile")}
+  onClick={() => setActiveTab("notes")}
   style={{ cursor: "pointer", height: "100%" }}
 >
     <ToolCard icon="📚" title="Club Notes" subtitle="Jim, Tyler & Spirits Team" />
   </div>
 
   <div
-  onClick={() => setActiveTab("profile")}
+  onClick={() => setActiveTab("offers")}
   style={{ cursor: "pointer", height: "100%" }}
 >
     <ToolCard icon="🎁" title="Offers" subtitle="Club exclusives" />
   </div>
 
   <div
-  onClick={() => setActiveTab("profile")}
+  onClick={() => setActiveTab("dms")}
   style={{ cursor: "pointer", height: "100%" }}
 >
     <ToolCard icon="💬" title="Staff DMs" subtitle="Message Tyler, Ryan & team" />
