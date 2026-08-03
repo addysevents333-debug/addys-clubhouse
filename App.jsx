@@ -4380,123 +4380,7 @@ const loadHomeEventRsvps = async () => {
         >
           🧪 Addy’s Clubhouse Beta — features and layouts may change as we improve the member experience.
         </div>
-</div>
-     <div style={{ padding: 20 }}>
-  <SectionHeader
-    title="Clubhouse Feed"
-    action={
-      clubhouseFeed.length > 3
-        ? showAllFeed
-          ? "Show Less"
-          : `View All (${clubhouseFeed.length})`
-        : null
-    }
-    onAction={() => setShowAllFeed(!showAllFeed)}
-  />
-
-  <div style={{ display: "grid", gap: 12 }}>
-    {(showAllFeed
-      ? clubhouseFeed
-      : clubhouseFeed.slice(0, 3)
-    ).map((post) => (
-      <FeedPost
-        key={post.id}
-        post={post}
-        setFullscreenImage={setFullscreenImage}
-        currentMember={currentMember}
-        feedMemberProfiles={feedMemberProfiles}
-      />
-    ))}
-  </div>
-
-  {!showAllFeed && clubhouseFeed.length > 3 ? (
-    <button
-      type="button"
-      onClick={() => setShowAllFeed(true)}
-      style={{
-        width: "100%",
-        marginTop: 12,
-        border: `1px solid ${burgundy}`,
-        borderRadius: 14,
-        padding: "11px 12px",
-        background: "white",
-        color: burgundy,
-        fontWeight: 900,
-        cursor: "pointer",
-      }}
-    >
-      View All Feed Posts
-    </button>
-  ) : null}
-</div>
-
-      <div style={{ padding: 20 }}>
-        <SectionHeader
-          title="Upcoming Classes"
-          action="See all"
-          onAction={() => setActiveTab("calendar")}
-        />
-
-        <div style={{ display: "grid", gap: 12 }}>
-          {homeEvents.map((event) => {
-  const reservedByApp = homeEventRsvps
-    .filter((rsvp) => rsvp.event_id === event.id)
-    .reduce((total, rsvp) => total + rsvp.guest_count, 0);
-
-  const spotsLeft = Math.max(
-    0,
-    event.capacity -
-      event.manual_reserved_spots -
-      reservedByApp
-  );
-
-  const eventDate = new Date(event.event_at);
-  const cutoffPassed =
-    event.rsvp_cutoff &&
-    new Date(event.rsvp_cutoff) <= new Date();
-
-  const status =
-    spotsLeft <= 0
-      ? "Sold Out"
-      : !event.rsvp_open || cutoffPassed
-        ? "RSVP Closed"
-        : "RSVP Open";
-
-  return (
-    <EventCard
-      key={event.id}
-      event={{
-        ...event,
-        date: eventDate.toLocaleDateString([], {
-          weekday: "short",
-          month: "long",
-          day: "numeric",
-        }),
-        time: eventDate.toLocaleTimeString([], {
-          hour: "numeric",
-          minute: "2-digit",
-        }),
-        spots: `${spotsLeft} spots left`,
-        spotsLeft,
-        status,
-      }}
-      currentMember={currentMember}
-      memberRsvp={homeEventRsvps.find(
-        (rsvp) =>
-          rsvp.event_id === event.id &&
-          rsvp.member_email === currentMember?.email
-      )}
-      onRsvpComplete={async () => {
-        await loadHomeEvents();
-        await loadHomeEventRsvps();
-      }}
-    />
-  );
-})}
-        </div>
-      </div>
-
-      <div style={{ padding: "0 20px" }}>
+        <div style={{ padding: "0 20px" }}>
         <SectionHeader title="Clubhouse Tools" />
         <div
   style={{
@@ -4623,6 +4507,123 @@ const loadHomeEventRsvps = async () => {
   </a>
 </div>
       </div>
+</div>
+     <div style={{ padding: 20 }}>
+  <SectionHeader
+    title="Clubhouse Feed"
+    action={
+      clubhouseFeed.length > 3
+        ? showAllFeed
+          ? "Show Less"
+          : `View All (${clubhouseFeed.length})`
+        : null
+    }
+    onAction={() => setShowAllFeed(!showAllFeed)}
+  />
+
+  <div style={{ display: "grid", gap: 12 }}>
+    {(showAllFeed
+      ? clubhouseFeed
+      : clubhouseFeed.slice(0, 3)
+    ).map((post) => (
+      <FeedPost
+        key={post.id}
+        post={post}
+        setFullscreenImage={setFullscreenImage}
+        currentMember={currentMember}
+        feedMemberProfiles={feedMemberProfiles}
+      />
+    ))}
+  </div>
+
+  {!showAllFeed && clubhouseFeed.length > 3 ? (
+    <button
+      type="button"
+      onClick={() => setShowAllFeed(true)}
+      style={{
+        width: "100%",
+        marginTop: 12,
+        border: `1px solid ${burgundy}`,
+        borderRadius: 14,
+        padding: "11px 12px",
+        background: "white",
+        color: burgundy,
+        fontWeight: 900,
+        cursor: "pointer",
+      }}
+    >
+      View All Feed Posts
+    </button>
+  ) : null}
+</div>
+
+      <div style={{ padding: 20 }}>
+        <SectionHeader
+          title="Upcoming Classes"
+          action="See all"
+          onAction={() => setActiveTab("calendar")}
+        />
+
+        <div style={{ display: "grid", gap: 12 }}>
+          {homeEvents.map((event) => {
+  const reservedByApp = homeEventRsvps
+    .filter((rsvp) => rsvp.event_id === event.id)
+    .reduce((total, rsvp) => total + rsvp.guest_count, 0);
+
+  const spotsLeft = Math.max(
+    0,
+    event.capacity -
+      event.manual_reserved_spots -
+      reservedByApp
+  );
+
+  const eventDate = new Date(event.event_at);
+  const cutoffPassed =
+    event.rsvp_cutoff &&
+    new Date(event.rsvp_cutoff) <= new Date();
+
+  const status =
+    spotsLeft <= 0
+      ? "Sold Out"
+      : !event.rsvp_open || cutoffPassed
+        ? "RSVP Closed"
+        : "RSVP Open";
+
+  return (
+    <EventCard
+      key={event.id}
+      event={{
+        ...event,
+        date: eventDate.toLocaleDateString([], {
+          weekday: "short",
+          month: "long",
+          day: "numeric",
+        }),
+        time: eventDate.toLocaleTimeString([], {
+          hour: "numeric",
+          minute: "2-digit",
+        }),
+        spots: `${spotsLeft} spots left`,
+        spotsLeft,
+        status,
+      }}
+      currentMember={currentMember}
+      memberRsvp={homeEventRsvps.find(
+        (rsvp) =>
+          rsvp.event_id === event.id &&
+          rsvp.member_email === currentMember?.email
+      )}
+      onRsvpComplete={async () => {
+        await loadHomeEvents();
+        await loadHomeEventRsvps();
+      }}
+    />
+  );
+})}
+        </div>
+      </div>
+
+      
     </div>
   );
 }
