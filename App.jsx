@@ -808,6 +808,7 @@ const [eventReservedSpots, setEventReservedSpots] = useState("0");
 const [eventRsvpCutoff, setEventRsvpCutoff] = useState("");
 const [eventRsvpOpen, setEventRsvpOpen] = useState(true);
    const [adminProducts, setAdminProducts] = useState([]);
+  const [inventorySync, setInventorySync] = useState(null);
 const [productMessage, setProductMessage] = useState("");
    const [editingProductId, setEditingProductId] = useState(null);
 const [editingProduct, setEditingProduct] = useState(null);
@@ -1626,6 +1627,22 @@ const deleteEvent = async (event) => {
  alert(
   `Event reminder sent to ${data?.allowedEmailsCount || 0} RSVP member(s) across ${data?.sent || 0} device(s).`
 );
+};
+  const loadInventorySync = async () => {
+  const { data, error } = await supabase
+    .from("inventory_sync_log")
+    .select("*")
+    .eq("success", true)
+    .order("synced_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (error) {
+    console.log("Inventory sync status error:", error);
+    return;
+  }
+
+  setInventorySync(data || null);
 };
    const loadAdminProducts = async () => {
   const { data, error } = await supabase
