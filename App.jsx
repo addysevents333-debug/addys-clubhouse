@@ -4477,7 +4477,7 @@ const loadHomeEventRsvps = async () => {
   </div>
 
   <div
-  onClick={() => setActiveTab("dms")}
+  onClick={() => setActiveTab("messages")}
   style={{ cursor: "pointer", height: "100%" }}
 >
     <ToolCard icon="💬" title="Staff DMs" subtitle="Message Tyler, Ryan & team" />
