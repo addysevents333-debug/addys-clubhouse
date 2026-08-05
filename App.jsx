@@ -811,6 +811,7 @@ const [eventReservedSpots, setEventReservedSpots] = useState("0");
 const [eventRsvpCutoff, setEventRsvpCutoff] = useState("");
 const [eventRsvpOpen, setEventRsvpOpen] = useState(true);
    const [adminProducts, setAdminProducts] = useState([]);
+  const [inventorySyncRefreshing, setInventorySyncRefreshing] = useState(false);
   const [inventorySync, setInventorySync] = useState(null);
   const inventorySyncAgeHours = inventorySync?.synced_at
   ? (Date.now() - new Date(inventorySync.synced_at).getTime()) / (1000 * 60 * 60)
