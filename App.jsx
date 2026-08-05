@@ -985,18 +985,20 @@ const deletePost = async (id) => {
 
   const imageUrl = await uploadOfferImage();
 
-  const { error } = await supabase
-    .from("offers")
-    .insert([
-      {
-        title: offerTitle,
-        detail: offerDetail,
-        price: offerPrice,
-        badge: offerBadge,
-        image_url: imageUrl,
-        product_id: selectedOfferProduct?.id || null,
-      },
-    ]);
+ const { data: createdOffer, error } = await supabase
+  .from("offers")
+  .insert([
+    {
+      title: offerTitle,
+      detail: offerDetail,
+      price: offerPrice,
+      badge: offerBadge,
+      image_url: imageUrl,
+      product_id: selectedOfferProduct?.id || null,
+    },
+  ])
+  .select("created_at")
+  .single();
 
  if (!error) {
   setOfferTitle("");
@@ -1006,12 +1008,13 @@ const deletePost = async (id) => {
   setOfferImage(null);
   setSelectedOfferProduct(null);
 
- await supabase.from("notifications").insert([
+await supabase.from("notifications").insert([
   {
     title: "New Member Offer",
     message: offerTitle,
     category: "Offers",
     target_type: "offer",
+    target_id: createdOffer?.created_at || null,
   },
 ]);
 
