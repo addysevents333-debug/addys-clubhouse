@@ -5188,7 +5188,7 @@ useEffect(() => {
             ) : null}
 
             <a
-              href="https://link-to.app/AddysWineLiquor"
+              href={product.product_url || "https://link-to.app/AddysWineLiquor"}
               target="_blank"
               rel="noreferrer"
               style={{
