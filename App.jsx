@@ -4393,7 +4393,11 @@ const togglePostLike = async () => {
     </Card>
   );
 }
-function NotificationPanel({ notifications }) {
+function NotificationPanel({
+  notifications,
+  setActiveTab,
+  setSelectedOfferId,
+}) {
   return (
     <Card
   style={{
@@ -4413,13 +4417,23 @@ function NotificationPanel({ notifications }) {
         <p style={{ margin: 0, color: "#666" }}>No notifications yet.</p>
       ) : (
         notifications.map((notification) => (
-          <div
-            key={notification.id}
-            style={{
-              padding: "10px 0",
-              borderBottom: "1px solid #eee",
-            }}
-          >
+         <div
+  key={notification.id}
+  onClick={() => {
+    if (notification.target_type === "offer" && notification.target_id) {
+      setSelectedOfferId(notification.target_id);
+      setActiveTab("offers");
+    }
+  }}
+  style={{
+    padding: "10px 0",
+    borderBottom: "1px solid #eee",
+    cursor:
+      notification.target_type === "offer"
+        ? "pointer"
+        : "default",
+  }}
+>
             <strong>{notification.title}</strong>
             <p style={{ margin: "4px 0", color: "#666", fontSize: 14 }}>
               {notification.message}
@@ -4599,7 +4613,11 @@ const loadHomeEventRsvps = async () => {
   </div>
 ) : null}
             {showNotifications ? (
-              <NotificationPanel notifications={notifications} />
+              <NotificationPanel
+  notifications={notifications}
+  setActiveTab={setActiveTab}
+  setSelectedOfferId={setSelectedOfferId}
+/>
             ) : null}
           </div>
         </div>
@@ -9621,6 +9639,7 @@ export default function AddysClubhousePrototype() {
 const [fullscreenImage, setFullscreenImage] = useState(null);
  const [activeTab, setActiveTab] = useState("home");
   const [selectedCellarProductId, setSelectedCellarProductId] = useState(null);
+  const [selectedOfferId, setSelectedOfferId] = useState(null);
    const [hasNewNotes, setHasNewNotes] = useState(false);
 const [hasNewOffers, setHasNewOffers] = useState(false);
 const [unreadNotes, setUnreadNotes] = useState(0);
@@ -9888,10 +9907,11 @@ const isAdmin =
   notificationsRead={notificationsRead}
 setNotificationsRead={setNotificationsRead}
   notifications={notifications}
-  setFullscreenImage={setFullscreenImage}
    unreadNotifications={unreadNotifications}
 setUnreadNotifications={setUnreadNotifications}
+  setSelectedOfferId={setSelectedOfferId}
 />
+   
 );
  if (activeTab === "calendar") {
   screen = <CalendarScreen currentMember={currentMember} />;
