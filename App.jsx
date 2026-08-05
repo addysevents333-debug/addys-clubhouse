@@ -893,6 +893,38 @@ const [editingEvent, setEditingEvent] = useState(null);
     setPostMessage("Error creating post.");
   }
 };
+
+  const refreshInventoryNow = async () => {
+  if (inventorySyncRefreshing) return;
+
+  setInventorySyncRefreshing(true);
+
+  try {
+    const { data, error } = await supabase.functions.invoke(
+      "sync-bottlecapps",
+      {
+        body: {},
+      }
+    );
+
+    if (error) {
+      console.log("Inventory refresh error:", error);
+      alert("Inventory refresh failed.");
+      return;
+    }
+
+    console.log("Inventory refresh result:", data);
+
+    await loadInventorySync();
+
+    alert("Inventory refresh completed.");
+  } catch (error) {
+    console.log("Inventory refresh exception:", error);
+    alert("Inventory refresh failed.");
+  } finally {
+    setInventorySyncRefreshing(false);
+  }
+};
  const deleteNotification = async (id) => {
   const confirmed = window.confirm(
     "Are you sure you want to delete this notification?"
