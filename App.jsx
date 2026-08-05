@@ -5003,7 +5003,11 @@ const reloadCalendar = async () => {
     </div>
   );
 }
-function CellarSearchScreen({ setActiveTab }) {
+function CellarSearchScreen({
+  setActiveTab,
+  selectedCellarProductId,
+  setSelectedCellarProductId,
+}) {
   const [search, setSearch] = useState("");
   const [products, setProducts] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
@@ -5183,8 +5187,12 @@ function CellarSearchScreen({ setActiveTab }) {
       </div>
     </div>
   );
-}
-function OffersScreen({ setFullscreenImage, currentMember }) {
+function OffersScreen({
+  setFullscreenImage,
+  currentMember,
+  setActiveTab,
+  setSelectedCellarProductId,
+}) {
   const [liveOffers, setLiveOffers] = useState([]);
   const [offerLikes, setOfferLikes] = useState([]);
 
@@ -9860,15 +9868,23 @@ setUnreadNotifications={setUnreadNotifications}
  if (activeTab === "calendar") {
   screen = <CalendarScreen currentMember={currentMember} />;
 }
-  if (activeTab === "offers")
+ if (activeTab === "offers")
   screen = (
-   <OffersScreen
-  setFullscreenImage={setFullscreenImage}
-  currentMember={currentMember}
-/>
+    <OffersScreen
+      setFullscreenImage={setFullscreenImage}
+      currentMember={currentMember}
+      setActiveTab={setActiveTab}
+      setSelectedCellarProductId={setSelectedCellarProductId}
+    />
   );
   if (activeTab === "cellar") {
-  screen = <CellarSearchScreen setActiveTab={setActiveTab} />;
+  screen = (
+    <CellarSearchScreen
+      setActiveTab={setActiveTab}
+      selectedCellarProductId={selectedCellarProductId}
+      setSelectedCellarProductId={setSelectedCellarProductId}
+    />
+  );
 }
   if (activeTab === "notes") screen = <NotesScreen
   currentMember={currentMember}
