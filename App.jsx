@@ -5054,8 +5054,8 @@ useEffect(() => {
     let query = supabase
       .from("products")
       .select(
-        "id, name, brand, category, subcategory, varietal, region, country, vintage, size, price, inventory_quantity, sku, upc, description, image_url"
-      )
+  "id, name, brand, category, subcategory, varietal, region, country, vintage, size, price, inventory_quantity, sku, upc, description, image_url, product_url"
+)
       .eq("active", true)
       .order("name", { ascending: true })
       .limit(50);
