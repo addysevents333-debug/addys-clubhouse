@@ -5238,6 +5238,7 @@ function OffersScreen({
   currentMember,
   setActiveTab,
   setSelectedCellarProductId,
+  selectedOfferId,
 }) {
   const [liveOffers, setLiveOffers] = useState([]);
   const [offerLikes, setOfferLikes] = useState([]);
@@ -9923,6 +9924,7 @@ setUnreadNotifications={setUnreadNotifications}
       currentMember={currentMember}
       setActiveTab={setActiveTab}
       setSelectedCellarProductId={setSelectedCellarProductId}
+      selectedOfferId={selectedOfferId}
     />
   );
   if (activeTab === "cellar") {
