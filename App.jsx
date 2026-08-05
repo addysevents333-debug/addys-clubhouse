@@ -5945,7 +5945,11 @@ function BottleNoteCard({ bottle }) {
   );
 }
 
-function NotesScreen({ currentMember, setFullscreenImage }) {
+function NotesScreen({
+  currentMember,
+  setFullscreenImage,
+  selectedNoteId,
+}) {
   const [notesView, setNotesView] = useState("expert");
   const [techSheetSearch, setTechSheetSearch] = useState("");
 const [techSheetProducts, setTechSheetProducts] = useState([]);
@@ -9972,11 +9976,14 @@ setUnreadNotifications={setUnreadNotifications}
     />
   );
 }
-  if (activeTab === "notes") screen = <NotesScreen
-  currentMember={currentMember}
-  setFullscreenImage={setFullscreenImage}
-  currentMember={currentMember}
-/>
+  if (activeTab === "notes")
+  screen = (
+    <NotesScreen
+      currentMember={currentMember}
+      setFullscreenImage={setFullscreenImage}
+      selectedNoteId={selectedNoteId}
+    />
+  );
  if (activeTab === "messages") {
   screen = (
     <MessagesScreen
