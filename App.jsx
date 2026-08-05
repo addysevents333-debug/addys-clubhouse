@@ -812,6 +812,12 @@ const [eventRsvpCutoff, setEventRsvpCutoff] = useState("");
 const [eventRsvpOpen, setEventRsvpOpen] = useState(true);
    const [adminProducts, setAdminProducts] = useState([]);
   const [inventorySync, setInventorySync] = useState(null);
+  const inventorySyncAgeHours = inventorySync?.synced_at
+  ? (Date.now() - new Date(inventorySync.synced_at).getTime()) / (1000 * 60 * 60)
+  : null;
+
+const inventoryFeedHealthy =
+  inventorySyncAgeHours !== null && inventorySyncAgeHours <= 20;
 const [productMessage, setProductMessage] = useState("");
    const [editingProductId, setEditingProductId] = useState(null);
 const [editingProduct, setEditingProduct] = useState(null);
