@@ -5247,7 +5247,24 @@ function OffersScreen({
     loadOffers();
     loadOfferLikes();
   }, [currentMember?.email]);
+useEffect(() => {
+  if (!selectedOfferId || liveOffers.length === 0) return;
 
+  const timer = setTimeout(() => {
+    const target = document.getElementById(
+      `offer-${selectedOfferId}`
+    );
+
+    if (target) {
+      target.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+  }, 150);
+
+  return () => clearTimeout(timer);
+}, [selectedOfferId, liveOffers]);
   const loadOffers = async () => {
     const { data, error } = await supabase
       .from("offers")
@@ -5340,7 +5357,11 @@ function OffersScreen({
           );
 
           return (
-            <Card key={offer.created_at}>
+           <div
+  id={`offer-${offer.created_at}`}
+  key={offer.created_at}
+>
+  <Card>
               {offer.image_url ? (
                 <img
                   src={offer.image_url}
@@ -5422,8 +5443,9 @@ function OffersScreen({
 {likeCount}
                 </button>
               </div>
-            </Card>
-          );
+           </Card>
+</div>
+);
         })}
       </div>
     </div>
