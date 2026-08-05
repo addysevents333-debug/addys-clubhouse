@@ -1194,10 +1194,12 @@ if (editingNoteId) {
 } else {
   result = await supabase
     .from("notes")
-    .insert([noteData]);
+    .insert([noteData])
+    .select("id")
+    .single();
 }
 
-const { error } = result;
+const { data: savedNote, error } = result;
 
 console.log("NOTE SAVE RESULT:", { editingNoteId, noteData, error });
 
@@ -1207,12 +1209,14 @@ console.log("NOTE SAVE RESULT:", { editingNoteId, noteData, error });
     setNoteFiles([]);
     setNoteAuthorGroup("tyler");
    setEditingNoteId(null);
-    if (!editingNoteId) {
+  if (!editingNoteId) {
   await supabase.from("notifications").insert([
     {
       title: "New Tasting Note",
       message: noteTitle,
       category: "Notes",
+      target_type: "note",
+      target_id: savedNote?.id || null,
     },
   ]);
 }
