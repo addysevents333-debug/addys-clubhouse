@@ -6064,6 +6064,24 @@ useEffect(() => {
   loadNoteLikes();
   loadClubhouseAverages();
 }, []);
+   useEffect(() => {
+  if (!selectedNoteId || liveNotes.length === 0) return;
+
+  const timer = setTimeout(() => {
+    const target = document.getElementById(
+      `note-${selectedNoteId}`
+    );
+
+    if (target) {
+      target.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+  }, 150);
+
+  return () => clearTimeout(timer);
+}, [selectedNoteId, liveNotes]);
 const loadTechSheets = async (searchText = "") => {
   const cleanSearch = searchText.trim().replace(/[,]/g, " ");
 
