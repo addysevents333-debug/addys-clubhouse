@@ -5315,16 +5315,40 @@ function OffersScreen({ setFullscreenImage, currentMember }) {
                 {offer.badge}
               </span>
 
-              <h3 style={{ margin: "14px 0 6px", fontSize: 20 }}>
-                {offer.title}
-              </h3>
+             <div
+  onClick={() => {
+    if (!offer.product_id) return;
 
-              <p style={{ color: "#666", lineHeight: 1.5 }}>
-                {offer.detail}
-              </p>
+    setSelectedCellarProductId(offer.product_id);
+    setActiveTab("cellar");
+  }}
+  style={{
+    cursor: offer.product_id ? "pointer" : "default",
+  }}
+>
+  <h3 style={{ margin: "14px 0 6px", fontSize: 20 }}>
+    {offer.title}
+  </h3>
 
-              <strong>{offer.price}</strong>
+  <p style={{ color: "#666", lineHeight: 1.5 }}>
+    {offer.detail}
+  </p>
 
+  <strong>{offer.price}</strong>
+
+  {offer.product_id ? (
+    <div
+      style={{
+        marginTop: 8,
+        color: burgundy,
+        fontSize: 13,
+        fontWeight: 800,
+      }}
+    >
+      View Product →
+    </div>
+  ) : null}
+</div>
               <div style={{ marginTop: 14 }}>
                 <button
                   type="button"
@@ -9560,6 +9584,7 @@ export default function AddysClubhousePrototype() {
   );
 const [fullscreenImage, setFullscreenImage] = useState(null);
  const [activeTab, setActiveTab] = useState("home");
+  const [selectedCellarProductId, setSelectedCellarProductId] = useState(null);
    const [hasNewNotes, setHasNewNotes] = useState(false);
 const [hasNewOffers, setHasNewOffers] = useState(false);
 const [unreadNotes, setUnreadNotes] = useState(0);
