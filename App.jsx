@@ -5105,7 +5105,10 @@ useEffect(() => {
 
       <input
         value={search}
-        onChange={(event) => setSearch(event.target.value)}
+        onChange={(event) => {
+  setSelectedCellarProductId(null);
+  setSearch(event.target.value);
+}}
         placeholder="Search Cabernet, Bourbon, Champagne..."
         style={{
           width: "100%",
