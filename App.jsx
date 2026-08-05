@@ -6562,8 +6562,12 @@ setJournalProductSearch(entry.product_name || "");
           </Card>
 
           <div style={{ display: "grid", gap: 12 }}>
-            {liveNotes.map((note) => (
-              <Card key={note.author}>
+           {liveNotes.map((note) => (
+  <div
+    id={`note-${note.id}`}
+    key={note.id}
+  >
+    <Card>
                 <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
                   <div
   style={{
@@ -6679,6 +6683,7 @@ setJournalProductSearch(entry.product_name || "");
                   </div>
                 </div>
               </Card>
+    </div>
             ))}
           </div>
         </>
