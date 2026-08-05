@@ -3088,6 +3088,27 @@ return (
       </div>
     </div>
   ) : null}
+  <button
+  type="button"
+  onClick={refreshInventoryNow}
+  disabled={inventorySyncRefreshing}
+  style={{
+    width: "100%",
+    marginTop: 14,
+    border: 0,
+    borderRadius: 14,
+    padding: "11px 12px",
+    background: burgundy,
+    color: "white",
+    fontWeight: 900,
+    cursor: inventorySyncRefreshing ? "default" : "pointer",
+    opacity: inventorySyncRefreshing ? 0.7 : 1,
+  }}
+>
+  {inventorySyncRefreshing
+    ? "Refreshing Inventory..."
+    : "Refresh Inventory Now"}
+</button>
 </Card>
  <input
   value={productSearch}
