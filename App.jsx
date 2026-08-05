@@ -5016,7 +5016,27 @@ function CellarSearchScreen({
   useEffect(() => {
     loadProducts("");
   }, []);
+useEffect(() => {
+  if (!selectedCellarProductId) return;
 
+  const loadSelectedProduct = async () => {
+    const { data, error } = await supabase
+      .from("products")
+      .select("*")
+      .eq("id", selectedCellarProductId)
+      .maybeSingle();
+
+    if (error || !data) {
+      console.log("Selected product load error:", error);
+      return;
+    }
+
+    setProducts([data]);
+    setSearch(data.name || "");
+  };
+
+  loadSelectedProduct();
+}, [selectedCellarProductId]);
   useEffect(() => {
     const timer = setTimeout(() => {
       loadProducts(search);
