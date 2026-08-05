@@ -1006,13 +1006,14 @@ const deletePost = async (id) => {
   setOfferImage(null);
   setSelectedOfferProduct(null);
 
-  await supabase.from("notifications").insert([
-    {
-      title: "New Member Offer",
-      message: offerTitle,
-      category: "Offers",
-    },
-  ]);
+ await supabase.from("notifications").insert([
+  {
+    title: "New Member Offer",
+    message: offerTitle,
+    category: "Offers",
+    target_type: "offer",
+  },
+]);
 
   setOfferMessage("Offer created. Go to Offers to view it.");
 
