@@ -4428,14 +4428,19 @@ function NotificationPanel({
       setSelectedOfferId(notification.target_id);
       setActiveTab("offers");
     }
+    if (notification.target_type === "note" && notification.target_id) {
+  setSelectedNoteId(notification.target_id);
+  setActiveTab("notes");
+}
   }}
   style={{
     padding: "10px 0",
     borderBottom: "1px solid #eee",
     cursor:
-      notification.target_type === "offer"
-        ? "pointer"
-        : "default",
+  notification.target_type === "offer" ||
+  notification.target_type === "note"
+    ? "pointer"
+    : "default",
   }}
 >
             <strong>{notification.title}</strong>
@@ -4454,15 +4459,17 @@ function NotificationPanel({
 function HomeScreen({
   setActiveTab,
   currentMember,
-   setCurrentMember,
+  setCurrentMember,
   showNotifications,
   setShowNotifications,
   notifications,
   setFullscreenImage,
   notificationsRead,
   setNotificationsRead,
-   unreadNotifications,
-setUnreadNotifications,
+  unreadNotifications,
+  setUnreadNotifications,
+  setSelectedOfferId,
+  setSelectedNoteId,
 }) {
    const [feedMemberProfiles, setFeedMemberProfiles] = useState({});
   const [clubhouseFeed, setClubhouseFeed] = useState([]);
@@ -4621,6 +4628,7 @@ const loadHomeEventRsvps = async () => {
   notifications={notifications}
   setActiveTab={setActiveTab}
   setSelectedOfferId={setSelectedOfferId}
+  setSelectedNoteId={setSelectedNoteId}
 />
             ) : null}
           </div>
@@ -9667,6 +9675,7 @@ const [fullscreenImage, setFullscreenImage] = useState(null);
  const [activeTab, setActiveTab] = useState("home");
   const [selectedCellarProductId, setSelectedCellarProductId] = useState(null);
   const [selectedOfferId, setSelectedOfferId] = useState(null);
+  const [selectedNoteId, setSelectedNoteId] = useState(null);
    const [hasNewNotes, setHasNewNotes] = useState(false);
 const [hasNewOffers, setHasNewOffers] = useState(false);
 const [unreadNotes, setUnreadNotes] = useState(0);
@@ -9937,6 +9946,7 @@ setNotificationsRead={setNotificationsRead}
    unreadNotifications={unreadNotifications}
 setUnreadNotifications={setUnreadNotifications}
   setSelectedOfferId={setSelectedOfferId}
+  setSelectedNoteId={setSelectedNoteId}
 />
    
 );
