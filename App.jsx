@@ -795,6 +795,7 @@ const [noteAuthor, setNoteAuthor] = useState("Tyler’s Notes");
   const [selectedConversation, setSelectedConversation] = useState(null);
   const [postMessage, setPostMessage] = useState("");
 const [offerMessage, setOfferMessage] = useState("");
+  const [selectedOfferProduct, setSelectedOfferProduct] = useState(null);
 const [noteMessage, setNoteMessage] = useState("");
    const [adminReplyPhoto, setAdminReplyPhoto] = useState(null);
 const [adminEvents, setAdminEvents] = useState([]);
@@ -967,6 +968,7 @@ const deletePost = async (id) => {
         price: offerPrice,
         badge: offerBadge,
         image_url: imageUrl,
+        product_id: selectedOfferProduct?.id || null,
       },
     ]);
 
@@ -976,6 +978,7 @@ const deletePost = async (id) => {
   setOfferPrice("");
   setOfferBadge("Member Offer");
   setOfferImage(null);
+  setSelectedOfferProduct(null);
 
   await supabase.from("notifications").insert([
     {
