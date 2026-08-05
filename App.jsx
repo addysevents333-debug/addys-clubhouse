@@ -5207,6 +5207,7 @@ useEffect(() => {
       </div>
     </div>
   );
+  }
 function OffersScreen({
   setFullscreenImage,
   currentMember,
