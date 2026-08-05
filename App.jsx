@@ -772,6 +772,8 @@ const [members, setMembers] = useState([]);
   const [offerDetail, setOfferDetail] = useState("");
   const [offerPrice, setOfferPrice] = useState("");
   const [offerBadge, setOfferBadge] = useState("Member Offer");
+  const [offerProductSearch, setOfferProductSearch] = useState("");
+const [offerProductResults, setOfferProductResults] = useState([]);
   const [memberSearch, setMemberSearch] = useState("");
   const [adminMessages, setAdminMessages] = useState([]);
   const [adminReply, setAdminReply] = useState("");
@@ -950,6 +952,30 @@ const deletePost = async (id) => {
     .getPublicUrl(fileName);
 
   return data.publicUrl;
+};
+  const searchOfferProducts = async (searchTerm) => {
+  setOfferProductSearch(searchTerm);
+
+  if (!searchTerm.trim()) {
+    setOfferProductResults([]);
+    return;
+  }
+
+  const { data, error } = await supabase
+    .from("products")
+    .select("id, name, brand, upc, image_url")
+    .or(
+      `name.ilike.%${searchTerm}%,brand.ilike.%${searchTerm}%,upc.ilike.%${searchTerm}%`
+    )
+    .order("name", { ascending: true })
+    .limit(10);
+
+  if (error) {
+    console.log("Offer product search error:", error);
+    return;
+  }
+
+  setOfferProductResults(data || []);
 };
   const createOffer = async () => {
   if (!offerTitle.trim() || !offerDetail.trim()) {
@@ -2738,6 +2764,134 @@ return (
             marginBottom: 12,
           }}
         />
+    <div style={{ marginBottom: 14 }}>
+  <div
+    style={{
+      fontSize: 13,
+      fontWeight: 800,
+      color: "#555",
+      marginBottom: 7,
+    }}
+  >
+    Link Product (optional)
+  </div>
+
+  {selectedOfferProduct ? (
+    <div
+      style={{
+        border: `1px solid ${burgundy}`,
+        borderRadius: 14,
+        padding: 12,
+        background: "#fffaf8",
+        marginBottom: 8,
+      }}
+    >
+      <div
+        style={{
+          fontWeight: 900,
+          color: burgundy,
+        }}
+      >
+        {selectedOfferProduct.name}
+      </div>
+
+      {selectedOfferProduct.brand ? (
+        <div style={{ fontSize: 12, color: "#666", marginTop: 3 }}>
+          {selectedOfferProduct.brand}
+        </div>
+      ) : null}
+
+      {selectedOfferProduct.upc ? (
+        <div style={{ fontSize: 11, color: "#888", marginTop: 3 }}>
+          UPC: {selectedOfferProduct.upc}
+        </div>
+      ) : null}
+
+      <button
+        type="button"
+        onClick={() => {
+          setSelectedOfferProduct(null);
+          setOfferProductSearch("");
+          setOfferProductResults([]);
+        }}
+        style={{
+          marginTop: 8,
+          border: 0,
+          background: "transparent",
+          color: burgundy,
+          fontWeight: 800,
+          padding: 0,
+          cursor: "pointer",
+        }}
+      >
+        Change product
+      </button>
+    </div>
+  ) : (
+    <>
+      <input
+        value={offerProductSearch}
+        onChange={(event) =>
+          searchOfferProducts(event.target.value)
+        }
+        placeholder="Search product by name, brand, or UPC..."
+        style={{
+          width: "100%",
+          borderRadius: 16,
+          border: "1px solid #ddd6cf",
+          padding: 13,
+          boxSizing: "border-box",
+          fontSize: 15,
+        }}
+      />
+
+      {offerProductResults.length > 0 ? (
+        <div
+          style={{
+            border: "1px solid #e7e0da",
+            borderRadius: 14,
+            overflow: "hidden",
+            marginTop: 6,
+          }}
+        >
+          {offerProductResults.map((product) => (
+            <div
+              key={product.id}
+              onClick={() => {
+                setSelectedOfferProduct(product);
+                setOfferProductSearch(product.name);
+                setOfferProductResults([]);
+              }}
+              style={{
+                padding: 11,
+                borderBottom: "1px solid #eee7e2",
+                cursor: "pointer",
+                background: "white",
+              }}
+            >
+              <div style={{ fontWeight: 800 }}>
+                {product.name}
+              </div>
+
+              <div
+                style={{
+                  fontSize: 12,
+                  color: "#777",
+                  marginTop: 2,
+                }}
+              >
+                {product.brand || "No brand"}
+                {product.upc
+                  ? ` • UPC: ${product.upc}`
+                  : ""}
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : null}
+    </>
+  )}
+</div>    
 <input
   type="file"
   accept="image/*"
