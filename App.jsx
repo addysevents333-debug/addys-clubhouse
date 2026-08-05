@@ -3023,7 +3023,11 @@ return (
           color: burgundy,
         }}
       >
-        {inventorySync ? "✓ Feed healthy" : "No sync data yet"}
+       {!inventorySync
+  ? "No sync data yet"
+  : inventoryFeedHealthy
+    ? "✓ Feed healthy"
+    : "⚠ Feed may be delayed"}
       </div>
     </div>
   </div>
