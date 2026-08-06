@@ -85,6 +85,17 @@ async function approveAndSaveIntelligence() {
 
     product_type: generatedIntelligence.product_type ?? null,
     subcategory: generatedIntelligence.subcategory ?? null,
+    varietal_or_style:
+  generatedIntelligence.varietal_or_style ?? null,
+
+container_type:
+  generatedIntelligence.container_type ?? null,
+
+container_material:
+  generatedIntelligence.container_material ?? null,
+
+package_format:
+  generatedIntelligence.package_format ?? null,
     country: generatedIntelligence.country ?? null,
     region: generatedIntelligence.region ?? null,
     producer: generatedIntelligence.producer ?? null,
