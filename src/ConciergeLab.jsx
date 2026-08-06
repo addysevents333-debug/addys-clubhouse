@@ -359,18 +359,29 @@ if (baseSpirits.length > 0) {
       ) {
         cocktailScore += 10;
       }
-
-      // Only use generic whiskey matching when the recipe
-      // actually asks for generic whiskey rather than
-      // bourbon, rye, Scotch, Irish, etc.
-      if (
-        baseSpirit.includes("whiskey") &&
-        !baseSpirit.includes("bourbon") &&
-        !baseSpirit.includes("rye") &&
-        searchableText.includes("whiskey")
-      ) {
-        cocktailScore += 6;
-      }
+// If the recipe specifically calls for bourbon or rye,
+// reject unrelated whiskey categories such as Scotch.
+if (
+  (baseSpirit.includes("bourbon") || baseSpirit.includes("rye")) &&
+  searchableText.includes("scotch")
+) {
+  continue;
+}
+     // Generic whiskey matching should only happen when
+// the recipe truly asks for generic whiskey.
+// If bourbon or rye are named, do not allow Scotch
+// or other whiskey categories to sneak in.
+if (
+  baseSpirit.includes("whiskey") &&
+  !baseSpirit.includes("bourbon") &&
+  !baseSpirit.includes("rye") &&
+  !baseSpirit.includes("scotch") &&
+  !baseSpirit.includes("irish") &&
+  searchableText.includes("whiskey") &&
+  !searchableText.includes("scotch")
+) {
+  cocktailScore += 6;
+}
     }
 console.log(
   "COCKTAIL MATCH DEBUG:",
