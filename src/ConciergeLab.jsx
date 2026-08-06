@@ -372,7 +372,17 @@ if (baseSpirits.length > 0) {
         cocktailScore += 6;
       }
     }
-
+console.log(
+  "COCKTAIL MATCH DEBUG:",
+  product?.name,
+  {
+    baseSpirits,
+    cocktailScore,
+    subcategory: item.subcategory,
+    varietal_or_style: item.varietal_or_style,
+    searchableText,
+  }
+);
     if (cocktailScore <= 0) {
       return null;
     }
