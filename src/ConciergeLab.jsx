@@ -25,6 +25,8 @@ const [generationError, setGenerationError] = useState("");
 const [conciergeResults, setConciergeResults] = useState([]);
 const [conciergeLoading, setConciergeLoading] = useState(false);
 const [conciergeError, setConciergeError] = useState("");
+  const [cocktailRecipe, setCocktailRecipe] = useState(null);
+const [cocktailLoading, setCocktailLoading] = useState(false);
   useEffect(() => {
     loadProducts(); 
   }, []);
@@ -210,6 +212,7 @@ async function askClubhouseConcierge() {
   setConciergeLoading(true);
   setConciergeError("");
   setConciergeResults([]);
+  setCocktailRecipe(null);
 
   try {
     // STEP 1: Ask OpenAI to understand the customer's request
@@ -234,7 +237,37 @@ async function askClubhouseConcierge() {
     }
 
     const intent = parserData.intent;
+if (intent.request_mode === "cocktail_recipe") {
+  setCocktailLoading(true);
 
+  const { data: cocktailData, error: cocktailError } =
+    await supabase.functions.invoke(
+      "generate-concierge-cocktail",
+      {
+        body: {
+          question,
+          cocktail_name: intent.cocktail_name ?? null,
+        },
+      }
+    );
+
+  setCocktailLoading(false);
+
+  if (cocktailError) {
+    throw cocktailError;
+  }
+
+  if (!cocktailData?.recipe) {
+    throw new Error(
+      "The cocktail generator did not return a recipe."
+    );
+  }
+
+  setCocktailRecipe(cocktailData.recipe);
+  setConciergeLoading(false);
+
+  return;
+}
     // STEP 2: Load approved Concierge intelligence
     // tied to products that are still active in live inventory
     const { data, error } = await supabase
