@@ -292,81 +292,99 @@ if (baseSpirits.length > 0) {
       inventoryError
     );
   } else {
-    const cocktailMatches = (inventoryData || [])
-      .filter((item) => {
-        const product = item.products;
+   const cocktailMatches = (inventoryData || [])
+  .map((item) => {
+    const product = item.products;
 
-        if (!product?.active) {
-          return false;
-        }
+    if (!product?.active) {
+      return null;
+    }
 
-        const searchableText = [
-          product?.name,
-          product?.brand,
-          item.product_type,
-          item.subcategory,
-          item.varietal_or_style,
-          item.ai_summary,
-          ...(item.style_tags || []),
-        ]
-          .filter(Boolean)
-          .join(" ")
-          .toLowerCase();
+    const searchableText = [
+      product?.name,
+      product?.brand,
+      item.product_type,
+      item.subcategory,
+      item.varietal_or_style,
+      item.ai_summary,
+      ...(item.style_tags || []),
+    ]
+      .filter(Boolean)
+      .join(" ")
+      .toLowerCase();
 
-        return baseSpirits.some((baseSpirit) => {
-          if (
-            baseSpirit.includes("bourbon") &&
-            searchableText.includes("bourbon")
-          ) {
-            return true;
-          }
+    let cocktailScore = 0;
 
-          if (
-            baseSpirit.includes("rye") &&
-            searchableText.includes("rye")
-          ) {
-            return true;
-          }
+    for (const baseSpirit of baseSpirits) {
+      // Bourbon must actually be bourbon.
+      if (
+        baseSpirit.includes("bourbon") &&
+        searchableText.includes("bourbon")
+      ) {
+        cocktailScore += 10;
+      }
 
-          if (
-            baseSpirit.includes("vodka") &&
-            searchableText.includes("vodka")
-          ) {
-            return true;
-          }
+      // Rye must actually be rye whiskey.
+      if (
+        baseSpirit.includes("rye") &&
+        searchableText.includes("rye")
+      ) {
+        cocktailScore += 10;
+      }
 
-          if (
-            baseSpirit.includes("tequila") &&
-            searchableText.includes("tequila")
-          ) {
-            return true;
-          }
+      if (
+        baseSpirit.includes("vodka") &&
+        searchableText.includes("vodka")
+      ) {
+        cocktailScore += 10;
+      }
 
-          if (
-            baseSpirit.includes("gin") &&
-            searchableText.includes("gin")
-          ) {
-            return true;
-          }
+      if (
+        baseSpirit.includes("tequila") &&
+        searchableText.includes("tequila")
+      ) {
+        cocktailScore += 10;
+      }
 
-          if (
-            baseSpirit.includes("rum") &&
-            searchableText.includes("rum")
-          ) {
-            return true;
-          }
+      if (
+        baseSpirit.includes("gin") &&
+        searchableText.includes("gin")
+      ) {
+        cocktailScore += 10;
+      }
 
-          if (
-            baseSpirit.includes("whiskey") &&
-            searchableText.includes("whiskey")
-          ) {
-            return true;
-          }
+      if (
+        baseSpirit.includes("rum") &&
+        searchableText.includes("rum")
+      ) {
+        cocktailScore += 10;
+      }
 
-          return false;
-        });
-      })
-      .slice(0, 3);
+      // Only use generic whiskey matching when the recipe
+      // actually asks for generic whiskey rather than
+      // bourbon, rye, Scotch, Irish, etc.
+      if (
+        baseSpirit.includes("whiskey") &&
+        !baseSpirit.includes("bourbon") &&
+        !baseSpirit.includes("rye") &&
+        searchableText.includes("whiskey")
+      ) {
+        cocktailScore += 6;
+      }
+    }
+
+    if (cocktailScore <= 0) {
+      return null;
+    }
+
+    return {
+      ...item,
+      cocktailScore,
+    };
+  })
+  .filter(Boolean)
+  .sort((a, b) => b.cocktailScore - a.cocktailScore)
+  .slice(0, 3);
 
     setCocktailInventoryMatches(cocktailMatches);
   }
