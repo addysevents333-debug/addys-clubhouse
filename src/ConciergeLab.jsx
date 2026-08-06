@@ -292,7 +292,7 @@ if (baseSpirits.length > 0) {
       inventoryError
     );
   } else {
-   const cocktailMatches = (inventoryData || [])
+  const cocktailMatches = (inventoryData || [])
   .map((item) => {
     const product = item.products;
 
@@ -300,89 +300,105 @@ if (baseSpirits.length > 0) {
       return null;
     }
 
-    const searchableText = [
-      product?.name,
-      product?.brand,
-      item.product_type,
-      item.subcategory,
-      item.varietal_or_style,
-      item.ai_summary,
-      ...(item.style_tags || []),
-    ]
-      .filter(Boolean)
-      .join(" ")
-      .toLowerCase();
+    const subcategory = String(
+      item.subcategory || ""
+    ).toLowerCase();
+
+    const style = String(
+      item.varietal_or_style || ""
+    ).toLowerCase();
 
     let cocktailScore = 0;
 
-  for (const baseSpirit of baseSpirits) {
-  const wantsBourbon = baseSpirit.includes("bourbon");
-  const wantsRye = baseSpirit.includes("rye");
-  const wantsVodka = baseSpirit.includes("vodka");
-  const wantsTequila = baseSpirit.includes("tequila");
-  const wantsGin = baseSpirit.includes("gin");
-  const wantsRum = baseSpirit.includes("rum");
+    for (const baseSpirit of baseSpirits) {
+      const requested = String(
+        baseSpirit || ""
+      ).toLowerCase();
 
-  // Specific spirit categories take priority over broad "whiskey".
-  // Example: "bourbon or rye whiskey" should ONLY match bourbon or rye.
-  if (wantsBourbon || wantsRye) {
-    if (wantsBourbon && searchableText.includes("bourbon")) {
-      cocktailScore += 10;
+      // Bourbon or rye whiskey
+      if (
+        requested.includes("bourbon") ||
+        requested.includes("rye")
+      ) {
+        if (subcategory !== "whiskey") {
+          continue;
+        }
+
+        if (
+          requested.includes("bourbon") &&
+          style === "bourbon"
+        ) {
+          cocktailScore += 10;
+        }
+
+        if (
+          requested.includes("rye") &&
+          style === "rye whiskey"
+        ) {
+          cocktailScore += 10;
+        }
+
+        continue;
+      }
+
+      // Generic whiskey
+      if (
+        requested.includes("whiskey") ||
+        requested.includes("whisky")
+      ) {
+        if (subcategory === "whiskey") {
+          cocktailScore += 6;
+        }
+
+        continue;
+      }
+
+      // Vodka
+      if (requested.includes("vodka")) {
+        if (subcategory === "vodka") {
+          cocktailScore += 10;
+        }
+
+        continue;
+      }
+
+      // Tequila
+      if (requested.includes("tequila")) {
+        if (subcategory === "tequila") {
+          cocktailScore += 10;
+        }
+
+        continue;
+      }
+
+      // Mezcal
+      if (requested.includes("mezcal")) {
+        if (subcategory === "mezcal") {
+          cocktailScore += 10;
+        }
+
+        continue;
+      }
+
+      // Gin
+      if (requested.includes("gin")) {
+        if (subcategory === "gin") {
+          cocktailScore += 10;
+        }
+
+        continue;
+      }
+
+      // Rum
+      if (requested.includes("rum")) {
+        if (subcategory === "rum") {
+          cocktailScore += 10;
+        }
+
+        continue;
+      }
     }
 
-    if (
-      wantsRye &&
-      searchableText.includes("rye") &&
-      !searchableText.includes("scotch")
-    ) {
-      cocktailScore += 10;
-    }
-
-    continue;
-  }
-
-  if (wantsVodka && searchableText.includes("vodka")) {
-    cocktailScore += 10;
-    continue;
-  }
-
-  if (wantsTequila && searchableText.includes("tequila")) {
-    cocktailScore += 10;
-    continue;
-  }
-
-  if (wantsGin && searchableText.includes("gin")) {
-    cocktailScore += 10;
-    continue;
-  }
-
-  if (wantsRum && searchableText.includes("rum")) {
-    cocktailScore += 10;
-    continue;
-  }
-
-  // Only use broad whiskey matching when no specific
-  // whiskey style was requested.
-  if (
-    baseSpirit.includes("whiskey") &&
-    !wantsBourbon &&
-    !wantsRye &&
-    searchableText.includes("whiskey")
-  ) {
-    cocktailScore += 6;
-  }
-}
-console.log(
-  "COCKTAIL MATCH DEBUG:",
-  product?.name,
-  {
-    baseSpirits,
-    cocktailScore,
-    subcategory: item.subcategory,
-    varietal_or_style: item.varietal_or_style,
-    searchableText,
-  }
-);
     if (cocktailScore <= 0) {
       return null;
     }
@@ -393,10 +409,13 @@ console.log(
     };
   })
   .filter(Boolean)
-  .sort((a, b) => b.cocktailScore - a.cocktailScore)
+  .sort(
+    (a, b) =>
+      b.cocktailScore - a.cocktailScore
+  )
   .slice(0, 3);
 
-    setCocktailInventoryMatches(cocktailMatches);
+setCocktailInventoryMatches(cocktailMatches);
   }
 }
   setCocktailRecipe(cocktailData.recipe);
