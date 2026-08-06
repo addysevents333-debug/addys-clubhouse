@@ -18,7 +18,7 @@ const [intelligenceLoading, setIntelligenceLoading] = useState(false);
 const [intelligenceSaving, setIntelligenceSaving] = useState(false);
 const [intelligenceError, setIntelligenceError] = useState("");
   useEffect(() => {
-    loadProducts();
+    loadProducts(); 
   }, []);
 
   async function loadProducts() {
