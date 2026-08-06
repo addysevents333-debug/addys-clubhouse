@@ -733,6 +733,15 @@ async function generateProductIntelligence() {
 </div>
 </div>
 )}
+        <div
+  style={{
+    marginTop: 18,
+    padding: 20,
+    border: "1px solid #e5dedb",
+    borderRadius: 14,
+  }}
+>
+  <h2 style={{ marginTop: 0 }}>Concierge Test</h2>
           <textarea
             placeholder="Example: I like Caymus but want something under $30..."
             style={{
