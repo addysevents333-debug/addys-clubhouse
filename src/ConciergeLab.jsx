@@ -1513,7 +1513,114 @@ setConciergeResults(finalResults);
       No approved Concierge products matched this request.
     </p>
   )}
+{cocktailLoading && (
+  <div
+    style={{
+      marginTop: 18,
+      color: "#777",
+    }}
+  >
+    Generating cocktail recipe...
+  </div>
+)}
 
+{cocktailRecipe && (
+  <div
+    style={{
+      marginTop: 18,
+      padding: 16,
+      border: "1px solid #e2d8d5",
+      borderRadius: 12,
+      background: "#fffafa",
+    }}
+  >
+    <div
+      style={{
+        fontSize: 20,
+        fontWeight: 700,
+        color: "#4a0d20",
+        marginBottom: 8,
+      }}
+    >
+      {cocktailRecipe.cocktail_name}
+    </div>
+
+    {cocktailRecipe.description && (
+      <div
+        style={{
+          lineHeight: 1.5,
+          marginBottom: 14,
+        }}
+      >
+        {cocktailRecipe.description}
+      </div>
+    )}
+
+    <div style={{ fontWeight: 700, marginBottom: 6 }}>
+      Ingredients
+    </div>
+
+    <ul style={{ marginTop: 0, paddingLeft: 22 }}>
+      {(cocktailRecipe.ingredients || []).map(
+        (ingredient, index) => (
+          <li key={index} style={{ marginBottom: 5 }}>
+            <strong>{ingredient.amount}</strong>{" "}
+            {ingredient.ingredient}
+          </li>
+        )
+      )}
+    </ul>
+
+    <div
+      style={{
+        fontWeight: 700,
+        marginTop: 14,
+        marginBottom: 6,
+      }}
+    >
+      Instructions
+    </div>
+
+    <ol style={{ marginTop: 0, paddingLeft: 22 }}>
+      {(cocktailRecipe.instructions || []).map(
+        (step, index) => (
+          <li key={index} style={{ marginBottom: 7 }}>
+            {step}
+          </li>
+        )
+      )}
+    </ol>
+
+    {cocktailRecipe.garnish && (
+      <div style={{ marginTop: 12 }}>
+        <strong>Garnish:</strong>{" "}
+        {cocktailRecipe.garnish}
+      </div>
+    )}
+
+    {cocktailRecipe.glassware && (
+      <div style={{ marginTop: 6 }}>
+        <strong>Glassware:</strong>{" "}
+        {cocktailRecipe.glassware}
+      </div>
+    )}
+
+    {cocktailRecipe.notes && (
+      <div
+        style={{
+          marginTop: 14,
+          padding: 12,
+          borderRadius: 10,
+          background: "#f3efed",
+          lineHeight: 1.5,
+        }}
+      >
+        <strong>Tip:</strong>{" "}
+        {cocktailRecipe.notes}
+      </div>
+    )}
+  </div>
+)}
 {conciergeResults.length > 0 && (
   <div style={{ marginTop: 18 }}>
     <strong>Recommended Matches</strong>
