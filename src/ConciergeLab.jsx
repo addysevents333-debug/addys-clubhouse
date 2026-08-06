@@ -191,7 +191,7 @@ async function generateProductIntelligence() {
 
   setGenerationLoading(false);
 }
-  async function askClubhouseConcierge() {
+ async function askClubhouseConcierge() {
   const question = conciergeQuestion.trim();
 
   if (!question) return;
@@ -201,6 +201,31 @@ async function generateProductIntelligence() {
   setConciergeResults([]);
 
   try {
+    // STEP 1: Ask OpenAI to understand the customer's request
+    const { data: parserData, error: parserError } =
+      await supabase.functions.invoke(
+        "parse-concierge-question",
+        {
+          body: {
+            question,
+          },
+        }
+      );
+
+    if (parserError) {
+      throw parserError;
+    }
+
+    if (!parserData?.intent) {
+      throw new Error(
+        "The Concierge parser did not return a usable intent."
+      );
+    }
+
+    const intent = parserData.intent;
+
+    // STEP 2: Load approved Concierge intelligence
+    // tied to products that are still active in live inventory
     const { data, error } = await supabase
       .from("concierge_product_intelligence")
       .select(`
@@ -214,48 +239,198 @@ async function generateProductIntelligence() {
       throw error;
     }
 
-    const words = question
-      .toLowerCase()
-      .replace(/[^a-z0-9\s]/g, " ")
-      .split(/\s+/)
-      .filter((word) => word.length > 2);
+    const normalize = (value) =>
+      String(value || "").trim().toLowerCase();
+
+    const includesValue = (source, target) => {
+      const sourceText = normalize(source);
+      const targetText = normalize(target);
+
+      if (!sourceText || !targetText) return false;
+
+      return (
+        sourceText.includes(targetText) ||
+        targetText.includes(sourceText)
+      );
+    };
+
+    const arrayContainsMatch = (values, target) => {
+      if (!Array.isArray(values) || !target) return false;
+
+      return values.some((value) =>
+        includesValue(value, target)
+      );
+    };
 
     const scored = (data || [])
       .filter((item) => item.products?.active === true)
       .map((item) => {
         const product = item.products;
-
-        const searchableText = [
-          product?.name,
-          product?.brand,
-          item.product_type,
-          item.subcategory,
-          item.country,
-          item.region,
-          item.producer,
-          item.grape_varieties,
-          item.body,
-          item.sweetness,
-          item.tannin,
-          item.acidity,
-          item.oak_level,
-          item.smoke_level,
-          ...(item.flavor_notes || []),
-          ...(item.style_tags || []),
-          ...(item.food_pairings || []),
-          ...(item.occasion_tags || []),
-          item.customer_fit,
-          item.ai_summary,
-        ]
-          .filter(Boolean)
-          .join(" ")
-          .toLowerCase();
-
         let score = 0;
+        const reasons = [];
 
-        for (const word of words) {
-          if (searchableText.includes(word)) {
+        // Product type
+        if (
+          intent.product_type &&
+          includesValue(item.product_type, intent.product_type)
+        ) {
+          score += 4;
+          reasons.push(`Product type: ${item.product_type}`);
+        }
+
+        // Subcategory
+        if (
+          intent.subcategory &&
+          includesValue(item.subcategory, intent.subcategory)
+        ) {
+          score += 6;
+          reasons.push(`Style: ${item.subcategory}`);
+        }
+
+        // Country
+        if (
+          intent.country &&
+          includesValue(item.country, intent.country)
+        ) {
+          score += 2;
+          reasons.push(`Country: ${item.country}`);
+        }
+
+        // Region
+        if (
+          intent.region &&
+          includesValue(item.region, intent.region)
+        ) {
+          score += 4;
+          reasons.push(`Region: ${item.region}`);
+        }
+
+        // Body
+        if (
+          intent.body &&
+          includesValue(item.body, intent.body)
+        ) {
+          score += 4;
+          reasons.push(`Body: ${item.body}`);
+        }
+
+        // Sweetness
+        if (
+          intent.sweetness &&
+          includesValue(item.sweetness, intent.sweetness)
+        ) {
+          score += 3;
+          reasons.push(`Sweetness: ${item.sweetness}`);
+        }
+
+        // Tannin
+        if (
+          intent.tannin &&
+          includesValue(item.tannin, intent.tannin)
+        ) {
+          score += 2;
+          reasons.push(`Tannin: ${item.tannin}`);
+        }
+
+        // Acidity
+        if (
+          intent.acidity &&
+          includesValue(item.acidity, intent.acidity)
+        ) {
+          score += 2;
+          reasons.push(`Acidity: ${item.acidity}`);
+        }
+
+        // Oak
+        if (
+          intent.oak_level &&
+          includesValue(item.oak_level, intent.oak_level)
+        ) {
+          score += 2;
+          reasons.push(`Oak: ${item.oak_level}`);
+        }
+
+        // Smoke
+        if (
+          intent.smoke_level &&
+          includesValue(item.smoke_level, intent.smoke_level)
+        ) {
+          score += 2;
+          reasons.push(`Smoke: ${item.smoke_level}`);
+        }
+
+        // Flavor notes
+        for (const flavor of intent.flavor_notes || []) {
+          if (arrayContainsMatch(item.flavor_notes, flavor)) {
+            score += 2;
+            reasons.push(`Flavor: ${flavor}`);
+          }
+        }
+
+        // Style tags
+        for (const style of intent.style_tags || []) {
+          if (arrayContainsMatch(item.style_tags, style)) {
+            score += 2;
+            reasons.push(`Style tag: ${style}`);
+          }
+        }
+
+        // Food pairings
+        for (const pairing of intent.food_pairings || []) {
+          if (arrayContainsMatch(item.food_pairings, pairing)) {
+            score += 4;
+            reasons.push(`Pairs with ${pairing}`);
+          }
+        }
+
+        // Occasion tags
+        for (const occasion of intent.occasion_tags || []) {
+          if (arrayContainsMatch(item.occasion_tags, occasion)) {
             score += 1;
+            reasons.push(`Occasion: ${occasion}`);
+          }
+        }
+
+        // Reference product / brand
+        const referenceTerms = [
+          ...(intent.reference_products || []),
+          ...(intent.reference_brands || []),
+        ];
+
+        for (const reference of referenceTerms) {
+          const intelligenceText = [
+            product?.name,
+            product?.brand,
+            item.customer_fit,
+            item.similar_products_notes,
+            item.ai_summary,
+          ]
+            .filter(Boolean)
+            .join(" ");
+
+          if (includesValue(intelligenceText, reference)) {
+            score += 3;
+            reasons.push(`Related to ${reference}`);
+          }
+        }
+
+        // Budget maximum
+        if (
+          intent.budget_max != null &&
+          product?.price != null
+        ) {
+          const price = Number(product.price);
+
+          if (
+            Number.isFinite(price) &&
+            price <= Number(intent.budget_max)
+          ) {
+            score += 5;
+            reasons.push(
+              `Within $${Number(intent.budget_max).toFixed(2)} budget`
+            );
+          } else {
+            score -= 8;
           }
         }
 
@@ -263,6 +438,8 @@ async function generateProductIntelligence() {
           ...item,
           product,
           score,
+          matchReasons: [...new Set(reasons)],
+          parsedIntent: intent,
         };
       })
       .filter((item) => item.score > 0)
@@ -270,6 +447,8 @@ async function generateProductIntelligence() {
       .slice(0, 10);
 
     setConciergeResults(scored);
+
+    console.log("Clubhouse Concierge parsed intent:", intent);
   } catch (error) {
     console.error("Concierge recommendation error:", error);
 
