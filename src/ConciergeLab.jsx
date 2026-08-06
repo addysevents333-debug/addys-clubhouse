@@ -11,7 +11,7 @@ export default function ConciergeLab() {
   const [search, setSearch] = useState("");
   const [products, setProducts] = useState([]);
   const [loadingProducts, setLoadingProducts] = useState(true);
-  const [productError, setProductError] = useState("");
+  const [productError, setProductError] = useState(""); 
   const [selectedProduct, setSelectedProduct] = useState(null);
 const [productIntelligence, setProductIntelligence] = useState(null);
 const [intelligenceLoading, setIntelligenceLoading] = useState(false);
