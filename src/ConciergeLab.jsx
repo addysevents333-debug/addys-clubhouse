@@ -315,74 +315,63 @@ if (baseSpirits.length > 0) {
 
     let cocktailScore = 0;
 
-    for (const baseSpirit of baseSpirits) {
-      // Bourbon must actually be bourbon.
-      if (
-        baseSpirit.includes("bourbon") &&
-        searchableText.includes("bourbon")
-      ) {
-        cocktailScore += 10;
-      }
+  for (const baseSpirit of baseSpirits) {
+  const wantsBourbon = baseSpirit.includes("bourbon");
+  const wantsRye = baseSpirit.includes("rye");
+  const wantsVodka = baseSpirit.includes("vodka");
+  const wantsTequila = baseSpirit.includes("tequila");
+  const wantsGin = baseSpirit.includes("gin");
+  const wantsRum = baseSpirit.includes("rum");
 
-      // Rye must actually be rye whiskey.
-      if (
-        baseSpirit.includes("rye") &&
-        searchableText.includes("rye")
-      ) {
-        cocktailScore += 10;
-      }
-
-      if (
-        baseSpirit.includes("vodka") &&
-        searchableText.includes("vodka")
-      ) {
-        cocktailScore += 10;
-      }
-
-      if (
-        baseSpirit.includes("tequila") &&
-        searchableText.includes("tequila")
-      ) {
-        cocktailScore += 10;
-      }
-
-      if (
-        baseSpirit.includes("gin") &&
-        searchableText.includes("gin")
-      ) {
-        cocktailScore += 10;
-      }
-
-      if (
-        baseSpirit.includes("rum") &&
-        searchableText.includes("rum")
-      ) {
-        cocktailScore += 10;
-      }
-// If the recipe specifically calls for bourbon or rye,
-// reject unrelated whiskey categories such as Scotch.
-if (
-  (baseSpirit.includes("bourbon") || baseSpirit.includes("rye")) &&
-  searchableText.includes("scotch")
-) {
-  continue;
-}
-     // Generic whiskey matching should only happen when
-// the recipe truly asks for generic whiskey.
-// If bourbon or rye are named, do not allow Scotch
-// or other whiskey categories to sneak in.
-if (
-  baseSpirit.includes("whiskey") &&
-  !baseSpirit.includes("bourbon") &&
-  !baseSpirit.includes("rye") &&
-  !baseSpirit.includes("scotch") &&
-  !baseSpirit.includes("irish") &&
-  searchableText.includes("whiskey") &&
-  !searchableText.includes("scotch")
-) {
-  cocktailScore += 6;
-}
+  // Specific spirit categories take priority over broad "whiskey".
+  // Example: "bourbon or rye whiskey" should ONLY match bourbon or rye.
+  if (wantsBourbon || wantsRye) {
+    if (wantsBourbon && searchableText.includes("bourbon")) {
+      cocktailScore += 10;
     }
+
+    if (
+      wantsRye &&
+      searchableText.includes("rye") &&
+      !searchableText.includes("scotch")
+    ) {
+      cocktailScore += 10;
+    }
+
+    continue;
+  }
+
+  if (wantsVodka && searchableText.includes("vodka")) {
+    cocktailScore += 10;
+    continue;
+  }
+
+  if (wantsTequila && searchableText.includes("tequila")) {
+    cocktailScore += 10;
+    continue;
+  }
+
+  if (wantsGin && searchableText.includes("gin")) {
+    cocktailScore += 10;
+    continue;
+  }
+
+  if (wantsRum && searchableText.includes("rum")) {
+    cocktailScore += 10;
+    continue;
+  }
+
+  // Only use broad whiskey matching when no specific
+  // whiskey style was requested.
+  if (
+    baseSpirit.includes("whiskey") &&
+    !wantsBourbon &&
+    !wantsRye &&
+    searchableText.includes("whiskey")
+  ) {
+    cocktailScore += 6;
+  }
+}
 console.log(
   "COCKTAIL MATCH DEBUG:",
   product?.name,
