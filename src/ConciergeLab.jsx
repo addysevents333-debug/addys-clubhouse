@@ -20,6 +20,7 @@ const [intelligenceError, setIntelligenceError] = useState("");
   const [generatedIntelligence, setGeneratedIntelligence] = useState(null);
 const [generationLoading, setGenerationLoading] = useState(false);
 const [generationError, setGenerationError] = useState("");
+  const [approvalSaving, setApprovalSaving] = useState(false);
   useEffect(() => {
     loadProducts(); 
   }, []);
@@ -69,7 +70,72 @@ async function loadProductIntelligence(productId) {
 
   setIntelligenceLoading(false);
 }
+async function approveAndSaveIntelligence() {
+  if (!selectedProduct?.id || !generatedIntelligence) return;
 
+  setApprovalSaving(true);
+  setGenerationError("");
+
+  const intelligenceToSave = {
+    product_id: selectedProduct.id,
+
+    product_type: generatedIntelligence.product_type ?? null,
+    subcategory: generatedIntelligence.subcategory ?? null,
+    country: generatedIntelligence.country ?? null,
+    region: generatedIntelligence.region ?? null,
+    producer: generatedIntelligence.producer ?? null,
+    grape_varieties: generatedIntelligence.grape_varieties ?? null,
+    age_statement: generatedIntelligence.age_statement ?? null,
+    abv: generatedIntelligence.abv ?? null,
+
+    body: generatedIntelligence.body ?? null,
+    sweetness: generatedIntelligence.sweetness ?? null,
+    tannin: generatedIntelligence.tannin ?? null,
+    acidity: generatedIntelligence.acidity ?? null,
+    oak_level: generatedIntelligence.oak_level ?? null,
+    smoke_level: generatedIntelligence.smoke_level ?? null,
+
+    flavor_notes: generatedIntelligence.flavor_notes || [],
+    style_tags: generatedIntelligence.style_tags || [],
+    food_pairings: generatedIntelligence.food_pairings || [],
+    occasion_tags: generatedIntelligence.occasion_tags || [],
+
+    customer_fit: generatedIntelligence.customer_fit ?? null,
+    avoid_if: generatedIntelligence.avoid_if ?? null,
+    similar_products_notes:
+      generatedIntelligence.similar_products_notes ?? null,
+    ai_summary: generatedIntelligence.ai_summary ?? null,
+    source_notes: generatedIntelligence.source_notes ?? null,
+    confidence_score:
+      generatedIntelligence.confidence_score ?? null,
+
+    review_status: "approved",
+    reviewed_by: "admin",
+    reviewed_at: new Date().toISOString(),
+    active: true,
+    updated_at: new Date().toISOString(),
+  };
+
+  const { data, error } = await supabase
+    .from("concierge_product_intelligence")
+    .upsert(intelligenceToSave, {
+      onConflict: "product_id",
+    })
+    .select()
+    .single();
+
+  if (error) {
+    console.error("Approval save error:", error);
+    setGenerationError(
+      error.message || "Unable to save approved intelligence."
+    );
+  } else {
+    setProductIntelligence(data);
+    setGeneratedIntelligence(null);
+  }
+
+  setApprovalSaving(false);
+}
 async function generateProductIntelligence() {
   if (!selectedProduct?.id) return;
 
@@ -600,7 +666,26 @@ async function generateProductIntelligence() {
         {generatedIntelligence.ai_summary || "No summary returned."}
       </div>
     </div>
-
+<button
+  type="button"
+  onClick={approveAndSaveIntelligence}
+  disabled={approvalSaving}
+  style={{
+    marginTop: 16,
+    padding: "11px 16px",
+    border: 0,
+    borderRadius: 10,
+    background: "#8b1734",
+    color: "white",
+    fontWeight: 700,
+    cursor: approvalSaving ? "default" : "pointer",
+    opacity: approvalSaving ? 0.6 : 1,
+  }}
+>
+  {approvalSaving
+    ? "Saving Approved Intelligence..."
+    : "Approve & Save Intelligence"}
+</button>
     <details style={{ marginTop: 14 }}>
       <summary style={{ cursor: "pointer", fontWeight: 700 }}>
         View full generated JSON
