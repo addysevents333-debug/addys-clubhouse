@@ -324,20 +324,19 @@ if (baseSpirits.length > 0) {
           continue;
         }
 
-        if (
-          requested.includes("bourbon") &&
-          style === "bourbon"
-        ) {
-          cocktailScore += 10;
-        }
+       if (
+  requested.includes("bourbon") &&
+  style.includes("bourbon")
+) {
+  cocktailScore += 10;
+}
 
         if (
-          requested.includes("rye") &&
-          style === "rye whiskey"
-        ) {
-          cocktailScore += 10;
-        }
-
+  requested.includes("rye") &&
+  style.includes("rye")
+) {
+  cocktailScore += 10;
+}
         continue;
       }
 
