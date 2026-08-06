@@ -285,6 +285,7 @@ async function askClubhouseConcierge() {
         product?.description,
         item.product_type,
         item.subcategory,
+        item.varietal_or_style,
         item.country,
         item.region,
         item.producer,
@@ -343,7 +344,18 @@ async function askClubhouseConcierge() {
         ) {
           return false;
         }
-
+// HARD VARIETAL OR STYLE
+// Example: Sauvignon Blanc means other white wine
+// varietals should not appear in the results.
+if (
+  intent.hard_varietal_or_style &&
+  !includesValue(
+    item.varietal_or_style,
+    intent.hard_varietal_or_style
+  )
+) {
+  return false;
+}
         // HARD COUNTRY
         if (
           intent.hard_country &&
@@ -431,7 +443,19 @@ for (const required of intent.required_terms || []) {
             `Style: ${item.subcategory}`
           );
         }
-
+// Varietal or style
+if (
+  intent.varietal_or_style &&
+  includesValue(
+    item.varietal_or_style,
+    intent.varietal_or_style
+  )
+) {
+  score += 8;
+  reasons.push(
+    `Varietal/Style: ${item.varietal_or_style}`
+  );
+}
         // Country
         if (
           intent.country &&
