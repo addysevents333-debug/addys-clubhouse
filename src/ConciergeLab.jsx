@@ -390,13 +390,93 @@ if (
             return false;
           }
         }
+// EXCLUDED CONTAINER TYPES
+for (const excludedType of intent.excluded_container_types || []) {
+  if (
+    item.container_type &&
+    includesValue(item.container_type, excludedType)
+  ) {
+    return false;
+  }
+}
 
+// EXCLUDED CONTAINER MATERIALS
+for (const excludedMaterial of
+  intent.excluded_container_materials || []) {
+  if (
+    item.container_material &&
+    includesValue(item.container_material, excludedMaterial)
+  ) {
+    return false;
+  }
+}
         return true;
       })
       .map((item) => {
         const product = item.products;
         let score = 0;
         const reasons = [];
+        // Packaging requirements and preferences
+
+for (const requiredType of intent.required_container_types || []) {
+  if (
+    item.container_type &&
+    includesValue(item.container_type, requiredType)
+  ) {
+    score += 8;
+    reasons.push(`Container: ${item.container_type}`);
+  } else if (!item.container_type) {
+    score -= 3;
+  } else {
+    score -= 8;
+  }
+}
+
+for (const requiredMaterial of
+  intent.required_container_materials || []) {
+  if (
+    item.container_material &&
+    includesValue(item.container_material, requiredMaterial)
+  ) {
+    score += 8;
+    reasons.push(`Material: ${item.container_material}`);
+  } else if (!item.container_material) {
+    score -= 3;
+  } else {
+    score -= 8;
+  }
+}
+
+for (const excludedMaterial of
+  intent.excluded_container_materials || []) {
+  if (!item.container_material) {
+    score -= 2;
+    reasons.push(
+      `Packaging material not confirmed`
+    );
+  } else if (
+    !includesValue(item.container_material, excludedMaterial)
+  ) {
+    score += 6;
+    reasons.push(
+      `Non-${excludedMaterial} packaging: ${item.container_material}`
+    );
+  }
+}
+
+for (const packageFormat of intent.required_package_formats || []) {
+  if (
+    item.package_format &&
+    includesValue(item.package_format, packageFormat)
+  ) {
+    score += 6;
+    reasons.push(`Package: ${item.package_format}`);
+  } else if (!item.package_format) {
+    score -= 2;
+  } else {
+    score -= 5;
+  }
+}
 // Strong requested terms.
 // These heavily influence ranking but do not eliminate
 // an otherwise appropriate product just because the
