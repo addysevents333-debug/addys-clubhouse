@@ -738,27 +738,70 @@ if (
           }
         }
 
-        // Budget maximum
-        if (
-          intent.budget_max != null &&
-          product?.price != null
-        ) {
-          const price = Number(product.price);
+       // Budget handling
+if (
+  product?.price != null &&
+  (
+    intent.budget_min != null ||
+    intent.budget_max != null
+  )
+) {
+  const price = Number(product.price);
+  const min =
+    intent.budget_min != null
+      ? Number(intent.budget_min)
+      : null;
+  const max =
+    intent.budget_max != null
+      ? Number(intent.budget_max)
+      : null;
 
-          if (
-            Number.isFinite(price) &&
-            price <= Number(intent.budget_max)
-          ) {
-            score += 5;
-            reasons.push(
-              `Within $${Number(
-                intent.budget_max
-              ).toFixed(2)} budget`
-            );
-          } else {
-            score -= 8;
-          }
-        }
+  if (Number.isFinite(price)) {
+    const belowMin =
+      min != null && price < min;
+
+    const aboveMax =
+      max != null && price > max;
+
+    // Customer gave a range like "around $20".
+    if (!belowMin && !aboveMax) {
+      score += 6;
+      reasons.push(
+        `Within preferred price range`
+      );
+    }
+
+    // Slightly outside the range.
+    else if (
+      max != null &&
+      price > max &&
+      price <= max * 1.15
+    ) {
+      score -= 3;
+      reasons.push(
+        `Slightly above preferred budget`
+      );
+    }
+
+    // Well above the requested range.
+    else if (
+      max != null &&
+      price > max * 1.15
+    ) {
+      score -= 15;
+      reasons.push(
+        `Well above preferred budget`
+      );
+    }
+
+    // Below the requested range is usually okay,
+    // but gets a small reduction because the customer
+    // asked for something near a specific price.
+    else if (belowMin) {
+      score -= 1;
+    }
+  }
+}
 
         return {
           ...item,
