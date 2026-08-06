@@ -813,11 +813,22 @@ if (
           parsedIntent: intent,
         };
       })
-      .filter((item) => item.score > 0)
-      .sort((a, b) => b.score - a.score)
-      .slice(0, 10);
+     .filter((item) => item.score > 0)
+.sort((a, b) => b.score - a.score);
 
-    setConciergeResults(scored);
+const bestScore = scored[0]?.score ?? 0;
+const minimumScore = Math.max(
+  1,
+  Math.ceil(bestScore * 0.5)
+);
+
+const finalResults = scored
+  .filter(
+    (result) => result.score >= minimumScore
+  )
+  .slice(0, 3);
+
+setConciergeResults(finalResults);
 
     console.log(
       "Clubhouse Concierge parsed intent:",
