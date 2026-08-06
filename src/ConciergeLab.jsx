@@ -1506,6 +1506,8 @@ setConciergeResults(finalResults);
 )}
 
 {!conciergeLoading &&
+  !cocktailLoading &&
+  !cocktailRecipe &&
   conciergeQuestion.trim() &&
   conciergeResults.length === 0 &&
   !conciergeError && (
