@@ -449,120 +449,122 @@ async function generateProductIntelligence() {
     borderTop: "1px solid #ddd6d2",
   }}
 >
-  <strong>Clubhouse Concierge Intelligence</strong>
+ <strong>Clubhouse Concierge Intelligence</strong>
 
-  {intelligenceLoading ? (
-    <p style={{ color: "#777" }}>Loading intelligence...</p>
-  ) : intelligenceError ? (
-    <p style={{ color: "#a00000" }}>
-      Intelligence error: {intelligenceError}
-    </p>
-  ) : productIntelligence ? (
+{intelligenceLoading ? (
+  <p style={{ color: "#777" }}>Loading intelligence...</p>
+) : intelligenceError ? (
+  <p style={{ color: "#a00000" }}>
+    Intelligence error: {intelligenceError}
+  </p>
+) : productIntelligence ? (
+  <div style={{ marginTop: 10 }}>
+    <div style={{ marginBottom: 6 }}>
+      <strong>Status:</strong>{" "}
+      {productIntelligence.review_status || "pending"}
+    </div>
+
+    <div style={{ marginBottom: 6 }}>
+      <strong>Product Type:</strong>{" "}
+      {productIntelligence.product_type || "Not set"}
+    </div>
+
+    <div style={{ marginBottom: 6 }}>
+      <strong>Subtype:</strong>{" "}
+      {productIntelligence.subcategory || "Not set"}
+    </div>
+
+    <div style={{ marginBottom: 6 }}>
+      <strong>Confidence:</strong>{" "}
+      {productIntelligence.confidence_score ?? "Not set"}
+    </div>
+
     <div style={{ marginTop: 10 }}>
-      <div style={{ marginBottom: 6 }}>
-        <strong>Status:</strong>{" "}
-        {productIntelligence.review_status || "pending"}
+      <strong>Summary:</strong>
+
+      <div
+        style={{
+          marginTop: 6,
+          padding: 12,
+          background: "#f3efed",
+          borderRadius: 10,
+          lineHeight: 1.5,
+        }}
+      >
+        {productIntelligence.ai_summary || "No summary yet."}
       </div>
+    </div>
 
-      <div style={{ marginBottom: 6 }}>
-        <strong>Product Type:</strong>{" "}
-        {productIntelligence.product_type || "Not set"}
-      </div>
+    <details style={{ marginTop: 12 }}>
+      <summary style={{ cursor: "pointer", fontWeight: 700 }}>
+        View raw intelligence record
+      </summary>
 
-      <div style={{ marginBottom: 6 }}>
-        <strong>Subtype:</strong>{" "}
-        {productIntelligence.subcategory || "Not set"}
-      </div>
+      <pre
+        style={{
+          marginTop: 8,
+          padding: 14,
+          borderRadius: 10,
+          background: "#f3efed",
+          overflowX: "auto",
+          whiteSpace: "pre-wrap",
+          fontSize: 12,
+        }}
+      >
+        {JSON.stringify(productIntelligence, null, 2)}
+      </pre>
+    </details>
 
-      <div style={{ marginBottom: 6 }}>
-        <strong>Confidence:</strong>{" "}
-        {productIntelligence.confidence_score ?? "Not set"}
-      </div>
-
-      <div style={{ marginTop: 10 }}>
-        <strong>Summary:</strong>
-
-        <div
-          style={{
-            marginTop: 6,
-            padding: 12,
-            background: "#f3efed",
-            borderRadius: 10,
-            lineHeight: 1.5,
-          }}
-        >
-          {productIntelligence.ai_summary || "No summary yet."}
-        </div>
-      </div>
-
-      <details style={{ marginTop: 12 }}>
-        <summary style={{ cursor: "pointer", fontWeight: 700 }}>
-          View raw intelligence record
-        </summary>
-
-        <pre
-          style={{
-            marginTop: 8,
-            padding: 14,
-            borderRadius: 10,
-            background: "#f3efed",
-            overflowX: "auto",
-            whiteSpace: "pre-wrap",
-            fontSize: 12,
-          }}
-        >
-          {JSON.stringify(productIntelligence, null, 2)}
-        </pre>
-     </details>
-
-<button
-  type="button"
-  onClick={generateProductIntelligence}
-  disabled={generationLoading}
-  style={{
-    marginTop: 14,
-    padding: "11px 16px",
-    border: 0,
-    borderRadius: 10,
-    background: "#8b1734",
-    color: "white",
-    fontWeight: 700,
-    cursor: generationLoading ? "default" : "pointer",
-    opacity: generationLoading ? 0.6 : 1,
-  }}
->
-  {generationLoading
-    ? "Generating New Intelligence..."
-    : "Regenerate Intelligence"}
-</button>
-
-</div>
+    <button
+      type="button"
+      onClick={generateProductIntelligence}
+      disabled={generationLoading}
+      style={{
+        marginTop: 14,
+        padding: "11px 16px",
+        border: 0,
+        borderRadius: 10,
+        background: "#8b1734",
+        color: "white",
+        fontWeight: 700,
+        cursor: generationLoading ? "default" : "pointer",
+        opacity: generationLoading ? 0.6 : 1,
+      }}
+    >
+      {generationLoading
+        ? "Generating New Intelligence..."
+        : "Regenerate Intelligence"}
+    </button>
+  </div>
 ) : (
-    <div style={{ marginTop: 10 }}>
-      <p style={{ color: "#777" }}>
-        No Clubhouse Concierge intelligence exists for this product yet.
-      </p>
+  <div style={{ marginTop: 10 }}>
+    <p style={{ color: "#777" }}>
+      No Clubhouse Concierge intelligence exists for this product yet.
+    </p>
 
-   <button
-  type="button"
-  onClick={generateProductIntelligence}
-  disabled={generationLoading}
-  style={{
-    padding: "11px 16px",
-    border: 0,
-    borderRadius: 10,
-    background: "#8b1734",
-    color: "white",
-    fontWeight: 700,
-    cursor: generationLoading ? "default" : "pointer",
-    opacity: generationLoading ? 0.6 : 1,
-  }}
->
-  {generationLoading
-    ? "Generating Product Intelligence..."
-    : "Generate Product Intelligence"}
-</button>
-  {generationError && (
+    <button
+      type="button"
+      onClick={generateProductIntelligence}
+      disabled={generationLoading}
+      style={{
+        padding: "11px 16px",
+        border: 0,
+        borderRadius: 10,
+        background: "#8b1734",
+        color: "white",
+        fontWeight: 700,
+        cursor: generationLoading ? "default" : "pointer",
+        opacity: generationLoading ? 0.6 : 1,
+      }}
+    >
+      {generationLoading
+        ? "Generating Product Intelligence..."
+        : "Generate Product Intelligence"}
+    </button>
+  </div>
+)}
+
+{generationError && (
   <div
     style={{
       marginTop: 12,
@@ -577,12 +579,6 @@ async function generateProductIntelligence() {
   </div>
 )}
 
-
-    </div>
-  )}
-</div>
-          </div>
-        )}
 {generatedIntelligence && (
   <div
     style={{
@@ -650,20 +646,17 @@ async function generateProductIntelligence() {
 
       <div>
         <strong>Flavor Notes:</strong>{" "}
-        {(generatedIntelligence.flavor_notes || []).join(", ") ||
-          "None"}
+        {(generatedIntelligence.flavor_notes || []).join(", ") || "None"}
       </div>
 
       <div>
         <strong>Style:</strong>{" "}
-        {(generatedIntelligence.style_tags || []).join(", ") ||
-          "None"}
+        {(generatedIntelligence.style_tags || []).join(", ") || "None"}
       </div>
 
       <div>
         <strong>Food Pairings:</strong>{" "}
-        {(generatedIntelligence.food_pairings || []).join(", ") ||
-          "None"}
+        {(generatedIntelligence.food_pairings || []).join(", ") || "None"}
       </div>
 
       <div>
@@ -694,26 +687,30 @@ async function generateProductIntelligence() {
         {generatedIntelligence.ai_summary || "No summary returned."}
       </div>
     </div>
-<button
-  type="button"
-  onClick={approveAndSaveIntelligence}
-  disabled={approvalSaving}
-  style={{
-    marginTop: 16,
-    padding: "11px 16px",
-    border: 0,
-    borderRadius: 10,
-    background: "#8b1734",
-    color: "white",
-    fontWeight: 700,
-    cursor: approvalSaving ? "default" : "pointer",
-    opacity: approvalSaving ? 0.6 : 1,
-  }}
->
-  {approvalSaving
-    ? "Saving Approved Intelligence..."
-    : "Approve & Save Intelligence"}
-</button>
+
+    <button
+      type="button"
+      onClick={approveAndSaveIntelligence}
+      disabled={approvalSaving}
+      style={{
+        marginTop: 16,
+        padding: "11px 16px",
+        border: 0,
+        borderRadius: 10,
+        background: "#8b1734",
+        color: "white",
+        fontWeight: 700,
+        cursor: approvalSaving ? "default" : "pointer",
+        opacity: approvalSaving ? 0.6 : 1,
+      }}
+    >
+      {approvalSaving
+        ? "Saving Approved Intelligence..."
+        : productIntelligence
+        ? "Approve & Replace Intelligence"
+        : "Approve & Save Intelligence"}
+    </button>
+
     <details style={{ marginTop: 14 }}>
       <summary style={{ cursor: "pointer", fontWeight: 700 }}>
         View full generated JSON
@@ -731,17 +728,11 @@ async function generateProductIntelligence() {
       </pre>
     </details>
   </div>
-)}    
-        <div
-          style={{
-            marginTop: 18,
-            padding: 20,
-            border: "1px solid #e5dedb",
-            borderRadius: 14,
-          }}
-        >
-          <h2 style={{ marginTop: 0 }}>Concierge Test</h2>
+)}
 
+</div>
+</div>
+)}
           <textarea
             placeholder="Example: I like Caymus but want something under $30..."
             style={{
