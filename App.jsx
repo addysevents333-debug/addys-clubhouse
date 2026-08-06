@@ -1,5 +1,6 @@
 // Clubhouse Concierge development branch
 import React, { useEffect, useState } from "react";
+import ConciergeLab from "./src/ConciergeLab.jsx";
 import AddysLogo from "./src/Addys-Logo.png";
 const SUPABASE_URL = "https://ztqtfftgtwgxrtoqqggx.supabase.co";
 const SUPABASE_KEY = "sb_publishable_V3P46SsSqP3cj8-hensd9w_OYqIvuhC";
@@ -9753,7 +9754,7 @@ onClick={() => {
     </div>
   );
 }
-export default function AddysClubhousePrototype() {
+function MainClubhouseApp() {
   const savedMember = localStorage.getItem("addysMember");
 
   const [currentMember, setCurrentMember] = useState(
@@ -10279,4 +10280,15 @@ screen = (
 ) : null}
     </div>
   );
+}
+export default function AddysClubhousePrototype() {
+  const isConciergeLab =
+    window.location.pathname === "/concierge-test" ||
+    window.location.pathname === "/concierge-test/";
+
+  if (isConciergeLab) {
+    return <ConciergeLab />;
+  }
+
+  return <MainClubhouseApp />;
 }
