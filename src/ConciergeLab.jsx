@@ -3,7 +3,7 @@ import { createClient } from "@supabase/supabase-js";
 
 // COPY THESE TWO VALUES FROM THE TOP OF App.jsx
 const SUPABASE_URL = "https://ztqtfftgtwgxrtoqqggx.supabase.co";
-const SUPABASE_KEY = "sb_publishable_V3P46SsSqP3cj8-hensd9w_OYqIvuhC";
+const SUPABASE_KEY = "sb_publishable_V3P46SsSqP3cj8-hensd9w_OYqIvuhC"; 
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
@@ -17,6 +17,9 @@ const [productIntelligence, setProductIntelligence] = useState(null);
 const [intelligenceLoading, setIntelligenceLoading] = useState(false);
 const [intelligenceSaving, setIntelligenceSaving] = useState(false);
 const [intelligenceError, setIntelligenceError] = useState("");
+  const [generatedIntelligence, setGeneratedIntelligence] = useState(null);
+const [generationLoading, setGenerationLoading] = useState(false);
+const [generationError, setGenerationError] = useState("");
   useEffect(() => {
     loadProducts(); 
   }, []);
@@ -67,41 +70,56 @@ async function loadProductIntelligence(productId) {
   setIntelligenceLoading(false);
 }
 
-async function createTestIntelligence() {
+async function generateProductIntelligence() {
   if (!selectedProduct?.id) return;
 
-  setIntelligenceSaving(true);
-  setIntelligenceError("");
+  setGenerationLoading(true);
+  setGenerationError("");
+  setGeneratedIntelligence(null);
 
-  const { data, error } = await supabase
-    .from("concierge_product_intelligence")
-    .upsert(
+  try {
+    const { data, error } = await supabase.functions.invoke(
+      "generate-concierge-intelligence",
       {
-        product_id: selectedProduct.id,
-        product_type: "wine",
-        subcategory: "test record",
-        ai_summary:
-          "Temporary Clubhouse Concierge test record. This will be replaced by real generated product intelligence.",
-        confidence_score: 0.5,
-        review_status: "pending",
-        active: true,
-        updated_at: new Date().toISOString(),
-      },
-      {
-        onConflict: "product_id",
+        body: {
+          product: {
+            id: selectedProduct.id,
+            name: selectedProduct.name ?? null,
+            brand: selectedProduct.brand ?? null,
+            category: selectedProduct.category ?? null,
+            sku:
+              selectedProduct.sku ??
+              selectedProduct.item_number ??
+              null,
+            upc: selectedProduct.upc ?? null,
+            description: selectedProduct.description ?? null,
+          },
+        },
       }
-    )
-    .select()
-    .single();
+    );
 
-  if (error) {
-    console.error("Concierge intelligence save error:", error);
-    setIntelligenceError(error.message);
-  } else {
-    setProductIntelligence(data);
+    if (error) {
+      console.error("Concierge generation error:", error);
+      setGenerationError(error.message || "AI generation failed.");
+    } else if (!data?.intelligence) {
+      console.error("Unexpected Concierge response:", data);
+      setGenerationError(
+        "The AI function responded, but no intelligence was returned."
+      );
+    } else {
+      setGeneratedIntelligence(data.intelligence);
+    }
+  } catch (error) {
+    console.error("Concierge generation exception:", error);
+
+    setGenerationError(
+      error instanceof Error
+        ? error.message
+        : "Unknown AI generation error."
+    );
   }
 
-  setIntelligenceSaving(false);
+  setGenerationLoading(false);
 }
   const filteredProducts = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -437,25 +455,170 @@ async function createTestIntelligence() {
         No Clubhouse Concierge intelligence exists for this product yet.
       </p>
 
-      <button
-        type="button"
-        onClick={createTestIntelligence}
-        disabled={intelligenceSaving}
+   <button
+  type="button"
+  onClick={generateProductIntelligence}
+  disabled={generationLoading}
+  style={{
+    padding: "11px 16px",
+    border: 0,
+    borderRadius: 10,
+    background: "#8b1734",
+    color: "white",
+    fontWeight: 700,
+    cursor: generationLoading ? "default" : "pointer",
+    opacity: generationLoading ? 0.6 : 1,
+  }}
+>
+  {generationLoading
+    ? "Generating Product Intelligence..."
+    : "Generate Product Intelligence"}
+</button>
+  {generationError && (
+  <div
+    style={{
+      marginTop: 12,
+      padding: 12,
+      borderRadius: 10,
+      background: "#fff1f1",
+      color: "#a00000",
+      lineHeight: 1.4,
+    }}
+  >
+    {generationError}
+  </div>
+)}
+
+{generatedIntelligence && (
+  <div
+    style={{
+      marginTop: 16,
+      padding: 16,
+      borderRadius: 12,
+      background: "#f3efed",
+    }}
+  >
+    <div
+      style={{
+        fontWeight: 700,
+        color: "#8b1734",
+        marginBottom: 10,
+      }}
+    >
+      AI Generated Preview
+    </div>
+
+    <div style={{ display: "grid", gap: 7 }}>
+      <div>
+        <strong>Product Type:</strong>{" "}
+        {generatedIntelligence.product_type || "Unknown"}
+      </div>
+
+      <div>
+        <strong>Subtype:</strong>{" "}
+        {generatedIntelligence.subcategory || "Unknown"}
+      </div>
+
+      <div>
+        <strong>Country:</strong>{" "}
+        {generatedIntelligence.country || "Unknown"}
+      </div>
+
+      <div>
+        <strong>Region:</strong>{" "}
+        {generatedIntelligence.region || "Unknown"}
+      </div>
+
+      <div>
+        <strong>Body:</strong>{" "}
+        {generatedIntelligence.body || "Unknown"}
+      </div>
+
+      <div>
+        <strong>Sweetness:</strong>{" "}
+        {generatedIntelligence.sweetness || "Unknown"}
+      </div>
+
+      <div>
+        <strong>Tannin:</strong>{" "}
+        {generatedIntelligence.tannin || "Unknown"}
+      </div>
+
+      <div>
+        <strong>Acidity:</strong>{" "}
+        {generatedIntelligence.acidity || "Unknown"}
+      </div>
+
+      <div>
+        <strong>Oak:</strong>{" "}
+        {generatedIntelligence.oak_level || "Unknown"}
+      </div>
+
+      <div>
+        <strong>Flavor Notes:</strong>{" "}
+        {(generatedIntelligence.flavor_notes || []).join(", ") ||
+          "None"}
+      </div>
+
+      <div>
+        <strong>Style:</strong>{" "}
+        {(generatedIntelligence.style_tags || []).join(", ") ||
+          "None"}
+      </div>
+
+      <div>
+        <strong>Food Pairings:</strong>{" "}
+        {(generatedIntelligence.food_pairings || []).join(", ") ||
+          "None"}
+      </div>
+
+      <div>
+        <strong>Customer Fit:</strong>{" "}
+        {generatedIntelligence.customer_fit || "Unknown"}
+      </div>
+
+      <div>
+        <strong>Avoid If:</strong>{" "}
+        {generatedIntelligence.avoid_if || "Unknown"}
+      </div>
+
+      <div>
+        <strong>Confidence:</strong>{" "}
+        {generatedIntelligence.confidence_score ?? "Unknown"}
+      </div>
+    </div>
+
+    <div style={{ marginTop: 14 }}>
+      <strong>Summary:</strong>
+
+      <div
         style={{
-          padding: "11px 16px",
-          border: 0,
-          borderRadius: 10,
-          background: "#8b1734",
-          color: "white",
-          fontWeight: 700,
-          cursor: intelligenceSaving ? "default" : "pointer",
-          opacity: intelligenceSaving ? 0.6 : 1,
+          marginTop: 6,
+          lineHeight: 1.5,
         }}
       >
-        {intelligenceSaving
-          ? "Creating Test Record..."
-          : "Create Test Intelligence Record"}
-      </button>
+        {generatedIntelligence.ai_summary || "No summary returned."}
+      </div>
+    </div>
+
+    <details style={{ marginTop: 14 }}>
+      <summary style={{ cursor: "pointer", fontWeight: 700 }}>
+        View full generated JSON
+      </summary>
+
+      <pre
+        style={{
+          marginTop: 8,
+          whiteSpace: "pre-wrap",
+          overflowX: "auto",
+          fontSize: 12,
+        }}
+      >
+        {JSON.stringify(generatedIntelligence, null, 2)}
+      </pre>
+    </details>
+  </div>
+)}    
     </div>
   )}
 </div>
