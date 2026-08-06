@@ -21,6 +21,10 @@ const [intelligenceError, setIntelligenceError] = useState("");
 const [generationLoading, setGenerationLoading] = useState(false);
 const [generationError, setGenerationError] = useState("");
   const [approvalSaving, setApprovalSaving] = useState(false);
+  const [conciergeQuestion, setConciergeQuestion] = useState("");
+const [conciergeResults, setConciergeResults] = useState([]);
+const [conciergeLoading, setConciergeLoading] = useState(false);
+const [conciergeError, setConciergeError] = useState("");
   useEffect(() => {
     loadProducts(); 
   }, []);
@@ -186,6 +190,97 @@ async function generateProductIntelligence() {
   }
 
   setGenerationLoading(false);
+}
+  async function askClubhouseConcierge() {
+  const question = conciergeQuestion.trim();
+
+  if (!question) return;
+
+  setConciergeLoading(true);
+  setConciergeError("");
+  setConciergeResults([]);
+
+  try {
+    const { data, error } = await supabase
+      .from("concierge_product_intelligence")
+      .select(`
+        *,
+        products (*)
+      `)
+      .eq("review_status", "approved")
+      .eq("active", true);
+
+    if (error) {
+      throw error;
+    }
+
+    const words = question
+      .toLowerCase()
+      .replace(/[^a-z0-9\s]/g, " ")
+      .split(/\s+/)
+      .filter((word) => word.length > 2);
+
+    const scored = (data || [])
+      .filter((item) => item.products?.active === true)
+      .map((item) => {
+        const product = item.products;
+
+        const searchableText = [
+          product?.name,
+          product?.brand,
+          item.product_type,
+          item.subcategory,
+          item.country,
+          item.region,
+          item.producer,
+          item.grape_varieties,
+          item.body,
+          item.sweetness,
+          item.tannin,
+          item.acidity,
+          item.oak_level,
+          item.smoke_level,
+          ...(item.flavor_notes || []),
+          ...(item.style_tags || []),
+          ...(item.food_pairings || []),
+          ...(item.occasion_tags || []),
+          item.customer_fit,
+          item.ai_summary,
+        ]
+          .filter(Boolean)
+          .join(" ")
+          .toLowerCase();
+
+        let score = 0;
+
+        for (const word of words) {
+          if (searchableText.includes(word)) {
+            score += 1;
+          }
+        }
+
+        return {
+          ...item,
+          product,
+          score,
+        };
+      })
+      .filter((item) => item.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 10);
+
+    setConciergeResults(scored);
+  } catch (error) {
+    console.error("Concierge recommendation error:", error);
+
+    setConciergeError(
+      error instanceof Error
+        ? error.message
+        : "Unable to search Concierge intelligence."
+    );
+  }
+
+  setConciergeLoading(false);
 }
   const filteredProducts = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -741,37 +836,146 @@ async function generateProductIntelligence() {
     borderRadius: 14,
   }}
 >
-  <h2 style={{ marginTop: 0 }}>Concierge Test</h2>
-          <textarea
-            placeholder="Example: I like Caymus but want something under $30..."
-            style={{
-              width: "100%",
-              minHeight: 100,
-              boxSizing: "border-box",
-              padding: 13,
-              borderRadius: 10,
-              border: "1px solid #ccc",
-              fontSize: 15,
-              resize: "vertical",
-            }}
-          />
+ <h2 style={{ marginTop: 0 }}>Concierge Test</h2>
 
-          <button
-            type="button"
-            disabled
+<p style={{ color: "#666", lineHeight: 1.5 }}>
+  Ask a recommendation question using approved Clubhouse Concierge
+  intelligence and current live inventory.
+</p>
+
+<textarea
+  value={conciergeQuestion}
+  onChange={(event) => setConciergeQuestion(event.target.value)}
+  placeholder="Example: I want a full-bodied California Cabernet..."
+  style={{
+    width: "100%",
+    minHeight: 100,
+    boxSizing: "border-box",
+    padding: 13,
+    borderRadius: 10,
+    border: "1px solid #ccc",
+    fontSize: 15,
+    resize: "vertical",
+  }}
+/>
+
+<button
+  type="button"
+  onClick={askClubhouseConcierge}
+  disabled={conciergeLoading || !conciergeQuestion.trim()}
+  style={{
+    marginTop: 12,
+    padding: "12px 18px",
+    border: 0,
+    borderRadius: 10,
+    background: "#8b1734",
+    color: "white",
+    fontWeight: 700,
+    cursor:
+      conciergeLoading || !conciergeQuestion.trim()
+        ? "default"
+        : "pointer",
+    opacity:
+      conciergeLoading || !conciergeQuestion.trim()
+        ? 0.5
+        : 1,
+  }}
+>
+  {conciergeLoading
+    ? "Searching Concierge Intelligence..."
+    : "Ask Clubhouse Concierge"}
+</button>
+
+{conciergeError && (
+  <div
+    style={{
+      marginTop: 14,
+      padding: 12,
+      borderRadius: 10,
+      background: "#fff1f1",
+      color: "#a00000",
+    }}
+  >
+    {conciergeError}
+  </div>
+)}
+
+{!conciergeLoading &&
+  conciergeQuestion.trim() &&
+  conciergeResults.length === 0 &&
+  !conciergeError && (
+    <p style={{ marginTop: 16, color: "#777" }}>
+      No approved Concierge products matched this request.
+    </p>
+  )}
+
+{conciergeResults.length > 0 && (
+  <div style={{ marginTop: 18 }}>
+    <strong>Recommended Matches</strong>
+
+    <div
+      style={{
+        display: "grid",
+        gap: 12,
+        marginTop: 10,
+      }}
+    >
+      {conciergeResults.map((result) => (
+        <div
+          key={result.id}
+          style={{
+            padding: 14,
+            border: "1px solid #e2d8d5",
+            borderRadius: 12,
+            background: "#fffafa",
+          }}
+        >
+          <div
             style={{
-              marginTop: 12,
-              padding: "12px 18px",
-              border: 0,
-              borderRadius: 10,
-              background: "#8b1734",
-              color: "white",
+              fontSize: 16,
               fontWeight: 700,
-              opacity: 0.5,
+              color: "#4a0d20",
             }}
           >
-            Ask Clubhouse Concierge
-          </button>
+            {result.product?.name || "Unknown Product"}
+          </div>
+
+          {result.product?.brand && (
+            <div
+              style={{
+                marginTop: 3,
+                color: "#777",
+                fontSize: 13,
+              }}
+            >
+              {result.product.brand}
+            </div>
+          )}
+
+          <div style={{ marginTop: 10, lineHeight: 1.5 }}>
+            {result.ai_summary || "No product summary available."}
+          </div>
+
+          <div
+            style={{
+              marginTop: 10,
+              fontSize: 13,
+              color: "#666",
+            }}
+          >
+            Match score: {result.score}
+            {result.product?.price != null
+              ? ` • $${Number(result.product.price).toFixed(2)}`
+              : ""}
+            {result.product?.inventory_quantity != null
+              ? ` • ${result.product.inventory_quantity} in inventory`
+              : ""}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+)}
         </div>
       </div>
     </div>
