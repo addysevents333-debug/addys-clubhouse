@@ -28,7 +28,7 @@ const [generationError, setGenerationError] = useState("");
   async function loadProducts() {
     setLoadingProducts(true);
     setProductError("");
-
+ 
     const { data, error } = await supabase
       .from("products")
       .select(`
