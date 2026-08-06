@@ -577,6 +577,12 @@ async function generateProductIntelligence() {
   </div>
 )}
 
+
+    </div>
+  )}
+</div>
+          </div>
+        )}
 {generatedIntelligence && (
   <div
     style={{
@@ -726,12 +732,6 @@ async function generateProductIntelligence() {
     </details>
   </div>
 )}    
-    </div>
-  )}
-</div>
-          </div>
-        )}
-
         <div
           style={{
             marginTop: 18,
