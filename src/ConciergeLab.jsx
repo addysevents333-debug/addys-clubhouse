@@ -27,6 +27,7 @@ const [conciergeLoading, setConciergeLoading] = useState(false);
 const [conciergeError, setConciergeError] = useState("");
   const [cocktailRecipe, setCocktailRecipe] = useState(null);
 const [cocktailLoading, setCocktailLoading] = useState(false);
+  const [cocktailInventoryMatches, setCocktailInventoryMatches] = useState([]);
   useEffect(() => {
     loadProducts(); 
   }, []);
@@ -213,6 +214,7 @@ async function askClubhouseConcierge() {
   setConciergeError("");
   setConciergeResults([]);
   setCocktailRecipe(null);
+  setCocktailInventoryMatches([]);
 
   try {
     // STEP 1: Ask OpenAI to understand the customer's request
@@ -262,7 +264,113 @@ if (intent.request_mode === "cocktail_recipe") {
       "The cocktail generator did not return a recipe."
     );
   }
+const recipe = cocktailData.recipe;
 
+const baseSpirits = (recipe.ingredients || [])
+  .filter(
+    (ingredient) =>
+      ingredient.ingredient_type === "base_spirit"
+  )
+  .map((ingredient) =>
+    String(ingredient.ingredient || "").toLowerCase()
+  );
+
+if (baseSpirits.length > 0) {
+  const { data: inventoryData, error: inventoryError } =
+    await supabase
+      .from("concierge_product_intelligence")
+      .select(`
+        *,
+        products (*)
+      `)
+      .eq("review_status", "approved")
+      .eq("active", true);
+
+  if (inventoryError) {
+    console.error(
+      "Cocktail inventory lookup error:",
+      inventoryError
+    );
+  } else {
+    const cocktailMatches = (inventoryData || [])
+      .filter((item) => {
+        const product = item.products;
+
+        if (!product?.active) {
+          return false;
+        }
+
+        const searchableText = [
+          product?.name,
+          product?.brand,
+          item.product_type,
+          item.subcategory,
+          item.varietal_or_style,
+          item.ai_summary,
+          ...(item.style_tags || []),
+        ]
+          .filter(Boolean)
+          .join(" ")
+          .toLowerCase();
+
+        return baseSpirits.some((baseSpirit) => {
+          if (
+            baseSpirit.includes("bourbon") &&
+            searchableText.includes("bourbon")
+          ) {
+            return true;
+          }
+
+          if (
+            baseSpirit.includes("rye") &&
+            searchableText.includes("rye")
+          ) {
+            return true;
+          }
+
+          if (
+            baseSpirit.includes("vodka") &&
+            searchableText.includes("vodka")
+          ) {
+            return true;
+          }
+
+          if (
+            baseSpirit.includes("tequila") &&
+            searchableText.includes("tequila")
+          ) {
+            return true;
+          }
+
+          if (
+            baseSpirit.includes("gin") &&
+            searchableText.includes("gin")
+          ) {
+            return true;
+          }
+
+          if (
+            baseSpirit.includes("rum") &&
+            searchableText.includes("rum")
+          ) {
+            return true;
+          }
+
+          if (
+            baseSpirit.includes("whiskey") &&
+            searchableText.includes("whiskey")
+          ) {
+            return true;
+          }
+
+          return false;
+        });
+      })
+      .slice(0, 3);
+
+    setCocktailInventoryMatches(cocktailMatches);
+  }
+}
   setCocktailRecipe(cocktailData.recipe);
   setConciergeLoading(false);
 
@@ -1621,6 +1729,94 @@ setConciergeResults(finalResults);
         {cocktailRecipe.notes}
       </div>
     )}
+    {cocktailInventoryMatches.length > 0 && (
+  <div
+    style={{
+      marginTop: 16,
+      paddingTop: 14,
+      borderTop: "1px solid #e2d8d5",
+    }}
+  >
+    <div
+      style={{
+        fontWeight: 700,
+        fontSize: 17,
+        marginBottom: 10,
+        color: "#4a0d20",
+      }}
+    >
+      Available at Addy's
+    </div>
+
+    <div
+      style={{
+        display: "grid",
+        gap: 10,
+      }}
+    >
+      {cocktailInventoryMatches.map((item) => {
+        const product = item.products;
+
+        return (
+          <div
+            key={item.id}
+            style={{
+              padding: 12,
+              border: "1px solid #e2d8d5",
+              borderRadius: 10,
+              background: "white",
+            }}
+          >
+            <div
+              style={{
+                fontWeight: 700,
+                marginBottom: 4,
+              }}
+            >
+              {product?.name || "Product"}
+            </div>
+
+            {product?.brand && (
+              <div
+                style={{
+                  fontSize: 13,
+                  color: "#777",
+                  marginBottom: 6,
+                }}
+              >
+                {product.brand}
+              </div>
+            )}
+
+            <div
+              style={{
+                fontSize: 14,
+                lineHeight: 1.4,
+              }}
+            >
+              {product?.price != null && (
+                <>
+                  ${Number(product.price).toFixed(2)}
+                </>
+              )}
+
+              {product?.price != null &&
+                product?.inventory != null && (
+                  <> · </>
+                )}
+
+              {product?.inventory != null && (
+                <>
+                  {product.inventory} in inventory
+                </>
+              )}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+)}
   </div>
 )}
 {conciergeResults.length > 0 && (
