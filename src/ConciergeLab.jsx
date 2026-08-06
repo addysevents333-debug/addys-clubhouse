@@ -13,7 +13,10 @@ export default function ConciergeLab() {
   const [loadingProducts, setLoadingProducts] = useState(true);
   const [productError, setProductError] = useState("");
   const [selectedProduct, setSelectedProduct] = useState(null);
-
+const [productIntelligence, setProductIntelligence] = useState(null);
+const [intelligenceLoading, setIntelligenceLoading] = useState(false);
+const [intelligenceSaving, setIntelligenceSaving] = useState(false);
+const [intelligenceError, setIntelligenceError] = useState("");
   useEffect(() => {
     loadProducts();
   }, []);
@@ -41,7 +44,65 @@ export default function ConciergeLab() {
 
     setLoadingProducts(false);
   }
+async function loadProductIntelligence(productId) {
+  if (!productId) return;
 
+  setIntelligenceLoading(true);
+  setIntelligenceError("");
+  setProductIntelligence(null);
+
+  const { data, error } = await supabase
+    .from("concierge_product_intelligence")
+    .select("*")
+    .eq("product_id", productId)
+    .maybeSingle();
+
+  if (error) {
+    console.error("Concierge intelligence load error:", error);
+    setIntelligenceError(error.message);
+  } else {
+    setProductIntelligence(data || null);
+  }
+
+  setIntelligenceLoading(false);
+}
+
+async function createTestIntelligence() {
+  if (!selectedProduct?.id) return;
+
+  setIntelligenceSaving(true);
+  setIntelligenceError("");
+
+  const { data, error } = await supabase
+    .from("concierge_product_intelligence")
+    .upsert(
+      {
+        product_id: selectedProduct.id,
+        product_type: "wine",
+        subcategory: "test record",
+        ai_summary:
+          "Temporary Clubhouse Concierge test record. This will be replaced by real generated product intelligence.",
+        confidence_score: 0.5,
+        review_status: "pending",
+        active: true,
+        updated_at: new Date().toISOString(),
+      },
+      {
+        onConflict: "product_id",
+      }
+    )
+    .select()
+    .single();
+
+  if (error) {
+    console.error("Concierge intelligence save error:", error);
+    setIntelligenceError(error.message);
+  } else {
+    setProductIntelligence(data);
+  }
+
+  setIntelligenceSaving(false);
+}
   const filteredProducts = useMemo(() => {
     const query = search.trim().toLowerCase();
 
@@ -169,7 +230,10 @@ export default function ConciergeLab() {
                 <button
                   key={product.id}
                   type="button"
-                  onClick={() => setSelectedProduct(product)}
+                 onClick={() => {
+  setSelectedProduct(product);
+  loadProductIntelligence(product.id);
+}}
                   style={{
                     textAlign: "left",
                     background:
@@ -294,6 +358,107 @@ export default function ConciergeLab() {
                 )}
               </pre>
             </div>
+            <div
+  style={{
+    marginTop: 18,
+    paddingTop: 18,
+    borderTop: "1px solid #ddd6d2",
+  }}
+>
+  <strong>Clubhouse Concierge Intelligence</strong>
+
+  {intelligenceLoading ? (
+    <p style={{ color: "#777" }}>Loading intelligence...</p>
+  ) : intelligenceError ? (
+    <p style={{ color: "#a00000" }}>
+      Intelligence error: {intelligenceError}
+    </p>
+  ) : productIntelligence ? (
+    <div style={{ marginTop: 10 }}>
+      <div style={{ marginBottom: 6 }}>
+        <strong>Status:</strong>{" "}
+        {productIntelligence.review_status || "pending"}
+      </div>
+
+      <div style={{ marginBottom: 6 }}>
+        <strong>Product Type:</strong>{" "}
+        {productIntelligence.product_type || "Not set"}
+      </div>
+
+      <div style={{ marginBottom: 6 }}>
+        <strong>Subtype:</strong>{" "}
+        {productIntelligence.subcategory || "Not set"}
+      </div>
+
+      <div style={{ marginBottom: 6 }}>
+        <strong>Confidence:</strong>{" "}
+        {productIntelligence.confidence_score ?? "Not set"}
+      </div>
+
+      <div style={{ marginTop: 10 }}>
+        <strong>Summary:</strong>
+
+        <div
+          style={{
+            marginTop: 6,
+            padding: 12,
+            background: "#f3efed",
+            borderRadius: 10,
+            lineHeight: 1.5,
+          }}
+        >
+          {productIntelligence.ai_summary || "No summary yet."}
+        </div>
+      </div>
+
+      <details style={{ marginTop: 12 }}>
+        <summary style={{ cursor: "pointer", fontWeight: 700 }}>
+          View raw intelligence record
+        </summary>
+
+        <pre
+          style={{
+            marginTop: 8,
+            padding: 14,
+            borderRadius: 10,
+            background: "#f3efed",
+            overflowX: "auto",
+            whiteSpace: "pre-wrap",
+            fontSize: 12,
+          }}
+        >
+          {JSON.stringify(productIntelligence, null, 2)}
+        </pre>
+      </details>
+    </div>
+  ) : (
+    <div style={{ marginTop: 10 }}>
+      <p style={{ color: "#777" }}>
+        No Clubhouse Concierge intelligence exists for this product yet.
+      </p>
+
+      <button
+        type="button"
+        onClick={createTestIntelligence}
+        disabled={intelligenceSaving}
+        style={{
+          padding: "11px 16px",
+          border: 0,
+          borderRadius: 10,
+          background: "#8b1734",
+          color: "white",
+          fontWeight: 700,
+          cursor: intelligenceSaving ? "default" : "pointer",
+          opacity: intelligenceSaving ? 0.6 : 1,
+        }}
+      >
+        {intelligenceSaving
+          ? "Creating Test Record..."
+          : "Create Test Intelligence Record"}
+      </button>
+    </div>
+  )}
+</div>
           </div>
         )}
 
