@@ -368,26 +368,31 @@ async function askClubhouseConcierge() {
           }
         }
 
-        // REQUIRED TERMS
-        // Every explicitly required term must be represented
-        // somewhere in the product intelligence.
-        for (const required of intent.required_terms || []) {
-          if (
-            !searchableText.includes(
-              normalize(required)
-            )
-          ) {
-            return false;
-          }
-        }
-
         return true;
       })
       .map((item) => {
         const product = item.products;
         let score = 0;
         const reasons = [];
+// Strong requested terms.
+// These heavily influence ranking but do not eliminate
+// an otherwise appropriate product just because the
+// intelligence uses slightly different wording.
+const searchableText =
+  buildSearchableText(item, product);
 
+for (const required of intent.required_terms || []) {
+  if (
+    searchableText.includes(
+      normalize(required)
+    )
+  ) {
+    score += 5;
+    reasons.push(`Requested characteristic: ${required}`);
+  } else {
+    score -= 2;
+  }
+}
         // Product type
         if (
           intent.product_type &&
