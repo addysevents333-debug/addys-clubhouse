@@ -701,7 +701,7 @@ if (
               occasion
             )
           ) {
-            score += 1;
+            score += 2;
             reasons.push(
               `Occasion: ${occasion}`
             );
