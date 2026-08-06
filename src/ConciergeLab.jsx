@@ -513,9 +513,31 @@ async function generateProductIntelligence() {
         >
           {JSON.stringify(productIntelligence, null, 2)}
         </pre>
-      </details>
-    </div>
-  ) : (
+     </details>
+
+<button
+  type="button"
+  onClick={generateProductIntelligence}
+  disabled={generationLoading}
+  style={{
+    marginTop: 14,
+    padding: "11px 16px",
+    border: 0,
+    borderRadius: 10,
+    background: "#8b1734",
+    color: "white",
+    fontWeight: 700,
+    cursor: generationLoading ? "default" : "pointer",
+    opacity: generationLoading ? 0.6 : 1,
+  }}
+>
+  {generationLoading
+    ? "Generating New Intelligence..."
+    : "Regenerate Intelligence"}
+</button>
+
+</div>
+) : (
     <div style={{ marginTop: 10 }}>
       <p style={{ color: "#777" }}>
         No Clubhouse Concierge intelligence exists for this product yet.
