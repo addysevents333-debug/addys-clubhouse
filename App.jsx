@@ -1852,7 +1852,7 @@ if (editingProductTechSheet) {
     inventory_quantity: inventory,
     active: editingProduct.active,
   image_url: productImageUrl || editingProduct.image_url || null,
-    tech_sheet_url: techSheetUrl,
+    tech_sheet_url: techSheetUrl || editingProduct.tech_sheet_url || null,
     updated_at: new Date().toISOString(),
   })
   .eq("id", editingProductId)
