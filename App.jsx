@@ -1752,6 +1752,7 @@ const deleteEvent = async (event) => {
     price: product.price ?? "",
     inventory_quantity: product.inventory_quantity ?? 0,
     active: product.active !== false,
+    image_url: product.image_url || "",
     tech_sheet_url: product.tech_sheet_url || "",
     recommendation_status:
       merchandising?.recommendation_status || "neutral",
