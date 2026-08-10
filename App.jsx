@@ -1851,7 +1851,7 @@ if (editingProductTechSheet) {
     price,
     inventory_quantity: inventory,
     active: editingProduct.active,
-    image_url: productImageUrl,
+  image_url: productImageUrl || editingProduct.image_url || null,
     tech_sheet_url: techSheetUrl,
     updated_at: new Date().toISOString(),
   })
