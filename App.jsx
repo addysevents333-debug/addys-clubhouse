@@ -10195,9 +10195,37 @@ screen = (
                 return (
                  <button
   key={tab.id}
-  onClick={() => {
-    setActiveTab(tab.id);
+onClick={async () => {
+  setActiveTab(tab.id);
 
+  if (tab.id === "calendar" && currentMember?.email) {
+    const viewedAt = new Date().toISOString();
+
+    const { error } = await supabase
+      .from("members")
+      .update({
+        last_calendar_viewed: viewedAt,
+      })
+      .eq("email", currentMember.email);
+
+    if (!error) {
+      const updatedMember = {
+        ...currentMember,
+        last_calendar_viewed: viewedAt,
+      };
+
+      setCurrentMember(updatedMember);
+
+      localStorage.setItem(
+        "addysMember",
+        JSON.stringify(updatedMember)
+      );
+
+      setUnreadCalendarCount(0);
+    }
+  }
+
+  if (tab.id === "notes" && currentMember?.email) {
     if (tab.id === "notes" && currentMember?.email) {
       localStorage.setItem(
         `notesLastSeen:${currentMember.email}`,
