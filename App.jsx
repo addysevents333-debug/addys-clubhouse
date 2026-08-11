@@ -10225,7 +10225,6 @@ onClick={async () => {
     }
   }
 
-  if (tab.id === "notes" && currentMember?.email) {
     if (tab.id === "notes" && currentMember?.email) {
       localStorage.setItem(
         `notesLastSeen:${currentMember.email}`,
