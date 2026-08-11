@@ -9825,6 +9825,9 @@ useEffect(() => {
     setUnreadCalendarCount(count || 0);
   }
 };
+  useEffect(() => {
+  loadUnreadCalendarCount();
+}, [currentMember?.email, currentMember?.last_calendar_viewed]);
 const loadNotifications = async () => {
   const { data, error } = await supabase
     .from("notifications")
