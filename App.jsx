@@ -9851,6 +9851,35 @@ const loadNotifications = async () => {
     }
   }
 };
+  useEffect(() => {
+  if (activeTab !== "calendar" || !currentMember?.email) return;
+
+  const markCalendarViewed = async () => {
+    const viewedAt = new Date().toISOString();
+
+    const { error } = await supabase
+      .from("members")
+      .update({ last_calendar_viewed: viewedAt })
+      .eq("email", currentMember.email);
+
+    if (!error) {
+      const updatedMember = {
+        ...currentMember,
+        last_calendar_viewed: viewedAt,
+      };
+
+      setCurrentMember(updatedMember);
+      localStorage.setItem(
+        "addysMember",
+        JSON.stringify(updatedMember)
+      );
+
+      setUnreadCalendarCount(0);
+    }
+  };
+
+  markCalendarViewed();
+}, [activeTab]);
   const loadUnreadMemberDmCount = async () => {
   if (!currentMember?.email) return;
 
