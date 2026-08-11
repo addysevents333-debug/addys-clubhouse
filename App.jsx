@@ -9774,6 +9774,7 @@ const [unreadNotes, setUnreadNotes] = useState(0);
 const [unreadOffers, setUnreadOffers] = useState(0);
   const [unreadMemberDmCount, setUnreadMemberDmCount] = useState(0);
   const [unreadAdminDmCount, setUnreadAdminDmCount] = useState(0);
+  const [unreadCalendarCount, setUnreadCalendarCount] = useState(0);
 const [notifications, setNotifications] = useState([]);
    const [unreadNotifications, setUnreadNotifications] = useState(0);
   const [notificationsRead, setNotificationsRead] = useState(
@@ -9805,6 +9806,25 @@ useEffect(() => {
     loadUnreadAdminDmCount();
   }
 }, [currentMember]);
+  const loadUnreadCalendarCount = async () => {
+  if (!currentMember?.email) return;
+
+  const lastViewed = currentMember?.last_calendar_viewed;
+
+  let query = supabase
+    .from("events")
+    .select("id", { count: "exact", head: true });
+
+  if (lastViewed) {
+    query = query.gt("created_at", lastViewed);
+  }
+
+  const { count, error } = await query;
+
+  if (!error) {
+    setUnreadCalendarCount(count || 0);
+  }
+};
 const loadNotifications = async () => {
   const { data, error } = await supabase
     .from("notifications")
