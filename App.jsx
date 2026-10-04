@@ -1754,6 +1754,7 @@ const deleteEvent = async (event) => {
     price: product.price ?? "",
     inventory_quantity: product.inventory_quantity ?? 0,
     active: product.active !== false,
+    image_url: product.image_url || "",
     tech_sheet_url: product.tech_sheet_url || "",
     recommendation_status:
       merchandising?.recommendation_status || "neutral",
@@ -1853,8 +1854,8 @@ if (editingProductTechSheet) {
     price,
     inventory_quantity: inventory,
     active: editingProduct.active,
-    image_url: productImageUrl,
-    tech_sheet_url: techSheetUrl,
+  image_url: productImageUrl || editingProduct.image_url || null,
+    tech_sheet_url: techSheetUrl || editingProduct.tech_sheet_url || null,
     updated_at: new Date().toISOString(),
   })
   .eq("id", editingProductId)
@@ -9775,6 +9776,7 @@ const [unreadNotes, setUnreadNotes] = useState(0);
 const [unreadOffers, setUnreadOffers] = useState(0);
   const [unreadMemberDmCount, setUnreadMemberDmCount] = useState(0);
   const [unreadAdminDmCount, setUnreadAdminDmCount] = useState(0);
+  const [unreadCalendarCount, setUnreadCalendarCount] = useState(0);
 const [notifications, setNotifications] = useState([]);
    const [unreadNotifications, setUnreadNotifications] = useState(0);
   const [notificationsRead, setNotificationsRead] = useState(
@@ -9806,6 +9808,28 @@ useEffect(() => {
     loadUnreadAdminDmCount();
   }
 }, [currentMember]);
+  const loadUnreadCalendarCount = async () => {
+  if (!currentMember?.email) return;
+
+  const lastViewed = currentMember?.last_calendar_viewed;
+
+  let query = supabase
+    .from("events")
+    .select("id", { count: "exact", head: true });
+
+  if (lastViewed) {
+    query = query.gt("created_at", lastViewed);
+  }
+
+  const { count, error } = await query;
+
+  if (!error) {
+    setUnreadCalendarCount(count || 0);
+  }
+};
+  useEffect(() => {
+  loadUnreadCalendarCount();
+}, [currentMember?.email, currentMember?.last_calendar_viewed]);
 const loadNotifications = async () => {
   const { data, error } = await supabase
     .from("notifications")
@@ -9829,6 +9853,35 @@ const loadNotifications = async () => {
     }
   }
 };
+  useEffect(() => {
+  if (activeTab !== "calendar" || !currentMember?.email) return;
+
+  const markCalendarViewed = async () => {
+    const viewedAt = new Date().toISOString();
+
+    const { error } = await supabase
+      .from("members")
+      .update({ last_calendar_viewed: viewedAt })
+      .eq("email", currentMember.email);
+
+    if (!error) {
+      const updatedMember = {
+        ...currentMember,
+        last_calendar_viewed: viewedAt,
+      };
+
+      setCurrentMember(updatedMember);
+      localStorage.setItem(
+        "addysMember",
+        JSON.stringify(updatedMember)
+      );
+
+      setUnreadCalendarCount(0);
+    }
+  };
+
+  markCalendarViewed();
+}, [activeTab]);
   const loadUnreadMemberDmCount = async () => {
   if (!currentMember?.email) return;
 
@@ -10144,8 +10197,35 @@ screen = (
                 return (
                  <button
   key={tab.id}
-  onClick={() => {
-    setActiveTab(tab.id);
+onClick={async () => {
+  setActiveTab(tab.id);
+
+  if (tab.id === "calendar" && currentMember?.email) {
+    const viewedAt = new Date().toISOString();
+
+    const { error } = await supabase
+      .from("members")
+      .update({
+        last_calendar_viewed: viewedAt,
+      })
+      .eq("email", currentMember.email);
+
+    if (!error) {
+      const updatedMember = {
+        ...currentMember,
+        last_calendar_viewed: viewedAt,
+      };
+
+      setCurrentMember(updatedMember);
+
+      localStorage.setItem(
+        "addysMember",
+        JSON.stringify(updatedMember)
+      );
+
+      setUnreadCalendarCount(0);
+    }
+  }
 
     if (tab.id === "notes" && currentMember?.email) {
       localStorage.setItem(
@@ -10242,7 +10322,20 @@ screen = (
       background: "#d50000",
     }}
   />
-) : null}                 
+) : null}
+      {tab.id === "calendar" && unreadCalendarCount > 0 ? (
+  <span
+    style={{
+      position: "absolute",
+      top: -4,
+      right: -6,
+      width: 8,
+      height: 8,
+      borderRadius: "50%",
+      background: "#d50000",
+    }}
+  />
+) : null}                
 </div>
                    
                     <div style={{ fontSize: 11 }}>{tab.label}</div>
