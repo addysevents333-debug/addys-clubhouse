@@ -1229,8 +1229,9 @@ author:
     ? "Ryan's Notes"
     : noteAuthorGroup === "karl"
     ? "Karl's Notes"
-    : noteAuthorGroup === "mike-derek" 
+    : noteAuthorGroup === "mike-derek"
     ? "Mike & Derek Notes"
+    : "Mike & Derek Notes",
 
 let result;
 
