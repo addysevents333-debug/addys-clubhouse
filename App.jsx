@@ -165,6 +165,15 @@ const staffContacts = [
     lastMessage: "That would be a great bottle for Old Fashioneds.",
   },
   {
+  id: "karl",
+    name: "Karl",
+    email: "karl.frankovitchaddys@gmail.com",
+    role: "Spirits Specialist",
+    icon: "🥃",
+    status: "Best for whiskey, tequila, bourbon picks, and Spirits Club questions.",
+    lastMessage: "That would be a great bottle for Old Fashioneds.",
+  },
+  {
     id: "jim",
     name: "Jim Curry",
     email: "jpcurry@aol.com",
@@ -1211,17 +1220,17 @@ const keptExistingFiles = existingNoteFiles.filter(
       ...uploadedFiles,
     ]
   : uploadedFiles,
-    author:
-      noteAuthorGroup === "tyler"
-        ? "Tyler's Notes"
-        : noteAuthorGroup === "jim"
-        ? "Jim's Notes"
-        : noteAuthorGroup === "ryan"
-        ? "Ryan's Notes"
-        : "Mike & Derek Notes",
-    author_group: noteAuthorGroup,
-     author_email: currentMember?.email,
-  };
+author:
+  noteAuthorGroup === "tyler"
+    ? "Tyler's Notes"
+    : noteAuthorGroup === "jim"
+    ? "Jim's Notes"
+    : noteAuthorGroup === "ryan"
+    ? "Ryan's Notes"
+    : noteAuthorGroup === "karl"
+    ? "Karl's Notes"
+    : noteAuthorGroup === "mike-derek" 
+    ? "Mike & Derek Notes"
 
 let result;
 
@@ -3616,6 +3625,7 @@ return (
   <option value="tyler">Tyler's Notes</option>
   <option value="jim">Jim's Notes</option>
   <option value="ryan">Ryan's Notes</option>
+  <option value="karl">Karl's Notes</option>
   <option value="mike_derek">Mike & Derek Notes</option>
 </select>
 <AppButton onClick={createNote}>
