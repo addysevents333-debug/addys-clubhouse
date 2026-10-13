@@ -1220,18 +1220,19 @@ const keptExistingFiles = existingNoteFiles.filter(
       ...uploadedFiles,
     ]
   : uploadedFiles,
-author:
-  noteAuthorGroup === "tyler"
-    ? "Tyler's Notes"
-    : noteAuthorGroup === "jim"
-    ? "Jim's Notes"
-    : noteAuthorGroup === "ryan"
-    ? "Ryan's Notes"
+ author:
+      noteAuthorGroup === "tyler"
+        ? "Tyler's Notes"
+        : noteAuthorGroup === "jim"
+        ? "Jim's Notes"
+        : noteAuthorGroup === "ryan"
+        ? "Ryan's Notes"
     : noteAuthorGroup === "karl"
-    ? "Karl's Notes"
-    : noteAuthorGroup === "mike-derek"
-    ? "Mike & Derek Notes"
-    : "Mike & Derek Notes",
+        ? "Karl's Notes"
+        : "Mike & Derek Notes",
+author_group: noteAuthorGroup,
+     author_email: currentMember?.email,
+  };
 
 let result;
 
